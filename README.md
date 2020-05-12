@@ -1,2 +1,2 @@
-# filianore
+# Filianore
 Foundation for Filianore Renderer
