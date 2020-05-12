@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/filianore/elemental.h
+iostream
+-
+
+/Users/edem/Documents/dev/filianore/src/elemental.cpp
+filianore/elemental.h
+/Users/edem/Documents/dev/filianore/src/filianore/elemental.h
+
