@@ -3,9 +3,9 @@
 namespace filianore
 {
 
-    void AppInfo()
+    string AppInfo()
     {
-        std::cout << "Filianore Foundation" << std::endl;
+        return "Filianore Foundation";
     }
 
 }
