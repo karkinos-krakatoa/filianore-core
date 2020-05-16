@@ -10,7 +10,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast")
 
 add_library(${PROJECT_NAME} src/elemental.cpp)
 add_library(sub::filianore ALIAS ${PROJECT_NAME})
