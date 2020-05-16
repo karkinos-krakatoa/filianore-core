@@ -1,10 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 namespace filianore
 {
 
-    void AppInfo();
+    string AppInfo();
 
 }
