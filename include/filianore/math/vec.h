@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#include <filianore/elemental.h>
+#include <filianore/core/elemental.h>
 
 
 namespace filianore
