@@ -2,7 +2,8 @@
 
 
 #include <stdint.h>
-#include <math.h>
+#include <cmath>
+#include <numeric>
 
 #include <filianore/core/elemental.h>
 
@@ -340,20 +341,6 @@ namespace filianore
 	FILIANORE_INLINE auto Reflect(const Vector<T, N>& i, const Vector<T, N>& n)
 	{
 		return i - n * ((Dot(i, n)) * static_cast<T>(2));
-	}
-
-
-	template <typename T, size_t N>
-	FILIANORE_INLINE Vector<T, N> Faceforward(const Vector<T, N>& n, const Vector<T, N>& v)
-	{
-		float dot = Dot(n, v);
-		if (dot != 0)
-		{
-			return dot > 0 ? n : -n;
-		}
-		Vector<T, N> offset = Vector<T, N>(Epsilon<T>, 0, 0);
-		dot = Dot(n + offset, v);
-		return dot > 0 ? n : -n;
 	}
 
 
