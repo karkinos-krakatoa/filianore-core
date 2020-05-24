@@ -19,16 +19,10 @@ namespace konsortium
 #endif
 
 
-    template <typename T, typename Intrin, size_t N> class ArrayBase
+    class ArrayBase
     {
     public:
         ArrayBase(){ }
-
-        union
-        {
-            T m[N];
-            Intrin data;
-        }; 
     };
 
 }
