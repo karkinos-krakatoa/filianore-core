@@ -345,6 +345,20 @@ namespace filianore
 
 
 	template <typename T, size_t N>
+	FILIANORE_INLINE Vector<T, N> Faceforward(const Vector<T, N>& n, const Vector<T, N>& v)
+	{
+		float dot = Dot(n, v);
+		if (dot != 0)
+		{
+			return dot > 0 ? n : -n;
+		}
+		Vector<T, N> offset = Vector<T, N>(static_cast<T>(0.0001), 0, 0);
+		dot = Dot(n + offset, v);
+		return dot > 0 ? n : -n;
+	}
+
+
+	template <typename T, size_t N>
 	FILIANORE_INLINE bool Refract(const Vector<T, N>& wi, const Vector<T, N>& n, const T& eta, Vector<T, N>* wt)
 	{
 		T cosI = Dot(wi, n);
@@ -521,4 +535,5 @@ namespace filianore
 		Vector(T _x, T _y, T _z, T _w) :
 			x(_x), y(_y), z(_z), w(_w) { };
 	};
+
 }
