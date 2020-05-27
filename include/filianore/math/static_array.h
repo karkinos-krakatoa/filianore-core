@@ -26,6 +26,30 @@ namespace filianore
             params = arr;
         }
 
+        FILIANORE_INLINE constexpr T& x()
+	    {
+		    static_assert(1 <= N, "Invalid number of arguments for vector type");
+		    return params[0];
+	    }
+
+	    FILIANORE_INLINE constexpr T& y()
+	    {
+            static_assert(2 <= N, "Invalid number of arguments for vector type");
+            return params[1];
+	    }
+
+	    FILIANORE_INLINE constexpr T& z()
+	    {
+            static_assert(3 <= N, "Invalid number of arguments for vector type");
+            return params[2];
+	    }
+
+	    FILIANORE_INLINE constexpr T& w()
+	    {
+            static_assert(4 <= N, "Invalid number of arguments for vector type");
+            return params[3];
+	    }
+
         FILIANORE_INLINE StaticArray<T, N> operator+(const StaticArray<T, N>& v) const
         {
             int c = 0; StaticArray<T, N> result(params);

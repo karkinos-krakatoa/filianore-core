@@ -51,7 +51,7 @@ namespace filianore
 
 		StaticArray<T, 3> PointTransform(const StaticArray<T, 3>& pt) const
 		{
-			T x = pt.x, y = pt.y, z = pt.z;
+			T x = pt.x(), y = pt.y(), z = pt.z();
 
 			T xp = mat.data[0][0] * x + mat.data[0][1] * y + mat.data[0][2] * z + mat.data[0][3];
 			T yp = mat.data[1][0] * x + mat.data[1][1] * y + mat.data[1][2] * z + mat.data[1][3];
@@ -71,7 +71,7 @@ namespace filianore
 
 		StaticArray<T, 3> VectorTransform(const StaticArray<T, 3>& v) const
 		{
-			T x = v.x, y = v.y, z = v.z;
+			T x = v.x(), y = v.y(), z = v.z();
 			return StaticArray<T, 3>(mat.data[0][0] * x + mat.data[0][1] * y + mat.data[0][2] * z,
 					    mat.data[1][0] * x + mat.data[1][1] * y + mat.data[1][2] * z,
 					    mat.data[2][0] * x + mat.data[2][1] * y + mat.data[2][2] * z);
@@ -94,14 +94,14 @@ namespace filianore
 
 	template <typename T> Transform<T> Translate(const StaticArray<T, 3>& delta)
 	{
-		Matrix<T, 4, 4> m(1, 0, 0, delta.x,
-			0, 1, 0, delta.y,
-			0, 0, 1, delta.z,
+		Matrix<T, 4, 4> m(1, 0, 0, delta.x(),
+			0, 1, 0, delta.y(),
+			0, 0, 1, delta.z(),
 			0, 0, 0, 1);
 
-		Matrix<T, 4, 4> mInv(1, 0, 0, -delta.x,
-			0, 1, 0, -delta.y,
-			0, 0, 1, -delta.z,
+		Matrix<T, 4, 4> mInv(1, 0, 0, -delta.x(),
+			0, 1, 0, -delta.y(),
+			0, 0, 1, -delta.z(),
 			0, 0, 0, 1);
 
 		return Transform<T>(m, mInv);
