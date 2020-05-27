@@ -17,6 +17,5 @@ namespace filianore
 
 
     // Forward Declrs..
-    template <typename T> class Vec2;
 
 }
