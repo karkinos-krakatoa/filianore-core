@@ -1,4 +1,4 @@
-#include "triangle.h"
+#include <filianore/render/triangle.h>
 
 
 namespace filianore
@@ -14,7 +14,8 @@ namespace filianore
 
     template <typename T, size_t N> bool Triangle<T, N>::Intersect(const Ray<T, N>& ray, T* t) const
 	{
-		
+		*t = 0;
+		return false;
 	}
 
     template <typename T, size_t N> StaticArray<T, N> Triangle<T, N>::Centroid() const

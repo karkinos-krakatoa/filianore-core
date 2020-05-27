@@ -14,10 +14,9 @@ endif()
 set(CMAKE_C_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
-
-
 add_library(${PROJECT_NAME} 
-    src/core/elemental.cpp)
+    src/core/elemental.cpp
+    src/shapes/triangle.cpp)
 
 add_library(sub::filianore ALIAS ${PROJECT_NAME})
 
