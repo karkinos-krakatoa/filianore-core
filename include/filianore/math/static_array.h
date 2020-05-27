@@ -153,7 +153,7 @@ namespace filianore
             return std::sqrt(LengthSquared());
 	    }
 
-        FILIANORE_INLINE StaticArray<T, N> Normalise()
+        FILIANORE_INLINE StaticArray<T, N> Normalize()
 	    {
 		    T invLength = T(1) / Length();
 		    std::for_each(params.begin(), params.end(), [&invLength](T& elem){ elem *= invLength;});

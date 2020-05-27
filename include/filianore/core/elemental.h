@@ -17,5 +17,8 @@ namespace filianore
 
 
     // Forward Declrs..
+    template <typename T, size_t N> class Ray;
+	template <typename T> class AABB;
+	template <typename T> class Transform;
 
 }
