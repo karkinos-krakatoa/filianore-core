@@ -21,4 +21,6 @@ namespace filianore
 	template <typename T> class AABB;
 	template <typename T> class Transform;
 
+    template <typename T> class Triangle;
+
 }
