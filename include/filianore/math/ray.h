@@ -11,7 +11,7 @@ namespace filianore
     template <typename T, size_t N> class Ray
 	{
 	public:
-
+	
         StaticArray<T, N> origin;
 		StaticArray<T, N> dir;
 		mutable T tMin;
@@ -19,9 +19,7 @@ namespace filianore
 		T time;
 
 
-		Ray()
-			: tMin(Epsilon<T>), tMax(Infinity<T>()), time(0)
-		{ }
+		Ray() : tMin(Epsilon<T>), tMax(Infinity<T>()), time(0) { }
 
 
 		Ray(const StaticArray<T, N>& _origin, const StaticArray<T, N>& _dir, T _tMin = Epsilon<T>, T _tMax = Infinity<T>(), T _time = 0)

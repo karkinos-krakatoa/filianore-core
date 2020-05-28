@@ -55,13 +55,13 @@ namespace filianore
 
 		void Union(const  StaticArray<T, 3>& p)
 		{
-			pMin.x = std::min(pMin.x(), p.x());
-			pMin.y = std::min(pMin.y(), p.y());
-			pMin.z = std::min(pMin.z(), p.z());
+			pMin.params[0] = std::min(pMin.x(), p.x());
+			pMin.params[1] = std::min(pMin.y(), p.y());
+			pMin.params[2] = std::min(pMin.z(), p.z());
 
-			pMax.x = std::max(pMax.x(), p.x());
-			pMax.y = std::max(pMax.y(), p.y());
-			pMax.z = std::max(pMax.z(), p.z());
+			pMax.params[0] = std::max(pMax.x(), p.x());
+			pMax.params[1] = std::max(pMax.y(), p.y());
+			pMax.params[2] = std::max(pMax.z(), p.z());
 
 			Extent = pMax - pMin;
 		}

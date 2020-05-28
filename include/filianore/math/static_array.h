@@ -26,25 +26,25 @@ namespace filianore
             params = arr;
         }
 
-        FILIANORE_INLINE constexpr T& x()
+        FILIANORE_INLINE T x() const
 	    {
 		    static_assert(1 <= N, "Invalid number of arguments for vector type");
 		    return params[0];
 	    }
 
-	    FILIANORE_INLINE constexpr T& y()
+	    FILIANORE_INLINE T y() const
 	    {
             static_assert(2 <= N, "Invalid number of arguments for vector type");
             return params[1];
 	    }
 
-	    FILIANORE_INLINE constexpr T& z()
+	    FILIANORE_INLINE T z() const
 	    {
             static_assert(3 <= N, "Invalid number of arguments for vector type");
             return params[2];
 	    }
 
-	    FILIANORE_INLINE constexpr T& w()
+	    FILIANORE_INLINE T w() const
 	    {
             static_assert(4 <= N, "Invalid number of arguments for vector type");
             return params[3];
