@@ -2,7 +2,7 @@
 
 
 #include <filianore/core/sampler.h>
-
+#include <ext/pcg32/pcg32.h>
 
 namespace filianore
 {
