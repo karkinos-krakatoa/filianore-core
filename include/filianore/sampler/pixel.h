@@ -22,7 +22,7 @@ namespace filianore
 
     protected:
         std::vector<std::vector<T>> samples1D;
-        std::vector<std::vector<StaticArray<T, 2>> samples2D;
+        std::vector<std::vector<StaticArray<T, 2>>> samples2D;
         int current1DDimension = 0, current1DDimension = 0;
     };
 
