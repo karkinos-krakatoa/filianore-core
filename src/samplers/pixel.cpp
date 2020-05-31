@@ -26,7 +26,7 @@ namespace filianore
         }
         else
         {
-            return pcg32.nextFloat();
+            return _pcg32.nextFloat();
         }
     }
 
@@ -38,7 +38,7 @@ namespace filianore
         }
         else
         {
-            return StaticArray<T, 2>(pcg32.nextFloat(), pcg32.nextFloat());
+            return StaticArray<T, 2>(_pcg32.nextFloat(), _pcg32.nextFloat());
         }
     }
 

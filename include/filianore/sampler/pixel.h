@@ -33,7 +33,7 @@ namespace filianore
         std::vector<std::vector<T>> samples1D;
         std::vector<std::vector<StaticArray<T, 2>>> samples2D;
         int current1DDimension = 0, current2DDimension = 0;
-        pcg32 pcg32;
+        pcg32 _pcg32;
         
     };
 
