@@ -7,12 +7,29 @@
 namespace filianore
 {
 
+	template <typename T> struct CameraSample 
+	{
+    	StaticArray<T, 2> pFilm;
+    	StaticArray<T, 2> pLens;
+    	T time;
+	};
+
+
 	template <typename T, size_t N> class Camera
 	{
 	public:
+		Camera(const Transform<T>& _cameraTransform, float _shutterOpen, float _shutterClose, Film<T> *film);
+
 		virtual ~Camera() { }
 
-		virtual Ray<T, N> AwakenRay(const StaticArray<T, 2>& _cameraSample) const = 0;
+
+		virtual T AwakenRay(const CameraSample<T>& _cameraSample, Ray<T, N>* ray) const = 0;
+
+
+		Transform<T> cameraTransform;
+		const T shutterOpen, shutterClose;
+		Film<T>* film;
+
 	};
     
 }

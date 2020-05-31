@@ -21,6 +21,9 @@ namespace filianore
 	template <typename T> class AABB;
 	template <typename T> class Transform;
 
-    template <typename T> class Triangle;
+    template <typename T> class Film;
+    template <typename T, size_t N> class Camera;
+    template <typename T> class RNG;
+    template <typename T> class Sampler;
 
 }
