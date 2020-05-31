@@ -16,6 +16,8 @@ set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 add_library(${PROJECT_NAME} 
     src/core/elemental.cpp
     src/core/sampler.cpp
+    src/samplers/pixel.cpp
+    src/samplers/global.cpp
     src/shapes/triangle.cpp
     src/cameras/physical.cpp)
 

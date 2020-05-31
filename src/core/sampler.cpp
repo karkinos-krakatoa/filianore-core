@@ -4,7 +4,7 @@
 namespace filianore
 {
 
-    template <typename T> void Sampler<T>::Startpixel(const StaticArray<T, 2>& p)
+    template <typename T> void Sampler<T>::StartPixel(const StaticArray<T, 2>& p)
     {
         currentPixel = p;
         currentPixelSampleIndex  = 0;
@@ -51,7 +51,7 @@ namespace filianore
     }
 
 
-    template void Sampler<float>::Startpixel(const StaticArray<float, 2>& p);
+    template void Sampler<float>::StartPixel(const StaticArray<float, 2>& p);
     template bool Sampler<float>::StartNextSample();
     template bool Sampler<float>::SetSampleNumber(int64_t sampleNum);
     template void Sampler<float>::Request1DArray(int n);

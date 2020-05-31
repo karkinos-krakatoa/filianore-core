@@ -17,7 +17,9 @@ namespace filianore
         Sampler(int64_t _samplesPerPixel)
         : samplesPerPixel(_samplesPerPixel) { }
 
-        virtual void Startpixel(const StaticArray<T, 2>& p);
+        virtual ~Sampler(){ }
+
+        virtual void StartPixel(const StaticArray<T, 2>& p);
 
         virtual T Get1D() = 0;
         virtual StaticArray<T, 2> Get2D() = 0;

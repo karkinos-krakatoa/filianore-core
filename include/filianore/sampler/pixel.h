@@ -2,7 +2,8 @@
 
 
 #include <filianore/core/sampler.h>
-#include <ext/pcg32/pcg32.h>
+#include "../ext/pcg32/pcg32.h"
+
 
 namespace filianore
 {
@@ -20,10 +21,20 @@ namespace filianore
             }
         }
 
+        bool StartNextSample();
+
+        bool SetSampleNumber(int64_t sampleNum);
+
+        T Get1D();
+        StaticArray<T, 2> Get2D();
+
+
     protected:
         std::vector<std::vector<T>> samples1D;
         std::vector<std::vector<StaticArray<T, 2>>> samples2D;
-        int current1DDimension = 0, current1DDimension = 0;
+        int current1DDimension = 0, current2DDimension = 0;
+        pcg32 pcg32;
+        
     };
 
 }
