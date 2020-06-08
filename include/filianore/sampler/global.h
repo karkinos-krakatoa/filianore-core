@@ -7,25 +7,25 @@
 namespace filianore
 {
 
-    template <typename T> class GlobalSampler : public Sampler<T>
+    class GlobalSampler : public Sampler
     {
     public:    
         GlobalSampler(int64_t _samplesPerPixel)
-        : Sampler<T>(_samplesPerPixel)
+        : Sampler(_samplesPerPixel)
         {}
 
         virtual int64_t GetIndexForSample(int64_t sampleNum) const = 0;
 
-        virtual T SampleDimension(int64_t index, int dimension) const = 0;
+        virtual float SampleDimension(int64_t index, int dimension) const = 0;
 
-        void Startpixel(const StaticArray<T, 2>& p);
+        void Startpixel(const StaticArray<float, 2>& p);
 
         bool StartNextSample();
 
         bool SetSampleNumber(int64_t sampleNum);
 
-        T Get1D();
-        StaticArray<T, 2> Get2D();
+        float Get1D();
+        StaticArray<float, 2> Get2D();
 
 
     private:

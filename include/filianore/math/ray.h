@@ -8,26 +8,26 @@
 namespace filianore
 {
 
-    template <typename T, size_t N> class Ray
+    class Ray
 	{
 	public:
 	
-        StaticArray<T, N> origin;
-		StaticArray<T, N> dir;
-		mutable T tMin;
-		mutable T tMax;
-		T time;
+        StaticArray<float, 3> origin;
+		StaticArray<float, 3> dir;
+		mutable float tMin;
+		mutable float tMax;
+		float time;
 
 
-		Ray() : tMin(Epsilon<T>), tMax(Infinity<T>()), time(0) { }
+		Ray() : tMin(Epsilon<float>), tMax(Infinity<float>()), time(0) { }
 
 
-		Ray(const StaticArray<T, N>& _origin, const StaticArray<T, N>& _dir, T _tMin = Epsilon<T>, T _tMax = Infinity<T>(), T _time = 0)
+		Ray(const StaticArray<float, 3>& _origin, const StaticArray<float, 3>& _dir, float _tMin = Epsilon<float>, float _tMax = Infinity<float>(), float _time = 0)
 			: origin(_origin), dir(_dir), tMin(_tMin), tMax(_tMax), time(_time)
 		{ }
 
 
-		StaticArray<T, N> PointAtT(T t) const
+		StaticArray<float, 3> PointAtT(float t) const
 		{
 			return origin + dir * t;
 		}

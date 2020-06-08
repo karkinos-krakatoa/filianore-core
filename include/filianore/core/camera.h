@@ -1,35 +1,35 @@
 #pragma once
 
 
-#include "../math/transform.h"
+#include <filianore/math/static_array.h>
+#include <filianore/math/transform.h>
 
 
 namespace filianore
 {
 
-	template <typename T> struct CameraSample 
+	struct CameraSample 
 	{
-    	StaticArray<T, 2> pFilm;
-    	StaticArray<T, 2> pLens;
-    	T time;
+    	StaticArray<float, 2> pFilm;
+    	StaticArray<float, 2> pLens;
+    	float time;
 	};
 
 
-	template <typename T, size_t N> class Camera
+	class Camera
 	{
 	public:
-		Camera(const Transform<T>& _cameraTransform, float _shutterOpen, float _shutterClose, Film<T> *film);
+		Camera(const Transform<float>& _cameraTransform, float _shutterOpen, float _shutterClose, Film* film);
 
 		virtual ~Camera() { }
 
 
-		virtual T AwakenRay(const CameraSample<T>& _cameraSample, Ray<T, N>* ray) const = 0;
+		virtual float AwakenRay(const CameraSample& _cameraSample, Ray* ray) const = 0;
 
 
-		Transform<T> cameraTransform;
-		const T shutterOpen, shutterClose;
-		Film<T>* film;
-
+		Transform<float> cameraTransform;
+		const float shutterOpen, shutterClose;
+		Film* film;
 	};
     
 }

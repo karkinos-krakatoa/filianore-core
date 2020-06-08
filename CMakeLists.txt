@@ -18,8 +18,7 @@ add_library(${PROJECT_NAME}
     src/core/sampler.cpp
     src/samplers/pixel.cpp
     src/samplers/global.cpp
-    src/shapes/triangle.cpp
-    src/cameras/physical.cpp)
+    src/shapes/triangle.cpp)
 
 add_library(sub::filianore ALIAS ${PROJECT_NAME})
 

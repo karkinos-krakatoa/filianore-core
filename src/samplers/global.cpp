@@ -4,9 +4,9 @@
 namespace filianore
 {
 
-    template <typename T> void GlobalSampler<T>::Startpixel(const StaticArray<T, 2>& p)
+    void GlobalSampler::Startpixel(const StaticArray<float, 2>& p)
     {
-        Sampler<T>::StartPixel(p);
+        Sampler::StartPixel(p);
         dimension = 0;
         intervalSampleIndex  = GetIndexForSample(0);
         arrayEndDim = arrayStartDim + this->sampleArray1D.size() + 2 * this->sampleArray2D.size();
@@ -28,51 +28,43 @@ namespace filianore
             for(int j = 0; j < nSamples; ++j)
             {
                 int64_t index = GetIndexForSample(j);
-                this->sampleArray2D[i][j] = StaticArray<T, 2>(SampleDimension(index, dim), SampleDimension(index, dim + 1));
+                this->sampleArray2D[i][j] = StaticArray<float, 2>(SampleDimension(index, dim), SampleDimension(index, dim + 1));
             }
         }
     }
 
 
-    template <typename T> bool GlobalSampler<T>::StartNextSample()
+    bool GlobalSampler::StartNextSample()
     {
         dimension = 0;
         intervalSampleIndex = GetIndexForSample(this->currentPixelSampleIndex + 1);
-        return Sampler<T>::StartNextSample();
+        return Sampler::StartNextSample();
     }
 
 
-    template <typename T> bool GlobalSampler<T>::SetSampleNumber(int64_t sampleNum)
+    bool GlobalSampler::SetSampleNumber(int64_t sampleNum)
     {
         dimension = 0;
         intervalSampleIndex = GetIndexForSample(sampleNum);
-        return Sampler<T>::SetSampleNumber(sampleNum);
+        return Sampler::SetSampleNumber(sampleNum);
     }
 
 
-    template <typename T> T GlobalSampler<T>::Get1D()
+    float GlobalSampler::Get1D()
     {
         if (dimension >= arrayStartDim && dimension < arrayEndDim)
             dimension = arrayEndDim;
         return SampleDimension(intervalSampleIndex, dimension++);
     }
 
-    template <typename T> StaticArray<T, 2> GlobalSampler<T>::Get2D()
+    StaticArray<float, 2> GlobalSampler::Get2D()
     {
         if (dimension + 1 >= arrayStartDim && dimension < arrayEndDim)
             dimension = arrayEndDim;
-        StaticArray<T, 2> p(SampleDimension(intervalSampleIndex, dimension),
+        StaticArray<float, 2> p(SampleDimension(intervalSampleIndex, dimension),
               SampleDimension(intervalSampleIndex, dimension + 1));
         dimension += 2;
         return p;
     }
-
-
-
-    template void GlobalSampler<float>::Startpixel(const StaticArray<float, 2>& p);
-    template bool GlobalSampler<float>::StartNextSample();
-    template bool GlobalSampler<float>::SetSampleNumber(int64_t sampleNum);
-    template float GlobalSampler<float>::Get1D();
-    template StaticArray<float, 2> GlobalSampler<float>::Get2D();
 
 }

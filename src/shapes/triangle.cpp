@@ -4,31 +4,31 @@
 namespace filianore
 {
 
-	template <typename T> AABB<T> Triangle<T>::WorldBound() const
+	AABB Triangle::WorldBound() const
     {
-        AABB<T> box(v1.vertex);
+        AABB box(v1.vertex);
 		box.Union(v2.vertex);
 		box.Union(v3.vertex);
 		return box;
     }
 
 
-	template <typename T> bool Triangle<T>::Intersect(const Ray<T, 3>& ray, T* t) const
+	bool Triangle::Intersect(const Ray& ray, float* t) const
     {
-        StaticArray<T, 3> e1 = v2.vertex - v1.vertex;
-		StaticArray<T, 3> e2 = v3.vertex - v1.vertex;
+        StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
+		StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
 
-		StaticArray<T, 3> n = Cross(e1, e2);
+		StaticArray<float, 3> n = Cross(e1, e2);
 
-		T det = -Dot(ray.dir, n);
+		float det = -Dot(ray.dir, n);
 
-		StaticArray<T, 3> ao = ray.origin - v1.vertex;
-		StaticArray<T, 3> dao = Cross(ao, ray.dir);
+		StaticArray<float, 3> ao = ray.origin - v1.vertex;
+		StaticArray<float, 3> dao = Cross(ao, ray.dir);
 
-		T invDet = (T)1 / det;
+		float invDet = 1.f / det;
 
-		T u = Dot(e2, dao) * invDet;
-		T v = -Dot(e1, dao) * invDet;
+		float u = Dot(e2, dao) * invDet;
+		float v = -Dot(e1, dao) * invDet;
 
 		*t = Dot(ao, n) * invDet;
 
@@ -36,38 +36,31 @@ namespace filianore
     }
 
 
-	template <typename T> StaticArray<T, 3> Triangle<T>::Centroid() const
+	StaticArray<float, 3> Triangle::Centroid() const
     {
-        return (v1.vertex + v2.vertex + v3.vertex) / (T)3;
+        return (v1.vertex + v2.vertex + v3.vertex) / 3.f;
     }
 
 
-	template <typename T> T Triangle<T>::Area() const
+	float Triangle::Area() const
     {
-        return (T)0.5 * Cross((v2.vertex - v1.vertex), (v3.vertex - v1.vertex)).Length();
+        return 0.5f * Cross((v2.vertex - v1.vertex), (v3.vertex - v1.vertex)).Length();
     }
 
 
-    template <typename T> StaticArray<T, 3> Triangle<T>::GeometricNormal(const StaticArray<T, 3>& _p) const
+    StaticArray<float, 3> Triangle::GeometricNormal(const StaticArray<float, 3>& _p) const
 	{
-		StaticArray<T, 3> e1 = v2.vertex - v1.vertex;
-		StaticArray<T, 3> e2 = v3.vertex - v1.vertex;
-		StaticArray<T, 3> normal = Cross(e1, e2).Normalize();
+		StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
+		StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
+		StaticArray<float, 3> normal = Cross(e1, e2).Normalize();
 		return this->reverseOrientation ? normal.Neg() : normal;
 	}
 
 
-    template <typename T> StaticArray<T, 3> Triangle<T>::ShadingNormal(const StaticArray<T, 3>& _p) const
+    StaticArray<float, 3> Triangle::ShadingNormal(const StaticArray<float, 3>& _p) const
 	{
-		return ((v1.normal + v2.normal + v3.normal) / (T)3).Normalize();
+		return ((v1.normal + v2.normal + v3.normal) / 3.f).Normalize();
 	}
 
-
-	template AABB<float> Triangle<float>::WorldBound() const;
-	template bool Triangle<float>::Intersect(const Ray<float, 3>& ray, float* t) const;
-	template StaticArray<float, 3> Triangle<float>::Centroid() const;
-	template float Triangle<float>::Area() const;
-    template StaticArray<float, 3> Triangle<float>::GeometricNormal(const StaticArray<float, 3>& _p) const;
-    template StaticArray<float, 3> Triangle<float>::ShadingNormal(const StaticArray<float, 3>& _p) const;
 
 }

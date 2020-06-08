@@ -17,14 +17,14 @@ namespace filianore
 
 
     // Forward Declrs..
-    template <typename T, size_t N> class Ray;
-	template <typename T> class AABB;
+    class Ray;
+	class AABB;
 	template <typename T> class Transform;
 
-    template <typename T> class Film;
-    template <typename T, size_t N> class Camera;
-    template <typename T> class Sampler;
-    template <typename T> class PixelSampler;
-    template <typename T> class GlobalSampler;
+    class Film;
+    class Camera;
+    class Sampler;
+    class PixelSampler;
+    class GlobalSampler;
     
 }
