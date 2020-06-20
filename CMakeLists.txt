@@ -4,6 +4,16 @@ project(filianore)
 
 set(CMAKE_CXX_STANDARD 17)
 
+
+set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp")
+set(OpenMP_C_LIB_NAMES "omp")
+set(OpenMP_omp_LIBRARY omp)
+
+set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp")
+set(OpenMP_CXX_LIB_NAMES "omp")
+set(OpenMP_omp_LIBRARY omp)
+
+
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -flto")
 
@@ -22,4 +32,8 @@ add_library(${PROJECT_NAME}
 
 add_library(sub::filianore ALIAS ${PROJECT_NAME})
 
+find_package (OpenMP REQUIRED)
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(${PROJECT_NAME} PUBLIC OpenMP::OpenMP_CXX)
+
