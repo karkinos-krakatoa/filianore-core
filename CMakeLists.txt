@@ -5,14 +5,6 @@ project(filianore)
 set(CMAKE_CXX_STANDARD 17)
 
 
-find_package(OpenMP QUIET)
-    if (OpenMP_CXX_FOUND)
-        target_link_libraries(${PROJECT_NAME} INTERFACE ${OpenMP_CXX_LIBRARIES})
-        target_include_directories(${PROJECT_NAME} INTERFACE ${OpenMP_CXX_INCLUDE_DIRS})
-        target_link_options(${PROJECT_NAME} INTERFACE ${OpenMP_CXX_FLAGS})
-        target_compile_options(${PROJECT_NAME} INTERFACE ${OpenMP_CXX_FLAGS})
-    endif ()
-
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -flto")
 
