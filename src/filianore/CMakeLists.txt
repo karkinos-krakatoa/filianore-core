@@ -74,5 +74,5 @@ source_group ("filianore\\shapes" FILES
 # Main Build
 #-----------------------------------------------------------------------------------
 
-add_library(filianore STATIC 
+add_library(filianore SHARED 
     ${filianore_sources})
