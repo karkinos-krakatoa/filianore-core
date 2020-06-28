@@ -76,3 +76,26 @@ source_group ("filianore\\shapes" FILES
 
 add_library(filianore SHARED 
     ${filianore_sources})
+
+set_target_properties (filianore PROPERTIES FOLDER "core")
+
+
+#-----------------------------------------------------------------------------------
+# Installation.
+#-----------------------------------------------------------------------------------
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    install (TARGETS filianore
+        RUNTIME
+        DESTINATION bin
+    )
+
+    install (TARGETS filianore
+        ARCHIVE
+        DESTINATION lib
+    )
+else ()
+    install (TARGETS filianore
+        DESTINATION lib
+    )
+endif ()
