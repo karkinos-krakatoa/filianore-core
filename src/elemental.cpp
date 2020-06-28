@@ -5,7 +5,7 @@ namespace filianore
 
     string AppInfo()
     {
-        return "Filianore Foundation";
+        return "Filianore Foundation..";
     }
 
 }
