@@ -27,4 +27,8 @@ namespace filianore
     class PixelSampler;
     class GlobalSampler;
     
+
+    std::string AppInfo();
+
+    
 }
