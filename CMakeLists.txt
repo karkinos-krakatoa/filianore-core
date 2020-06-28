@@ -1,30 +1,54 @@
+#-----------------------------------------------------------------------------------
+# CMake Config
+#-----------------------------------------------------------------------------------
+
 cmake_minimum_required(VERSION 3.17)
 
-project(filianore)
 
-set(CMAKE_CXX_STANDARD 17)
+#-----------------------------------------------------------------------------------
+# Project Config
+#-----------------------------------------------------------------------------------
 
-
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -flto")
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+    message (FATAL_ERROR "In-source builds are not permitted; run CMake inside an empty build directory.")
+endif ()
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
+project(filianore)
+
+set (CMAKE_MODULE_PATH
+    ${CMAKE_MODULE_PATH}
+    ${PROJECT_SOURCE_DIR}/cmake/modules
+)
+
+
+#-----------------------------------------------------------------------------------
+# Lang and Compile
+#-----------------------------------------------------------------------------------
+
+set(CMAKE_CXX_STANDARD 17)
+
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -flto")
+
 set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
-add_library(${PROJECT_NAME} 
-    src/core/elemental.cpp
-    src/core/sampler.cpp
-    src/samplers/pixel.cpp
-    src/samplers/global.cpp
-    src/shapes/triangle.cpp)
 
-add_library(sub::filianore ALIAS ${PROJECT_NAME})
+#-----------------------------------------------------------------------------------
+# Include Paths
+#-----------------------------------------------------------------------------------
 
-#find_package (OpenMP REQUIRED)
+include_directories (
+    src/middleware
+    src/filianore
+)
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
-#target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_CXX)
 
+#-----------------------------------------------------------------------------------
+# Main Build
+#-----------------------------------------------------------------------------------
+
+add_subdirectory (src/filianore)

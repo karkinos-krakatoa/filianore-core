@@ -1,5 +1,5 @@
-#include <filianore/sampler/stratified.h>
-#include <filianore/core/sampling.h>
+#include "stratified.h"
+#include "core/sampling.h"
 
 
 namespace filianore

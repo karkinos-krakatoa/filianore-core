@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <vector>
-#include <filianore/math/static_array.h>
+#include "math/static_array.h"
 
 
 namespace filianore

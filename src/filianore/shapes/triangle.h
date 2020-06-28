@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include <filianore/core/shape.h>
-#include <filianore/math/aabb.h>
+#include "core/shape.h"
+#include "math/aabb.h"
 
 
 namespace filianore

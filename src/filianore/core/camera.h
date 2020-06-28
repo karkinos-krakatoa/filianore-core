@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include <filianore/math/static_array.h>
-#include <filianore/math/transform.h>
+#include "math/static_array.h"
+#include "math/transform.h"
 
 
 namespace filianore

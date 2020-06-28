@@ -1,4 +1,4 @@
-#include <filianore/sampler/pixel.h>
+#include "pixel.h"
 
 
 namespace filianore

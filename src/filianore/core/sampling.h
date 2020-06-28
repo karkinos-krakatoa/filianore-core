@@ -1,9 +1,9 @@
 #pragma once
 
 
-#include <filianore/core/elemental.h>
 #include <algorithm>
-#include "../ext/pcg32/pcg32.h"
+#include "core/elemental.h"
+#include "../middleware/pcg32/pcg32.h"
 
 
 namespace filianore

@@ -1,4 +1,4 @@
-#include <filianore/shape/triangle.h>
+#include "triangle.h"
 
 
 namespace filianore

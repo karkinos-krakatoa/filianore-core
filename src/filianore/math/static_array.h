@@ -5,7 +5,7 @@
 #include <cmath>
 #include <numeric>
 #include <array>
-#include <filianore/core/elemental.h>
+#include "core/elemental.h"
 
 
 namespace filianore

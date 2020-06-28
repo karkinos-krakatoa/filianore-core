@@ -1,4 +1,4 @@
-#include <filianore/core/sampler.h>
+#include "sampler.h"
 
 
 namespace filianore

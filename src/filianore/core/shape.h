@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include "../core/elemental.h"
-#include "../math/transform.h"
+#include "elemental.h"
+#include "math/transform.h"
 
 
 namespace filianore
