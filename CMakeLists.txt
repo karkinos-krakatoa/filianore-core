@@ -5,14 +5,6 @@ project(filianore)
 set(CMAKE_CXX_STANDARD 17)
 
 
-# set(OpenMP_C_FLAGS "-Xpreprocessor -fopenmp")
-# set(OpenMP_C_LIB_NAMES "omp")
-# set(OpenMP_omp_LIBRARY omp)
-
-# set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp")
-# set(OpenMP_CXX_LIB_NAMES "omp")
-# set(OpenMP_omp_LIBRARY omp)
-
 find_package(OpenMP QUIET)
     if (OpenMP_CXX_FOUND)
         target_link_libraries(${PROJECT_NAME} INTERFACE ${OpenMP_CXX_LIBRARIES})
