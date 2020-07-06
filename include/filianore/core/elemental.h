@@ -29,7 +29,10 @@ namespace filianore
     class GlobalSampler;
     
 
-    std::string AppInfo();
+    std::string AppInfo()
+    {
+        return "Filianore";
+    }
     
 }
 

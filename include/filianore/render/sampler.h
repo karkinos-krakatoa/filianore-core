@@ -20,24 +20,63 @@ namespace filianore
 
         virtual ~Sampler(){ }
 
-        virtual void StartPixel(const StaticArray<float, 2>& p);
+        virtual void StartPixel(const StaticArray<float, 2>& p)
+        {
+            currentPixel = p;
+            currentPixelSampleIndex  = 0;
+            array1DOffset = array2DOffset = 0;
+        }
+
 
         virtual float Get1D() = 0;
         virtual StaticArray<float, 2> Get2D() = 0;
 
-        void Request1DArray(int n);
-        void Request2DArray(int n);
+
+        void Request1DArray(int n)
+        {
+            samples1DArraySizes.emplace_back(n);
+            sampleArray1D.emplace_back(std::vector<float>(n * samplesPerPixel));
+        }
+        void Request2DArray(int n)
+        {
+            samples2DArraySizes.emplace_back(n);
+            sampleArray2D.emplace_back(std::vector<StaticArray<float, 2>>(n * samplesPerPixel));
+        }
+
 
         virtual int RoundCount(int n) const { return n; }
 
-        const float* Get1DArray(int n);
-        const StaticArray<float, 2>* Get2DArray(int n);
 
-        virtual bool StartNextSample();
+        const float* Get1DArray(int n)
+        {
+            if (array1DOffset == sampleArray1D.size())
+                return nullptr;
+            return &sampleArray1D[array1DOffset++][currentPixelSampleIndex * n];
+        }
+        const StaticArray<float, 2>* Get2DArray(int n)
+        {
+            if (array2DOffset == sampleArray2D.size())
+                return nullptr;
+            return &sampleArray2D[array2DOffset++][currentPixelSampleIndex * n];
+        }
+
+
+        virtual bool StartNextSample()
+        {
+            array1DOffset = array2DOffset = 0;
+            return ++currentPixelSampleIndex < samplesPerPixel;
+        }
+
 
         virtual std::unique_ptr<Sampler> Clone(int seed) = 0;
 
-        virtual bool SetSampleNumber(int64_t sampleNum);
+
+        virtual bool SetSampleNumber(int64_t sampleNum)
+        {
+            array1DOffset = array2DOffset = 0;
+            currentPixelSampleIndex = sampleNum;
+            return currentPixelSampleIndex < samplesPerPixel;
+        }
 
 
         const int64_t samplesPerPixel;
