@@ -3,7 +3,7 @@
 
 
 #include "../shape.h"
-#include "core/aabb.h"
+#include "../../core/aabb.h"
 
 
 namespace filianore

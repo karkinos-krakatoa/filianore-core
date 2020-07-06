@@ -3,8 +3,8 @@
 
 
 #include <algorithm>
-#include "core/elemental.h"
-#include "ext/pcg32.h"
+#include "../core/elemental.h"
+#include "../ext/pcg32.h"
 
 
 namespace filianore

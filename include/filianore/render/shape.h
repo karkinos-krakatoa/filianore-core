@@ -2,8 +2,8 @@
 #define _SHAPE_H
 
 
-#include "elemental.h"
-#include "maths/transform.h"
+#include "../core/elemental.h"
+#include "../maths/transform.h"
 
 
 namespace filianore

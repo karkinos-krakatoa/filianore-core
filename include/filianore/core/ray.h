@@ -2,8 +2,8 @@
 #define _RAY_H
 
 
-#include "maths/vec3_math.h"
-#include "maths/scalar.h"
+#include "../maths/vec3_math.h"
+#include "../maths/scalar.h"
 
 
 namespace filianore

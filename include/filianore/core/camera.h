@@ -2,8 +2,8 @@
 #define _CAMERA_H
 
 
-#include "maths/static_array.h"
-#include "maths/transform.h"
+#include "../maths/static_array.h"
+#include "../maths/transform.h"
 
 
 namespace filianore

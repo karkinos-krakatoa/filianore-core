@@ -2,7 +2,7 @@
 # CMake Config
 #-----------------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.0)
 
 
 #-----------------------------------------------------------------------------------
@@ -38,17 +38,60 @@ set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 
 
 #-----------------------------------------------------------------------------------
-# Include Paths
-#-----------------------------------------------------------------------------------
-
-include_directories (
-    src/middleware
-    src/filianore
-)
-
-
-#-----------------------------------------------------------------------------------
 # Main Build
 #-----------------------------------------------------------------------------------
 
-add_subdirectory (src/filianore)
+add_library(filianore STATIC
+    src/samplers/global.cpp
+    src/samplers/pixel.cpp
+    src/samplers/stratified.cpp
+    src/shapes/triangle.cpp)
+
+target_include_directories(filianore PUBLIC
+    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+
+
+#-----------------------------------------------------------------------------------
+# Install and Export
+#-----------------------------------------------------------------------------------
+
+set(FULL_CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/filianore)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/matrix.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/scalar.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/static_array.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/transform.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/vec3_math.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/maths)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/sampler.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/sampling.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/shape.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/render)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/samplers/global.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/samplers/pixel.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/samplers/stratified.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/render/samplers)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/shapes/triangle.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/render/shapes)
+
+install(TARGETS filianore
+    EXPORT filianore_export
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/filianore)
+
+install(EXPORT filianore_export FILE filianore-config.cmake 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/filianore)
