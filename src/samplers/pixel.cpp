@@ -20,7 +20,7 @@ namespace filianore
 
     float PixelSampler::Get1D()
     {
-        if(current1DDimension < samples1D.size())
+        if (current1DDimension < samples1D.size())
         {
             return samples1D[current1DDimension++][this->currentPixelSampleIndex];
         }
@@ -32,7 +32,7 @@ namespace filianore
 
     StaticArray<float, 2> PixelSampler::Get2D()
     {
-        if(current1DDimension < samples2D.size())
+        if (current1DDimension < samples2D.size())
         {
             return samples2D[current1DDimension++][this->currentPixelSampleIndex];
         }

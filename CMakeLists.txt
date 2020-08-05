@@ -57,7 +57,7 @@ target_include_directories(filianore PUBLIC
 #---------------------------------------------------------------------------
 
 if (NOT MSVC)
-    find_package(OpenMP QUIET)
+    find_package(OpenMP REQUIRED)
     if (OpenMP_CXX_FOUND)
         message(STATUS "OpenMP found")
         target_link_libraries(filianore INTERFACE OpenMP::OpenMP_CXX)
@@ -74,13 +74,6 @@ endif ()
 set(FULL_CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/filianore)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
-
-install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/matrix.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/scalar.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/static_array.h 
@@ -89,10 +82,15 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/maths)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/sampler.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/sampling.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/shape.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/render)
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampler.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampling.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shape.h
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/util.h
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/samplers/global.h 

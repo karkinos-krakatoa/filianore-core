@@ -9,7 +9,7 @@
 namespace filianore
 {
 
-    template <typename T, typename MatrixType> class MatrixBase
+	template <typename T, typename MatrixType> class MatrixBase
 	{
 	public:
 		size_t Size() const
@@ -69,10 +69,18 @@ namespace filianore
 
 		using iterator = T*;
 		using const_iterator = const T*;
-		iterator begin() { return &MatrixT().data[0][0]; }
-		iterator end() { return &MatrixT().data[0][0] + Size(); }
-		const_iterator begin() const { return &MatrixT().data[0][0]; }
-		const_iterator end() const { return &MatrixT().data[0][0] + Size(); }
+		iterator begin() {
+			return &MatrixT().data[0][0];
+		}
+		iterator end() {
+			return &MatrixT().data[0][0] + Size();
+		}
+		const_iterator begin() const {
+			return &MatrixT().data[0][0];
+		}
+		const_iterator end() const {
+			return &MatrixT().data[0][0] + Size();
+		}
 
 		T& operator () (size_t m, size_t n) {
 			return MatrixT().data[m][n];

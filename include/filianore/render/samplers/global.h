@@ -2,7 +2,7 @@
 #define _GLOBAL_SAMPLER_H
 
 
-#include "../sampler.h"
+#include "../core/sampler.h"
 
 
 namespace filianore
@@ -10,9 +10,13 @@ namespace filianore
 
     class GlobalSampler : public Sampler
     {
-    public:    
+    public:
+        float Get1D();
+        StaticArray<float, 2> Get2D();
+
+
         GlobalSampler(int64_t _samplesPerPixel)
-        : Sampler(_samplesPerPixel)
+            : Sampler(_samplesPerPixel)
         {}
 
         virtual int64_t GetIndexForSample(int64_t sampleNum) const = 0;
@@ -24,9 +28,6 @@ namespace filianore
         bool StartNextSample();
 
         bool SetSampleNumber(int64_t sampleNum);
-
-        float Get1D();
-        StaticArray<float, 2> Get2D();
 
 
     private:

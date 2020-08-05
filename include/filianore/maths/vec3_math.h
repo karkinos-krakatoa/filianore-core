@@ -8,7 +8,7 @@
 namespace filianore
 {
 
-    template <typename T>
+	template <typename T>
 	FILIANORE_INLINE void CoordinateSystem(const StaticArray<T, 3>& v1, StaticArray<T, 3>* v2, StaticArray<T, 3>* v3)
 	{
 		if (std::abs(v1.params[0]) > std::abs(v1.params[1]))
@@ -23,15 +23,15 @@ namespace filianore
 	}
 
 
-    template <typename T>
+	template <typename T>
 	FILIANORE_INLINE StaticArray<T, 3> Cross(const StaticArray<T, 3>& a, const StaticArray<T, 3>& b)
 	{
-		return StaticArray<T, 3>((a.params[1] * b.params[2]) - (a.params[2] * b.params[1]), 
-            (a.params[2] * b.params[0]) - (a.params[0] * b.params[2]), (a.params[0] * b.params[1]) - (a.params[1] * b.params[0]));
+		return StaticArray<T, 3>((a.params[1] * b.params[2]) - (a.params[2] * b.params[1]),
+			(a.params[2] * b.params[0]) - (a.params[0] * b.params[2]), (a.params[0] * b.params[1]) - (a.params[1] * b.params[0]));
 	}
 
 
-    template <typename T>
+	template <typename T>
 	FILIANORE_INLINE StaticArray<T, 3> Vec3Permute(const StaticArray<T, 3>& a, int x, int y, int z)
 	{
 		return StaticArray<T, 3>(a.params[x], a.params[y], a.params[z]);

@@ -12,11 +12,11 @@ namespace filianore
     {
     public:
         StratifiedSampler(int _xPixelSamples, int _yPixelSamples, bool _jitterSamples,
-                    int nSampledDimensions)
+            int nSampledDimensions)
             : PixelSampler(_xPixelSamples * _yPixelSamples, nSampledDimensions),
-            xPixelSamples(_xPixelSamples), yPixelSamples(_yPixelSamples), 
+            xPixelSamples(_xPixelSamples), yPixelSamples(_yPixelSamples),
             jitterSamples(_jitterSamples)
-            { }
+        { }
 
         void StartPixel(const StaticArray<float, 2>& p);
 

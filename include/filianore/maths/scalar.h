@@ -10,7 +10,7 @@
 namespace filianore
 {
 
-    template<typename T> constexpr T Pi = static_cast<T>(3.14159265358979323846);
+	template<typename T> constexpr T Pi = static_cast<T>(3.14159265358979323846);
 	template<typename T> constexpr T Epsilon = static_cast<T>(0.0001);
 
 

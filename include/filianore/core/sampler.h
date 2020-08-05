@@ -15,10 +15,13 @@ namespace filianore
     class Sampler
     {
     public:
-        Sampler(int64_t _samplesPerPixel)
-        : samplesPerPixel(_samplesPerPixel) { }
+        const int64_t samplesPerPixel;
 
-        virtual ~Sampler(){ }
+
+        Sampler(int64_t _samplesPerPixel)
+            : samplesPerPixel(_samplesPerPixel) { }
+
+        virtual ~Sampler() { }
 
         virtual void StartPixel(const StaticArray<float, 2>& p)
         {
@@ -44,7 +47,9 @@ namespace filianore
         }
 
 
-        virtual int RoundCount(int n) const { return n; }
+        virtual int RoundCount(int n) const {
+            return n;
+        }
 
 
         const float* Get1DArray(int n)
@@ -79,9 +84,6 @@ namespace filianore
         }
 
 
-        const int64_t samplesPerPixel;
-
-
     private:
         size_t array1DOffset, array2DOffset;
 
@@ -94,7 +96,7 @@ namespace filianore
         std::vector<std::vector<StaticArray<float, 2>>> sampleArray2D;
 
     };
-    
+
 }
 
 

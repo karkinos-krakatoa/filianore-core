@@ -2,7 +2,7 @@
 #define _SHAPE_H
 
 
-#include "../core/elemental.h"
+#include "elemental.h"
 #include "../maths/transform.h"
 
 
@@ -12,11 +12,15 @@ namespace filianore
 	class Shape
 	{
 	public:
+		const bool reverseOrientation;
+
+
 		virtual ~Shape() { }
 
-		Shape() : reverseOrientation(false){ }
+		Shape() : reverseOrientation(false) { }
 
-		Shape(bool _reverseOrientation) : reverseOrientation(_reverseOrientation){ }
+		Shape(bool _reverseOrientation) : reverseOrientation(_reverseOrientation) { }
+
 
 		virtual AABB WorldBound() const = 0;
 
@@ -30,9 +34,6 @@ namespace filianore
 		virtual StaticArray<float, 3> Centroid() const = 0;
 
 		virtual float Area() const = 0;
-
-
-		const bool reverseOrientation;
 	};
 
 }

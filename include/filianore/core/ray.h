@@ -9,11 +9,10 @@
 namespace filianore
 {
 
-    class Ray
+	class Ray
 	{
 	public:
-	
-        StaticArray<float, 3> origin;
+		StaticArray<float, 3> origin;
 		StaticArray<float, 3> dir;
 		mutable float tMin;
 		mutable float tMax;
@@ -21,7 +20,6 @@ namespace filianore
 
 
 		Ray() : tMin(Epsilon<float>), tMax(Infinity<float>()), time(0) { }
-
 
 		Ray(const StaticArray<float, 3>& _origin, const StaticArray<float, 3>& _dir, float _tMin = Epsilon<float>, float _tMax = Infinity<float>(), float _time = 0)
 			: origin(_origin), dir(_dir), tMin(_tMin), tMax(_tMax), time(_time)
@@ -32,7 +30,6 @@ namespace filianore
 		{
 			return origin + dir * t;
 		}
-		
 	};
 
 }

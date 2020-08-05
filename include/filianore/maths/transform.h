@@ -9,7 +9,7 @@
 namespace filianore
 {
 
-    class Transform
+	class Transform
 	{
 	public:
 		Matrix<float, 4, 4> mat, matInv;
@@ -74,8 +74,8 @@ namespace filianore
 		{
 			float x = v.x(), y = v.y(), z = v.z();
 			return StaticArray<float, 3>(mat.data[0][0] * x + mat.data[0][1] * y + mat.data[0][2] * z,
-					    mat.data[1][0] * x + mat.data[1][1] * y + mat.data[1][2] * z,
-					    mat.data[2][0] * x + mat.data[2][1] * y + mat.data[2][2] * z);
+				mat.data[1][0] * x + mat.data[1][1] * y + mat.data[1][2] * z,
+				mat.data[2][0] * x + mat.data[2][1] * y + mat.data[2][2] * z);
 		}
 
 		friend Transform Inverse(const Transform& t)
@@ -83,11 +83,11 @@ namespace filianore
 			return Transform(t.matInv, t.mat);
 		}
 
-		bool SwapsHandedness() const 
+		bool SwapsHandedness() const
 		{
 			float det = mat.data[0][0] * (mat.data[1][1] * mat.data[2][2] - mat.data[1][2] * mat.data[2][1]) -
-				    mat.data[0][1] * (mat.data[1][0] * mat.data[2][2] - mat.data[1][2] * mat.data[2][0]) +
-				    mat.data[0][2] * (mat.data[1][0] * mat.data[2][1] - mat.data[1][1] * mat.data[2][0]);
+				mat.data[0][1] * (mat.data[1][0] * mat.data[2][2] - mat.data[1][2] * mat.data[2][0]) +
+				mat.data[0][2] * (mat.data[1][0] * mat.data[2][1] - mat.data[1][1] * mat.data[2][0]);
 			return det < 0;
 		}
 
@@ -115,14 +115,14 @@ namespace filianore
 		assert(x != 0 && y != 0 && z != 0);
 
 		Matrix<float, 4, 4> m(x, 0.f, 0.f, 0.f,
-						  0.f, y, 0.f, 0.f,
-						  0.f, 0, z, 0.f,
-						  0.f, 0.f, 0.f, 1.f);
+			0.f, y, 0.f, 0.f,
+			0.f, 0, z, 0.f,
+			0.f, 0.f, 0.f, 1.f);
 
 		Matrix<float, 4, 4> mInv(1.f / x, 0.f, 0.f, 0.f,
-							 0.f, 1.f / y, 0, 0,
-							 0.f, 0, 1.f / z, 0,
-						     0.f, 0.f, 0.f, 1.f);
+			0.f, 1.f / y, 0, 0,
+			0.f, 0, 1.f / z, 0,
+			0.f, 0.f, 0.f, 1.f);
 
 		return Transform(m, mInv);
 	}
