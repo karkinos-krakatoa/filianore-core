@@ -1,4 +1,4 @@
-#include "filianore/render/samplers/global.h"
+#include "filianore/samplers/global.h"
 
 
 namespace filianore

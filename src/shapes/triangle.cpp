@@ -1,4 +1,4 @@
-#include "filianore/render/shapes/triangle.h"
+#include "filianore/shapes/triangle.h"
 
 
 namespace filianore

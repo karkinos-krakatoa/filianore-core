@@ -45,6 +45,7 @@ add_library(filianore STATIC
     src/samplers/global.cpp
     src/samplers/pixel.cpp
     src/samplers/stratified.cpp
+    
     src/shapes/triangle.cpp)
 
 target_include_directories(filianore PUBLIC
@@ -93,14 +94,14 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/samplers/global.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/samplers/pixel.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/samplers/stratified.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/render/samplers)
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/global.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/pixel.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/stratified.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/render/shapes/triangle.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/render/shapes)
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shapes/triangle.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shapes)
 
 install(TARGETS filianore
     EXPORT filianore_export

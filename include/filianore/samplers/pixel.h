@@ -3,7 +3,7 @@
 
 
 #include "../core/sampler.h"
-#include "../../ext/pcg32.h"
+#include "../ext/pcg32.h"
 
 
 namespace filianore
