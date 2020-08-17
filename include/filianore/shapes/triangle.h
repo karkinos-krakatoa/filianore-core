@@ -1,10 +1,8 @@
 #ifndef _TRIANGLE_SHAPE_H
 #define _TRIANGLE_SHAPE_H
 
-
 #include "../core/shape.h"
 #include "../core/aabb.h"
-
 
 namespace filianore
 {
@@ -16,25 +14,25 @@ namespace filianore
 		bool normalFound;
 		StaticArray<float, 2> uv;
 
-
 		TriangleEntity()
 			: vertex(StaticArray<float, 3>()), normal(StaticArray<float, 3>()), normalFound(false), uv(StaticArray<float, 2>())
-		{ }
+		{
+		}
 
-		TriangleEntity(const StaticArray<float, 3>& _v, const StaticArray<float, 3>& _n, bool _normalFound = false, const StaticArray<float, 2>& _uv = StaticArray<float, 2>())
+		TriangleEntity(const StaticArray<float, 3> &_v, const StaticArray<float, 3> &_n, bool _normalFound = false, const StaticArray<float, 2> &_uv = StaticArray<float, 2>())
 			: vertex(_v), normal(_n), normalFound(_normalFound), uv(_uv)
-		{ }
+		{
+		}
 	};
-
 
 	class Triangle : public Shape
 	{
 	public:
-		Triangle() { }
+		Triangle() {}
 
-		~Triangle() { }
+		~Triangle() {}
 
-		Triangle(const TriangleEntity& _v1, const TriangleEntity& _v2, const TriangleEntity& _v3, bool _reverseOrientation = false)
+		Triangle(const TriangleEntity &_v1, const TriangleEntity &_v2, const TriangleEntity &_v3, bool _reverseOrientation = false)
 			: Shape(_reverseOrientation), v1(_v1), v2(_v2), v3(_v3)
 		{
 			allNormalsInMesh = false;
@@ -44,25 +42,22 @@ namespace filianore
 			}
 		}
 
-
 		AABB WorldBound() const;
 
-		bool Intersect(const Ray& ray, float* t) const;
+		bool Intersect(const Ray &ray, float *t) const;
 
 		StaticArray<float, 3> Centroid() const;
 
 		float Area() const;
 
-
 	private:
-		StaticArray<float, 3> GeometricNormal(const StaticArray<float, 3>& _p) const;
-		StaticArray<float, 3> ShadingNormal(const StaticArray<float, 3>& _p) const;
+		StaticArray<float, 3> GeometricNormal(const StaticArray<float, 3> &_p) const;
+		StaticArray<float, 3> ShadingNormal(const StaticArray<float, 3> &_p) const;
 
 		TriangleEntity v1, v2, v3;
 		bool allNormalsInMesh;
 	};
 
-}
-
+} // namespace filianore
 
 #endif

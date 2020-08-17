@@ -1,7 +1,6 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
-
 #include <cstring>
 #include <cstdint>
 #include <atomic>
@@ -12,36 +11,38 @@
 #include <climits>
 #include <type_traits>
 
-
 namespace filianore
 {
 
     template <size_t Bits>
-    struct SizedIntegerType {
+    struct SizedIntegerType
+    {
         static_assert(Bits <= 8);
-        using Signed   = int8_t;
+        using Signed = int8_t;
         using Unsigned = uint8_t;
     };
 
     template <>
-    struct SizedIntegerType<64> {
-        using Signed   = int64_t;
+    struct SizedIntegerType<64>
+    {
+        using Signed = int64_t;
         using Unsigned = uint64_t;
     };
 
     template <>
-    struct SizedIntegerType<32> {
-        using Signed   = int32_t;
+    struct SizedIntegerType<32>
+    {
+        using Signed = int32_t;
         using Unsigned = uint32_t;
     };
 
     template <>
-    struct SizedIntegerType<16> {
-        using Signed   = int16_t;
+    struct SizedIntegerType<16>
+    {
+        using Signed = int16_t;
         using Unsigned = uint16_t;
     };
 
-}
-
+} // namespace filianore
 
 #endif

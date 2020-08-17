@@ -1,15 +1,14 @@
 #ifndef _MATRIX_H
 #define _MATRIX_H
 
-
 #include <iostream>
 #include "scalar.h"
-
 
 namespace filianore
 {
 
-	template <typename T, typename MatrixType> class MatrixBase
+	template <typename T, typename MatrixType>
+	class MatrixBase
 	{
 	public:
 		size_t Size() const
@@ -17,11 +16,13 @@ namespace filianore
 			return std::extent<decltype(MatrixType::data)>::value;
 		}
 
-		size_t Rows() const {
+		size_t Rows() const
+		{
 			return sizeof(MatrixType::data) / sizeof(MatrixType::data[0]);
 		}
 
-		size_t Cols() const {
+		size_t Cols() const
+		{
 			return sizeof(MatrixType::data[0]) / sizeof(int);
 		}
 
@@ -66,55 +67,56 @@ namespace filianore
 			return tr;
 		}
 
-
-		using iterator = T*;
-		using const_iterator = const T*;
-		iterator begin() {
+		using iterator = T *;
+		using const_iterator = const T *;
+		iterator begin()
+		{
 			return &MatrixT().data[0][0];
 		}
-		iterator end() {
+		iterator end()
+		{
 			return &MatrixT().data[0][0] + Size();
 		}
-		const_iterator begin() const {
+		const_iterator begin() const
+		{
 			return &MatrixT().data[0][0];
 		}
-		const_iterator end() const {
+		const_iterator end() const
+		{
 			return &MatrixT().data[0][0] + Size();
 		}
 
-		T& operator () (size_t m, size_t n) {
+		T &operator()(size_t m, size_t n)
+		{
 			return MatrixT().data[m][n];
 		}
-		const T& operator ()(size_t m, size_t n) const {
+		const T &operator()(size_t m, size_t n) const
+		{
 			return MatrixT().data[m][n];
 		}
 
 	protected:
-		MatrixType& MatrixT()
+		MatrixType &MatrixT()
 		{
-			return static_cast<MatrixType&>(*this);
+			return static_cast<MatrixType &>(*this);
 		}
 
-
-		const MatrixType& MatrixT() const
+		const MatrixType &MatrixT() const
 		{
-			return static_cast<const MatrixType&>(*this);
+			return static_cast<const MatrixType &>(*this);
 		}
-
 	};
-
 
 	// Base Matrix Class
 	template <typename T, size_t M, size_t N>
-	struct Matrix : MatrixBase<T, Matrix<T, M, N>> {
+	struct Matrix : MatrixBase<T, Matrix<T, M, N>>
+	{
 		T data[M][N];
 	};
 
-
-
 	// Matrix Operations
 	template <typename T, size_t M, size_t N>
-	inline auto operator+(const Matrix<T, M, N>& a, const Matrix<T, M, N>& b) -> Matrix<T, M, N> const
+	inline auto operator+(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
 	{
 		Matrix<T, M, N> result;
 		for (size_t m = 0; m < M; ++m)
@@ -127,9 +129,8 @@ namespace filianore
 		return result;
 	}
 
-
 	template <typename T, size_t M, size_t N>
-	inline auto operator+=(Matrix<T, M, N>& a, const Matrix<T, M, N>& b)
+	inline auto operator+=(Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
 	{
 		for (size_t m = 0; m < M; ++m)
 		{
@@ -141,9 +142,8 @@ namespace filianore
 		return a;
 	}
 
-
 	template <typename T, size_t M, size_t N>
-	inline auto operator-(const Matrix<T, M, N>& a, const Matrix<T, M, N>& b) -> Matrix<T, M, N> const
+	inline auto operator-(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
 	{
 		Matrix<T, M, N> result;
 		for (size_t m = 0; m < M; ++m)
@@ -156,9 +156,8 @@ namespace filianore
 		return result;
 	}
 
-
 	template <typename T, size_t M, size_t N>
-	inline auto operator-=(Matrix<T, M, N>& a, const Matrix<T, M, N>& b)
+	inline auto operator-=(Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
 	{
 		for (size_t m = 0; m < M; ++m)
 		{
@@ -170,9 +169,8 @@ namespace filianore
 		return a;
 	}
 
-
 	template <typename T, size_t M, size_t N>
-	inline auto operator*(const Matrix<T, M, N>& a, T s) -> Matrix<T, M, N> const
+	inline auto operator*(const Matrix<T, M, N> &a, T s) -> Matrix<T, M, N> const
 	{
 		Matrix<T, M, N> result;
 		for (size_t m = 0; m < M; ++m)
@@ -185,9 +183,8 @@ namespace filianore
 		return result;
 	}
 
-
 	template <typename T, size_t M, size_t N>
-	inline auto operator*(const Matrix<T, M, N>& a, const Matrix<T, M, N>& b) -> Matrix<T, M, N> const
+	inline auto operator*(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
 	{
 		Matrix<T, M, N> result;
 		for (size_t m = 0; m < M; ++m)
@@ -203,9 +200,8 @@ namespace filianore
 		return result;
 	}
 
-
 	template <typename T, typename U, size_t M, size_t N>
-	inline auto Pow(const Matrix<T, M, N>& a, U exp)
+	inline auto Pow(const Matrix<T, M, N> &a, U exp)
 	{
 		using V = decltype(a.data[0][0] * exp);
 		Matrix<V, M, N> result = a;
@@ -218,9 +214,8 @@ namespace filianore
 		return result;
 	}
 
-
 	template <typename T, size_t M, size_t N>
-	inline auto Transpose(const Matrix<T, M, N>& a)
+	inline auto Transpose(const Matrix<T, M, N> &a)
 	{
 		Matrix<T, M, N> result;
 
@@ -234,9 +229,8 @@ namespace filianore
 		return result;
 	}
 
-
 	template <typename T, size_t M, size_t N>
-	inline bool operator==(const Matrix<T, M, N>& a, const Matrix<T, M, N>& b)
+	inline bool operator==(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
 	{
 		for (size_t m = 0; m < M; ++m)
 		{
@@ -249,9 +243,8 @@ namespace filianore
 		return true;
 	}
 
-
 	template <typename T, size_t M, size_t N>
-	inline bool operator!=(const Matrix<T, M, N>& a, const Matrix<T, M, N>& b)
+	inline bool operator!=(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
 	{
 		for (size_t m = 0; m < M; ++m)
 		{
@@ -264,24 +257,29 @@ namespace filianore
 		return false;
 	}
 
-
 	// Inverse - Credit to PBRT for this one
 	template <typename T, size_t M, size_t N>
-	auto Inverse(const Matrix<float, M, N>& a)
+	auto Inverse(const Matrix<float, M, N> &a)
 	{
 		int indxc[N], indxr[N];
 		int ipiv[N];
 		memset(ipiv, 0, sizeof(ipiv));
 		float minv[N][N];
 		memcpy(minv, a.data, N * N * sizeof(T));
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++)
+		{
 			int irow = 0, icol = 0;
 			float big = 0.f;
-			for (int j = 0; j < N; j++) {
-				if (ipiv[j] != 1) {
-					for (int k = 0; k < N; k++) {
-						if (ipiv[k] == 0) {
-							if (std::abs(minv[j][k]) >= big) {
+			for (int j = 0; j < N; j++)
+			{
+				if (ipiv[j] != 1)
+				{
+					for (int k = 0; k < N; k++)
+					{
+						if (ipiv[k] == 0)
+						{
+							if (std::abs(minv[j][k]) >= big)
+							{
 								big = float(std::abs(minv[j][k]));
 								irow = j;
 								icol = k;
@@ -293,8 +291,10 @@ namespace filianore
 				}
 			}
 			++ipiv[icol];
-			if (irow != icol) {
-				for (int k = 0; k < N; ++k) std::swap(minv[irow][k], minv[icol][k]);
+			if (irow != icol)
+			{
+				for (int k = 0; k < N; ++k)
+					std::swap(minv[irow][k], minv[icol][k]);
 			}
 			indxr[i] = irow;
 			indxc[i] = icol;
@@ -304,18 +304,24 @@ namespace filianore
 			}
 			float pivinv = 1.f / minv[icol][icol];
 			minv[icol][icol] = 1.;
-			for (int j = 0; j < N; j++) minv[icol][j] *= pivinv;
-			for (int j = 0; j < N; j++) {
-				if (j != icol) {
+			for (int j = 0; j < N; j++)
+				minv[icol][j] *= pivinv;
+			for (int j = 0; j < N; j++)
+			{
+				if (j != icol)
+				{
 					float save = minv[j][icol];
 					minv[j][icol] = 0;
-					for (int k = 0; k < N; k++) minv[j][k] -= minv[icol][k] * save;
+					for (int k = 0; k < N; k++)
+						minv[j][k] -= minv[icol][k] * save;
 				}
 			}
 		}
 		int _j = N - 1;
-		for (int j = _j; j >= 0; j--) {
-			if (indxr[j] != indxc[j]) {
+		for (int j = _j; j >= 0; j--)
+		{
+			if (indxr[j] != indxc[j])
+			{
 				for (int k = 0; k < N; k++)
 					std::swap(minv[k][indxr[j]], minv[k][indxc[j]]);
 			}
@@ -323,11 +329,10 @@ namespace filianore
 		return Matrix<T, N, N>(minv);
 	}
 
-
-
-	// Matrix2 
+	// Matrix2
 	template <typename T>
-	struct Matrix<T, 2, 2> : MatrixBase<T, Matrix<T, 2, 2>> {
+	struct Matrix<T, 2, 2> : MatrixBase<T, Matrix<T, 2, 2>>
+	{
 		T data[2][2];
 
 		Matrix()
@@ -335,18 +340,18 @@ namespace filianore
 			data[0][0] = data[0][1] = data[1][0] = data[1][1] = 0;
 		}
 
-
 		Matrix(T _m00, T _m01, T _m10, T _m11)
 		{
-			data[0][0] = _m00; data[0][1] = _m01; data[1][0] = _m10; data[1][1] = _m11;
+			data[0][0] = _m00;
+			data[0][1] = _m01;
+			data[1][0] = _m10;
+			data[1][1] = _m11;
 		}
-
 
 		Matrix(T mat[2][2])
 		{
 			memcpy(data, mat, (2 * 2) * sizeof(T));
 		}
-
 
 		T Determinant()
 		{
@@ -354,12 +359,11 @@ namespace filianore
 		}
 	};
 
-
-	// Matrix3 
+	// Matrix3
 	template <typename T>
-	struct Matrix<T, 3, 3> : MatrixBase<T, Matrix<T, 3, 3>> {
+	struct Matrix<T, 3, 3> : MatrixBase<T, Matrix<T, 3, 3>>
+	{
 		T data[3][3];
-
 
 		Matrix()
 		{
@@ -368,35 +372,37 @@ namespace filianore
 			data[2][0] = data[2][1] = data[2][2] = 0;
 		}
 
-
 		Matrix(T _m00, T _m01, T _m02, T _m10, T _m11, T _m12, T _m20, T _m21, T _m22)
 		{
-			data[0][0] = _m00; data[0][1] = _m01; data[0][2] = _m02;
-			data[1][0] = _m10; data[1][1] = _m11; data[1][2] = _m12;
-			data[2][0] = _m20; data[2][1] = _m21; data[2][2] = _m22;
+			data[0][0] = _m00;
+			data[0][1] = _m01;
+			data[0][2] = _m02;
+			data[1][0] = _m10;
+			data[1][1] = _m11;
+			data[1][2] = _m12;
+			data[2][0] = _m20;
+			data[2][1] = _m21;
+			data[2][2] = _m22;
 		}
-
 
 		Matrix(T mat[3][3])
 		{
 			memcpy(data, mat, (3 * 3) * sizeof(T));
 		}
 
-
 		T Determinant()
 		{
 			return data[0][0] * (data[1][1] * data[2][2] - data[1][2] * data[2][1]) -
-				data[0][1] * (data[1][0] * data[2][2] - data[1][2] * data[2][0]) +
-				data[0][2] * (data[1][0] * data[2][1] - data[1][1] * data[2][0]);
+				   data[0][1] * (data[1][0] * data[2][2] - data[1][2] * data[2][0]) +
+				   data[0][2] * (data[1][0] * data[2][1] - data[1][1] * data[2][0]);
 		}
 	};
 
-
-	// Matrix4 
+	// Matrix4
 	template <typename T>
-	struct Matrix<T, 4, 4> : MatrixBase<T, Matrix<T, 4, 4>> {
+	struct Matrix<T, 4, 4> : MatrixBase<T, Matrix<T, 4, 4>>
+	{
 		T data[4][4];
-
 
 		Matrix()
 		{
@@ -406,24 +412,33 @@ namespace filianore
 			data[3][0] = data[3][1] = data[3][2] = data[3][3] = 0;
 		}
 
-
 		Matrix(T _m00, T _m01, T _m02, T _m03,
-			T _m10, T _m11, T _m12, T _m13,
-			T _m20, T _m21, T _m22, T _m23,
-			T _m30, T _m31, T _m32, T _m33)
+			   T _m10, T _m11, T _m12, T _m13,
+			   T _m20, T _m21, T _m22, T _m23,
+			   T _m30, T _m31, T _m32, T _m33)
 		{
-			data[0][0] = _m00; data[0][1] = _m01; data[0][2] = _m02; data[0][3] = _m03;
-			data[1][0] = _m10; data[1][1] = _m11; data[1][2] = _m12; data[1][3] = _m13;
-			data[2][0] = _m20; data[2][1] = _m21; data[2][2] = _m22; data[2][3] = _m23;
-			data[3][0] = _m30; data[3][1] = _m31; data[3][2] = _m32; data[3][3] = _m33;
+			data[0][0] = _m00;
+			data[0][1] = _m01;
+			data[0][2] = _m02;
+			data[0][3] = _m03;
+			data[1][0] = _m10;
+			data[1][1] = _m11;
+			data[1][2] = _m12;
+			data[1][3] = _m13;
+			data[2][0] = _m20;
+			data[2][1] = _m21;
+			data[2][2] = _m22;
+			data[2][3] = _m23;
+			data[3][0] = _m30;
+			data[3][1] = _m31;
+			data[3][2] = _m32;
+			data[3][3] = _m33;
 		}
-
 
 		Matrix(T mat[4][4])
 		{
 			memcpy(data, mat, (4 * 4) * sizeof(T));
 		}
-
 
 		T Determinant()
 		{
@@ -436,7 +451,6 @@ namespace filianore
 		}
 	};
 
-}
-
+} // namespace filianore
 
 #endif

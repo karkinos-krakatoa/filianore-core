@@ -42,10 +42,7 @@ set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 #-----------------------------------------------------------------------------------
 
 add_library(filianore STATIC
-    src/samplers/global.cpp
-    src/samplers/pixel.cpp
-    src/samplers/stratified.cpp
-    
+    src/cameras/physical.cpp
     src/shapes/triangle.cpp)
 
 target_include_directories(filianore PUBLIC
@@ -94,10 +91,8 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/global.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/pixel.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/stratified.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/cameras/physical.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/cameras)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shapes/triangle.h 

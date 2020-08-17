@@ -1,6 +1,5 @@
 #include "filianore/shapes/triangle.h"
 
-
 namespace filianore
 {
 
@@ -12,8 +11,7 @@ namespace filianore
 		return box;
 	}
 
-
-	bool Triangle::Intersect(const Ray& ray, float* t) const
+	bool Triangle::Intersect(const Ray &ray, float *t) const
 	{
 		StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
 		StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
@@ -35,20 +33,17 @@ namespace filianore
 		return (*t > 0 && u > 0 && v > 0 && (u + v) < 1);
 	}
 
-
 	StaticArray<float, 3> Triangle::Centroid() const
 	{
 		return (v1.vertex + v2.vertex + v3.vertex) / 3.f;
 	}
-
 
 	float Triangle::Area() const
 	{
 		return 0.5f * Cross((v2.vertex - v1.vertex), (v3.vertex - v1.vertex)).Length();
 	}
 
-
-	StaticArray<float, 3> Triangle::GeometricNormal(const StaticArray<float, 3>& _p) const
+	StaticArray<float, 3> Triangle::GeometricNormal(const StaticArray<float, 3> &_p) const
 	{
 		StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
 		StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
@@ -56,11 +51,9 @@ namespace filianore
 		return this->reverseOrientation ? normal.Neg() : normal;
 	}
 
-
-	StaticArray<float, 3> Triangle::ShadingNormal(const StaticArray<float, 3>& _p) const
+	StaticArray<float, 3> Triangle::ShadingNormal(const StaticArray<float, 3> &_p) const
 	{
 		return ((v1.normal + v2.normal + v3.normal) / 3.f).Normalize();
 	}
 
-
-}
+} // namespace filianore
