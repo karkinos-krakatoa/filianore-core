@@ -1,4 +1,5 @@
 #include "filianore/shapes/triangle.h"
+#include "filianore/core/interaction.h"
 
 namespace filianore
 {
@@ -11,7 +12,7 @@ namespace filianore
 		return box;
 	}
 
-	bool Triangle::Intersect(const Ray &ray, float *t) const
+	bool Triangle::Intersect(const Ray &ray, SurfaceInteraction *isect) const
 	{
 		StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
 		StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
@@ -28,9 +29,21 @@ namespace filianore
 		float u = Dot(e2, dao) * invDet;
 		float v = -Dot(e1, dao) * invDet;
 
-		*t = Dot(ao, n) * invDet;
+		float t = Dot(ao, n) * invDet;
 
-		return (*t > 0 && u > 0 && v > 0 && (u + v) < 1);
+		if (t > 0 && u > 0 && v > 0 && (u + v) < 1)
+		{
+			StaticArray<float, 3> revRay = ray.dir;
+			*isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
+
+			isect->p = ray.PointAtT(t);
+			isect->n = ShadingNormal(isect->p);
+			isect->shape = this;
+
+			return true;
+		}
+
+		return false;
 	}
 
 	StaticArray<float, 3> Triangle::Centroid() const

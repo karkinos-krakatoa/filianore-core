@@ -1,14 +1,17 @@
 #ifndef _BVH_H
 #define _BVH_H
 
+#include <climits>
+#include <memory>
+#include <cassert>
+#include <vector>
 
 #include "filianore/core/aabb.h"
 #include "filianore/core/util.h"
 
 namespace filianore
 {
-
-    struct BVH
+    struct Bvh
     {
         using IndexType = typename SizedIntegerType<sizeof(float) * CHAR_BIT>::Unsigned;
 
@@ -19,16 +22,16 @@ namespace filianore
             IndexType primitiveCount : sizeof(IndexType) * CHAR_BIT - 1;
             IndexType firstChildOrPrimitive;
 
-
             struct AABBProxy
             {
-                Node& node;
+                Node &node;
 
-                AABBProxy(Node& node)
+                AABBProxy(Node &node)
                     : node(node)
-                {}
+                {
+                }
 
-                AABBProxy& operator=(const AABB& bbox)
+                AABBProxy &operator=(const AABB &bbox)
                 {
                     node.bounds[0] = bbox.pMin.params[0];
                     node.bounds[1] = bbox.pMax.params[0];
@@ -48,7 +51,9 @@ namespace filianore
 
                 AABB ToBoundingBox() const
                 {
-                    return static_cast<AABB>(*this);
+                    return AABB(
+                        StaticArray<float, 3>(node.bounds[0], node.bounds[2], node.bounds[4]),
+                        StaticArray<float, 3>(node.bounds[1], node.bounds[3], node.bounds[5]));
                 }
 
                 float HalfArea() const
@@ -56,14 +61,14 @@ namespace filianore
                     return ToBoundingBox().HalfArea();
                 }
 
-                AABBProxy& Extend(const AABB& bbox)
+                AABBProxy &Extend(const AABB &bbox)
                 {
                     AABB eBox(ToBoundingBox());
                     eBox.Extend(bbox);
                     return *this = eBox;
                 }
 
-                AABBProxy& Extend(const StaticArray<float, 3>& p)
+                AABBProxy &Extend(const StaticArray<float, 3> &p)
                 {
                     AABB eBox(ToBoundingBox());
                     eBox.Extend(p);
@@ -78,11 +83,9 @@ namespace filianore
 
             const AABBProxy AABB_Proxy() const
             {
-                return AABBProxy(*const_cast<Node*>(this));
+                return AABBProxy(*const_cast<Node *>(this));
             }
-
         };
-
 
         static size_t Sibling(size_t index)
         {
@@ -96,15 +99,12 @@ namespace filianore
             return index % 2 == 1;
         }
 
-
-        std::unique_ptr<Node[]> nodes;
-        std::unique_ptr<size_t[]> primitiveIndices;
+        std::vector<std::unique_ptr<Node>> nodes;
+        std::vector<std::unique_ptr<size_t>> primitiveIndices;
 
         size_t nodeCount = 0;
-
     };
 
-}
-
+} // namespace filianore
 
 #endif

@@ -2,7 +2,7 @@
 # CMake Config
 #-----------------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.14.0)
 
 
 #-----------------------------------------------------------------------------------
@@ -42,7 +42,11 @@ set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 #-----------------------------------------------------------------------------------
 
 add_library(filianore STATIC
+    src/core/interaction.cpp
+    src/core/primitive.cpp
+
     src/cameras/physical.cpp
+
     src/shapes/triangle.cpp)
 
 target_include_directories(filianore PUBLIC
@@ -87,12 +91,22 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampler.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampling.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shape.h
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/interaction.h
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/primitive.h
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/util.h
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/cameras/physical.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/cameras)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_alg_sah.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_prog_binned_sah.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_builder_topdown.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_utils.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvh)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shapes/triangle.h 

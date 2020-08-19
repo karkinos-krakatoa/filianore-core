@@ -5,9 +5,8 @@
 
 namespace filianore
 {
-	class AABB
+	struct AABB
 	{
-	public:
 		StaticArray<float, 3> pMin, pMax;
 
 		AABB() = default;

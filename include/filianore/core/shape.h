@@ -20,7 +20,7 @@ namespace filianore
 
 		virtual AABB WorldBound() const = 0;
 
-		virtual bool Intersect(const Ray &ray, float *t) const = 0;
+		virtual bool Intersect(const Ray &ray, SurfaceInteraction *t) const = 0;
 
 		virtual bool IntersectP(const Ray &ray) const
 		{

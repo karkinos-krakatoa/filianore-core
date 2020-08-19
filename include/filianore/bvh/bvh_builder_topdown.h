@@ -1,16 +1,13 @@
 #ifndef _BVH_BUILDER_TOPDOWN_H
 #define _BVH_BUILDER_TOPDOWN_H
 
-
-#include <omp.h>
 #include <stack>
 #include <cassert>
-
 
 namespace filianore
 {
 
-    class BvhBuilderTopDownTask
+    class TopDownBuildTask
     {
     protected:
         struct WorkItem
@@ -23,7 +20,8 @@ namespace filianore
             WorkItem() = default;
             WorkItem(size_t _nodeIndex, size_t _begin, size_t _end, size_t _depth)
                 : nodeIndex(_nodeIndex), begin(_begin), end(_end), depth(_depth)
-            { }
+            {
+            }
 
             size_t WorkSize() const
             {
@@ -32,27 +30,23 @@ namespace filianore
         };
     };
 
-
-    class BvhBuilderTopDown
+    class TopDownBuilder
     {
     public:
-
         size_t taskSpawnThreshold = 1024;
         size_t maxDepth = 64;
         size_t maxLeafSize = 16;
 
-
     protected:
-
-        ~BvhBuilderTopDown() {}
+        ~TopDownBuilder() {}
 
         template <typename BuildTask, typename... Args>
-        void RunTask(BuildTask& task, Args&&... args)
+        void RunTask(BuildTask &task, Args &&... args)
         {
             using WorkItem = typename BuildTask::WorkItemType;
             std::stack<WorkItem> stack;
 
-            stack.emplace(std::forward<Args&&>(args)...);
+            stack.emplace(std::forward<Args &&>(args)...);
 
             while (!stack.empty())
             {
@@ -75,7 +69,7 @@ namespace filianore
                     {
                         BuildTask newTask(task);
 
-                        #pragma omp task firstprivate(newTask, firstItem)
+#pragma omp task firstprivate(newTask, firstItem)
                         {
                             RunTask(newTask, firstItem);
                         }
@@ -84,14 +78,11 @@ namespace filianore
                     {
                         stack.push(firstItem);
                     }
-
                 }
             }
         }
-
     };
 
-}
-
+} // namespace filianore
 
 #endif

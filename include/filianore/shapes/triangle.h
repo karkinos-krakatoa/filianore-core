@@ -44,7 +44,7 @@ namespace filianore
 
 		AABB WorldBound() const;
 
-		bool Intersect(const Ray &ray, float *t) const;
+		bool Intersect(const Ray &ray, SurfaceInteraction *isect) const;
 
 		StaticArray<float, 3> Centroid() const;
 

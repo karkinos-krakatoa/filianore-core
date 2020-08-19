@@ -5,6 +5,9 @@
 #include <cmath>
 #include <numeric>
 #include <array>
+#include <cstddef>
+#include <algorithm>
+#include <type_traits>
 #include "../core/elemental.h"
 
 namespace filianore
@@ -51,6 +54,22 @@ namespace filianore
             static_assert(4 <= N, "Invalid number of arguments for vector type");
             return params[3];
         }
+
+        // FILIANORE_INLINE bool operator==(const StaticArray<T, N> &v) const
+        // {
+        //     bool result = true;
+        //     int c = 0;
+        //     std::for_each(params.begin(), params.end(), [&result](T &elem) { result || (elem == v.params[c++]); });
+        //     return min;
+        // }
+
+        // FILIANORE_INLINE bool operator!=(const StaticArray<T, N> &v) const
+        // {
+        //     bool result = true;
+        //     int c = 0;
+        //     std::for_each(params.begin(), params.end(), [&result](T &elem) { result || (elem != v.params[c++]); });
+        //     return min;
+        // }
 
         FILIANORE_INLINE StaticArray<T, N> operator+(const StaticArray<T, N> &v) const
         {
@@ -178,6 +197,13 @@ namespace filianore
             T max = params[0];
             std::for_each(params.begin(), params.end(), [&max](T &elem) { max = std::max(max, elem); });
             return max;
+        }
+
+        FILIANORE_INLINE StaticArray<T, N> Inverse()
+        {
+            StaticArray<T, N> result(params);
+            std::for_each(result.params.begin(), result.params.end(), [](T &elem) { elem = (T)1 / elem; });
+            return result;
         }
 
         std::array<T, N> params;
