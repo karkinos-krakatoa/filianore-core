@@ -7,17 +7,18 @@
 #include "bvh.h"
 #include "bvh_builder_topdown.h"
 #include "bvh_alg_sah.h"
+#include "bvh_utils.h"
 
 namespace filianore
 {
 
-    template <typename, size_t>
+    template <size_t>
     class BinnedSahBuildTask;
 
-    template <typename Bvh, size_t BinCount>
+    template <size_t BinCount>
     class BinnedSahBuilder : public TopDownBuilder, public SahBasedAlgorithm
     {
-        using BuildTask = BinnedSahBuildTask<Bvh, BinCount>;
+        using BuildTask = BinnedSahBuildTask<BinCount>;
 
         using TopDownBuilder::RunTask;
 
@@ -42,11 +43,8 @@ namespace filianore
             size_t primitive_count)
         {
             // Allocate buffers
-            bvh.nodes.reserve(2 * primitive_count + 1);
-            bvh.nodes.resize(2 * primitive_count + 1);
-
-            bvh.primitiveIndices.reserve(primitive_count);
-            bvh.primitiveIndices.resize(primitive_count);
+            bvh.nodes = std::make_unique<Bvh::Node[]>(2 * primitive_count + 1);
+            bvh.primitiveIndices = std::make_unique<size_t[]>(primitive_count);
 
             bvh.nodeCount = 1;
             bvh.nodes[0].AABB_Proxy() = global_bbox;
@@ -66,10 +64,10 @@ namespace filianore
         }
     };
 
-    template <typename Bvh, size_t BinCount>
+    template <size_t BinCount>
     class BinnedSahBuildTask : public TopDownBuildTask
     {
-        using Builder = BinnedSahBuilder<Bvh, BinCount>;
+        using Builder = BinnedSahBuilder<BinCount>;
 
         using TopDownBuildTask::WorkItem;
 
@@ -125,7 +123,7 @@ namespace filianore
         {
         }
 
-        void Build(const WorkItem &item)
+        std::optional<std::pair<WorkItem, WorkItem>> Build(const WorkItem &item)
         {
             auto &bvh = builder.bvh;
             auto &node = bvh.nodes[item.nodeIndex];
@@ -139,7 +137,7 @@ namespace filianore
             if (item.WorkSize() <= 1 || item.depth >= builder.maxDepth)
             {
                 makeLeaf(node, item.begin, item.end);
-                //return std::nullopt;
+                return std::nullopt;
             }
 
             auto primitiveIndices = bvh.primitiveIndices.get();
@@ -210,8 +208,8 @@ namespace filianore
                 }
                 else
                 {
-                    makeleaf(node, item.begin, item.end);
-                    //return std::nullopt;
+                    makeLeaf(node, item.begin, item.end);
+                    return std::nullopt;
                 }
             }
 
@@ -252,11 +250,11 @@ namespace filianore
                 // Return new work items
                 WorkItem firstItem(firstChild + 0, item.begin, beginRight, item.depth + 1);
                 WorkItem secondItem(firstChild + 1, beginRight, item.end, item.depth + 1);
-                //return std::make_optional(std::make_pair(firstItem, secondItem));
+                return std::make_optional(std::make_pair(firstItem, secondItem));
             }
 
             makeLeaf(node, item.begin, item.end);
-            //return std::nullopt;
+            return std::nullopt;
         }
     };
 

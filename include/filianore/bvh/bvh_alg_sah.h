@@ -22,17 +22,17 @@ namespace filianore
                                    : cost)
             for (size_t i = 0; i < bvh.nodeCount; ++i)
             {
-                if (bvh.nodes[i]->isLeaf)
+                if (bvh.nodes[i].isLeaf)
                 {
-                    cost += bvh.nodes[i]->AABB_Proxy().HalfArea() * bvh.nodes[i]->primitiveCount;
+                    cost += bvh.nodes[i].AABB_Proxy().HalfArea() * bvh.nodes[i].primitiveCount;
                 }
                 else
                 {
-                    cost += rayTraversalCost * bvh.nodes[i]->AABB_Proxy().HalfArea();
+                    cost += rayTraversalCost * bvh.nodes[i].AABB_Proxy().HalfArea();
                 }
             }
 
-            return cost / bvh.nodes[0]->AABB_Proxy().HalfArea();
+            return cost / bvh.nodes[0].AABB_Proxy().HalfArea();
         }
     };
 

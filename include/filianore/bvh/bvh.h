@@ -4,7 +4,6 @@
 #include <climits>
 #include <memory>
 #include <cassert>
-#include <vector>
 
 #include "filianore/core/aabb.h"
 #include "filianore/core/util.h"
@@ -99,8 +98,8 @@ namespace filianore
             return index % 2 == 1;
         }
 
-        std::vector<std::unique_ptr<Node>> nodes;
-        std::vector<std::unique_ptr<size_t>> primitiveIndices;
+        std::unique_ptr<Node[]> nodes;
+        std::unique_ptr<size_t[]> primitiveIndices;
 
         size_t nodeCount = 0;
     };

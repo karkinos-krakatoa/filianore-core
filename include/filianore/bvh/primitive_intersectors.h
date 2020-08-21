@@ -13,7 +13,7 @@ namespace filianore
 {
 
     /// Base class for primitive intersectors.
-    template <bool PreShuffled, bool AnyHit>
+    template <bool PreShuffled = false, bool AnyHit = false>
     struct PrimitiveIntersector
     {
         PrimitiveIntersector(const Bvh &bvh, const std::vector<std::shared_ptr<Primitive>> &primitives)

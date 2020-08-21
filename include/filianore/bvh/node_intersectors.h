@@ -1,5 +1,5 @@
-#ifndef BVH_NODE_INTERSECTORS_HPP
-#define BVH_NODE_INTERSECTORS_HPP
+#ifndef BVH_NODE_INTERSECTORS_H
+#define BVH_NODE_INTERSECTORS_H
 
 #include "../core/ray.h"
 #include "bvh_platform.h"
@@ -11,7 +11,7 @@ namespace filianore
     using Vec3 = StaticArray<float, 3>;
 
     /// Base class for ray-node intersection algorithms. Does ray octant classification.
-    template <typename Derived>
+    template <typename Bvh, typename Derived>
     struct NodeIntersector
     {
         std::array<int, 3> octant;
@@ -29,7 +29,7 @@ namespace filianore
             return static_cast<const Derived *>(this)->IntersectAxis(axis, p, ray);
         }
 
-        bvh__always_inline__ std::pair<float, float> Intersect(const typename Bvh::Node &node, const Ray &ray) const
+        bvh__always_inline__ std::pair<float, float> Intersect(const Bvh::Node &node, const Ray &ray) const
         {
             Vec3 entry, exit;
             entry.params[0] = IntersectAxis(0, node.bounds[0 * 2 + octant[0]], ray);
@@ -49,13 +49,14 @@ namespace filianore
     };
 
     /// Fully robust ray-node intersection algorithm (see "Robust BVH Ray Traversal", by T. Ize).
-    struct RobustNodeIntersector : public NodeIntersector<RobustNodeIntersector>
+    template <typename Bvh>
+    struct RobustNodeIntersector : public NodeIntersector<Bvh, RobustNodeIntersector<Bvh>>
     {
         // Padded inverse direction to avoid false-negatives in the ray-node test.
         Vec3 paddedInverseDirection;
 
         RobustNodeIntersector(const Ray &ray)
-            : NodeIntersector<RobustNodeIntersector>(ray)
+            : NodeIntersector<Bvh, RobustNodeIntersector<Bvh>>(ray)
         {
             Ray _ray = ray;
             auto inverseDirection = _ray.dir.Inverse();
@@ -71,17 +72,18 @@ namespace filianore
             return (p.params[axis] - ray.origin.params[axis]) * paddedInverseDirection.params[axis];
         }
 
-        using NodeIntersector<RobustNodeIntersector>::Intersect;
+        using NodeIntersector<Bvh, RobustNodeIntersector<Bvh>>::Intersect;
     };
 
     /// Semi-robust, fast ray-node intersection algorithm.
-    struct FastNodeIntersector : public NodeIntersector<FastNodeIntersector>
+    template <typename Bvh>
+    struct FastNodeIntersector : public NodeIntersector<Bvh, FastNodeIntersector<Bvh>>
     {
         Vec3 scaledOrigin;
         Vec3 inverseDirection;
 
         FastNodeIntersector(const Ray &ray)
-            : NodeIntersector<FastNodeIntersector>(ray)
+            : NodeIntersector<Bvh, FastNodeIntersector<Bvh>>(ray)
         {
             Ray _ray = ray;
             inverseDirection = _ray.dir.Inverse();
@@ -93,7 +95,7 @@ namespace filianore
             return p.params[axis] * inverseDirection.params[axis] + scaledOrigin.params[axis];
         }
 
-        using NodeIntersector<FastNodeIntersector>::Intersect;
+        using NodeIntersector<Bvh, FastNodeIntersector<Bvh>>::Intersect;
     };
 
 } // namespace filianore
