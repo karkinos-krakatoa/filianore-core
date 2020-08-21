@@ -11,6 +11,31 @@
 namespace filianore
 {
 
+    const float &RobustMin(const float &x, const float &y)
+    {
+        return x < y ? x : y;
+    }
+
+    const float &RobustMax(const float &x, const float &y)
+    {
+        return x > y ? x : y;
+    }
+
+    template <typename To, typename From>
+    To as(From from)
+    {
+        static_assert(sizeof(To) == sizeof(From));
+        To to;
+        std::memcpy(&to, &from, sizeof(from));
+        return to;
+    }
+
+    float AddUlpMagnitude(float x, unsigned ulps)
+    {
+        using U = typename SizedIntegerType<sizeof(float) * CHAR_BIT>::Unsigned;
+        return std::isfinite(x) ? as<float>(as<U>(x) + ulps) : x;
+    }
+
     std::pair<std::vector<AABB>,
               std::vector<StaticArray<float, 3>>>
     ComputeBoundingBoxesAndCenters(const std::vector<std::shared_ptr<Primitive>> &primitives, size_t primitive_count)

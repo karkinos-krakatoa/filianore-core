@@ -103,9 +103,13 @@ install(FILES
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_alg_sah.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_prog_binned_sah.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_builder_topdown.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_platform.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_prog_binned_sah.h   
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_utils.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/node_intersectors.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/primitive_intersectors.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/single_ray_traverser.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvh)
 
 install(FILES 
