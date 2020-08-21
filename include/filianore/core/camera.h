@@ -11,8 +11,6 @@ namespace filianore
 	public:
 		Camera() {}
 
-		virtual ~Camera() {}
-
 		virtual Ray AwakenRay(const StaticArray<float, 2> &_cameraSample, const StaticArray<float, 2> &_lensSample) const = 0;
 	};
 } // namespace filianore

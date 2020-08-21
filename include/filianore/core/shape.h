@@ -12,8 +12,6 @@ namespace filianore
 	public:
 		const bool reverseOrientation;
 
-		virtual ~Shape() {}
-
 		Shape() : reverseOrientation(false) {}
 
 		Shape(bool _reverseOrientation) : reverseOrientation(_reverseOrientation) {}

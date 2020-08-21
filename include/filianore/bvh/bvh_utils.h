@@ -2,6 +2,7 @@
 #define _BVH_UTILS_H
 
 #include <vector>
+#include <utility>
 
 #include "../core/aabb.h"
 #include "../core/util.h"
@@ -10,25 +11,44 @@
 namespace filianore
 {
 
-    std::pair<std::vector<std::shared_ptr<AABB>>,
-              std::vector<std::shared_ptr<StaticArray<float, 3>>>>
-    ComputeBoundingBoxesAndCenters(const std::vector<Primitive> primitives, size_t primitive_count)
+    std::pair<std::vector<AABB>,
+              std::vector<StaticArray<float, 3>>>
+    ComputeBoundingBoxesAndCenters(const std::vector<std::shared_ptr<Primitive>> &primitives, size_t primitive_count)
     {
-        std::vector<std::shared_ptr<AABB>> boundingBoxes;
+        std::vector<AABB> boundingBoxes;
         boundingBoxes.reserve(primitive_count);
 
-        std::vector<std::shared_ptr<StaticArray<float, 3>>> centers;
+        std::vector<StaticArray<float, 3>> centers;
         centers.reserve(primitive_count);
 
 #pragma omp parallel for
         for (size_t i = 0; i < primitive_count; ++i)
         {
-            boundingBoxes.emplace_back(primitives[i].WorldBound());
-            centers.emplace_back(primitives[i].Centroid());
+            boundingBoxes.emplace_back(primitives[i]->WorldBound());
+            centers.emplace_back(primitives[i]->Centroid());
         }
 
-        return std::make_pair(std::move(boundingBoxes), std::move(centers));
+        return std::make_pair(boundingBoxes, centers);
     }
+
+    AABB ComputeEncompassingBoundingbox(const std::vector<AABB> &bboxes, size_t count)
+    {
+        auto bbox = AABB::Empty();
+
+#pragma omp declare reduction(bbox_extend:AABB          \
+                              : omp_out.Extend(omp_in)) \
+    initializer(omp_priv = AABB::Empty())
+
+#pragma omp parallel for reduction(bbox_extend \
+                                   : bbox)
+        for (size_t i = 0; i < count; ++i)
+        {
+            bbox.Extend(bboxes[i]);
+        }
+
+        return bbox;
+    }
+
 } // namespace filianore
 
 #endif

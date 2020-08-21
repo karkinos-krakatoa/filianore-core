@@ -92,7 +92,7 @@ namespace filianore
 		}
 	};
 
-	Transform Translate(const StaticArray<float, 3> &delta)
+	static Transform Translate(const StaticArray<float, 3> &delta)
 	{
 		Matrix<float, 4, 4> m(1, 0, 0, delta.x(),
 							  0, 1, 0, delta.y(),
@@ -107,7 +107,7 @@ namespace filianore
 		return Transform(m, mInv);
 	}
 
-	Transform Scale(float x, float y, float z)
+	static Transform Scale(float x, float y, float z)
 	{
 		assert(x != 0 && y != 0 && z != 0);
 
@@ -124,7 +124,7 @@ namespace filianore
 		return Transform(m, mInv);
 	}
 
-	Transform RotateX(float angle)
+	static Transform RotateX(float angle)
 	{
 		float sin_t = std::sin(Radians<float>(angle));
 		float cos_t = std::cos(Radians<float>(angle));
@@ -137,7 +137,7 @@ namespace filianore
 		return Transform(m, Transpose(m));
 	}
 
-	Transform RotateY(float angle)
+	static Transform RotateY(float angle)
 	{
 		float sin_t = std::sin(Radians<float>(angle));
 		float cos_t = std::cos(Radians<float>(angle));
@@ -150,7 +150,7 @@ namespace filianore
 		return Transform(m, Transpose(m));
 	}
 
-	Transform RotateZ(float angle)
+	static Transform RotateZ(float angle)
 	{
 		float sin_t = std::sin(Radians<float>(angle));
 		float cos_t = std::cos(Radians<float>(angle));

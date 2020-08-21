@@ -30,8 +30,6 @@ namespace filianore
 	public:
 		Triangle() {}
 
-		~Triangle() {}
-
 		Triangle(const TriangleEntity &_v1, const TriangleEntity &_v2, const TriangleEntity &_v3, bool _reverseOrientation = false)
 			: Shape(_reverseOrientation), v1(_v1), v2(_v2), v3(_v3)
 		{

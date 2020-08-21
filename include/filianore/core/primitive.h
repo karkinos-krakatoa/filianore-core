@@ -10,7 +10,7 @@ namespace filianore
     class Primitive
     {
     public:
-        virtual ~Primitive() {}
+        Primitive() {}
 
         virtual AABB WorldBound() const = 0;
 

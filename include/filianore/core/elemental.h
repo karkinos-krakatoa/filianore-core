@@ -2,6 +2,7 @@
 #define _ELEMENTAL_H
 
 #include <string>
+#include <memory>
 
 namespace filianore
 {
@@ -28,6 +29,7 @@ namespace filianore
 
     class Film;
     class Camera;
+    class PhysicalCamera;
     class Sampler;
 
     class Spectrum;
@@ -47,11 +49,6 @@ namespace filianore
     class AreaIlluminant;
     struct Distribution1D;
     class Distribution2D;
-
-    std::string AppInfo()
-    {
-        return "Filianore Foundation";
-    }
 
 } // namespace filianore
 
