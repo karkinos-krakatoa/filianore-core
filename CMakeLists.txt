@@ -91,6 +91,7 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/rect.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
