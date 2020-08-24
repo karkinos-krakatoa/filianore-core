@@ -45,6 +45,8 @@ add_library(filianore STATIC
     src/core/interaction.cpp
     src/core/primitive.cpp
 
+    src/bvhx/bvhx.cpp
+
     src/cameras/physical.cpp
 
     src/shapes/triangle.cpp)
@@ -82,6 +84,10 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/transform.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/vec3_math.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/maths)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/bvhx.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvhx)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 

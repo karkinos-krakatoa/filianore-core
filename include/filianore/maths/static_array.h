@@ -31,6 +31,15 @@ namespace filianore
             params = arr;
         }
 
+        template <class... Args>
+        StaticArray(const T &val)
+        {
+            for (int i = 0; i < N; i++)
+            {
+                params[i] = val;
+            }
+        }
+
         FILIANORE_INLINE T x() const
         {
             static_assert(1 <= N, "Invalid number of arguments for vector type");
@@ -162,8 +171,9 @@ namespace filianore
 
         FILIANORE_INLINE StaticArray<T, N> Neg()
         {
-            std::for_each(params.begin(), params.end(), [](T &elem) { elem = -elem; });
-            return *this;
+            StaticArray<T, N> result(params);
+            std::for_each(result.params.begin(), result.params.end(), [](T &elem) { elem = -elem; });
+            return result;
         }
 
         FILIANORE_INLINE T LengthSquared() const

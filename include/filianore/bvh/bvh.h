@@ -50,9 +50,7 @@ namespace filianore
 
                 AABB ToBoundingBox() const
                 {
-                    return AABB(
-                        StaticArray<float, 3>(node.bounds[0], node.bounds[2], node.bounds[4]),
-                        StaticArray<float, 3>(node.bounds[1], node.bounds[3], node.bounds[5]));
+                    return static_cast<AABB>(*this);
                 }
 
                 float HalfArea() const

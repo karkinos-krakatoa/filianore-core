@@ -29,15 +29,15 @@ namespace filianore
             return static_cast<const Derived *>(this)->IntersectAxis(axis, p, ray);
         }
 
-        bvh__always_inline__ std::pair<float, float> Intersect(const Bvh::Node &node, const Ray &ray) const
+        bvh__always_inline__ std::pair<float, float> Intersect(const typename Bvh::Node &node, const Ray &ray) const
         {
             Vec3 entry, exit;
-            entry.params[0] = IntersectAxis(0, node.bounds[0 * 2 + octant[0]], ray);
-            entry.params[1] = IntersectAxis(1, node.bounds[1 * 2 + octant[1]], ray);
-            entry.params[2] = IntersectAxis(2, node.bounds[2 * 2 + octant[2]], ray);
-            exit.params[0] = IntersectAxis(0, node.bounds[0 * 2 + 1 - octant[0]], ray);
-            exit.params[1] = IntersectAxis(1, node.bounds[1 * 2 + 1 - octant[1]], ray);
-            exit.params[2] = IntersectAxis(2, node.bounds[2 * 2 + 1 - octant[2]], ray);
+            entry.params[0] = IntersectAxis(0, Vec3(node.bounds[0 * 2 + octant[0]]), ray);
+            entry.params[1] = IntersectAxis(1, Vec3(node.bounds[1 * 2 + octant[1]]), ray);
+            entry.params[2] = IntersectAxis(2, Vec3(node.bounds[2 * 2 + octant[2]]), ray);
+            exit.params[0] = IntersectAxis(0, Vec3(node.bounds[0 * 2 + 1 - octant[0]]), ray);
+            exit.params[1] = IntersectAxis(1, Vec3(node.bounds[1 * 2 + 1 - octant[1]]), ray);
+            exit.params[2] = IntersectAxis(2, Vec3(node.bounds[2 * 2 + 1 - octant[2]]), ray);
             // Note: This order for the min/max operations is guaranteed not to produce NaNs
             return std::make_pair(
                 RobustMax(entry.params[0], RobustMax(entry.params[1], RobustMax(entry.params[2], ray.tMin))),

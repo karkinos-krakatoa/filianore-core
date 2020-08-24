@@ -13,7 +13,7 @@ namespace filianore
 {
 
     /// Base class for primitive intersectors.
-    template <bool PreShuffled = false, bool AnyHit = false>
+    template <bool PreShuffled, bool AnyHit>
     struct PrimitiveIntersector
     {
         PrimitiveIntersector(const Bvh &bvh, const std::vector<std::shared_ptr<Primitive>> &primitives)
@@ -57,7 +57,7 @@ namespace filianore
         {
             auto [p, i] = this->PrimitiveAt(index);
 
-            Interaction isect;
+            SurfaceInteraction isect;
             if (p->Intersect(ray, &isect))
             {
                 return std::make_optional(Result{i, isect});
@@ -85,7 +85,7 @@ namespace filianore
         {
             auto [p, i] = this->PrimitiveAt(index);
 
-            Interaction isect;
+            SurfaceInteraction isect;
             if (p->Intersect(ray, &isect))
             {
                 return std::make_optional(Result{isect.t});

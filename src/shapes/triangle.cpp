@@ -37,7 +37,7 @@ namespace filianore
             *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
 
             isect->p = ray.PointAtT(t);
-            isect->n = ShadingNormal(isect->p);
+            isect->n = GeometricNormal(isect->p);
             isect->shape = this;
 
             return true;
@@ -58,6 +58,10 @@ namespace filianore
 
     StaticArray<float, 3> Triangle::GeometricNormal(const StaticArray<float, 3> &_p) const
     {
+        if (allNormalsInMesh)
+        {
+            return ((v1.normal + v2.normal + v3.normal) / 3.f).Normalize();
+        }
         StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
         StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
         StaticArray<float, 3> normal = Cross(e1, e2).Normalize();
