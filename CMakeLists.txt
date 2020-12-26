@@ -45,7 +45,7 @@ add_library(filianore STATIC
     src/core/interaction.cpp
     src/core/primitive.cpp
 
-    src/bvhx/bvhx.cpp
+    src/accel/bvh.cpp
 
     src/cameras/physical.cpp
 
@@ -86,8 +86,8 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/maths)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/bvhx.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvhx)
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/accel/bvh.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/accel)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
@@ -106,18 +106,6 @@ install(FILES
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/cameras/physical.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/cameras)
-
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_alg_sah.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_builder_topdown.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_platform.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_prog_binned_sah.h   
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/bvh_utils.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/node_intersectors.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/primitive_intersectors.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvh/single_ray_traverser.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvh)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shapes/triangle.h 

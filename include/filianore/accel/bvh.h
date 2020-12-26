@@ -1,5 +1,5 @@
-#ifndef _BVHX_H
-#define _BVHX_H
+#ifndef _BVH_H
+#define _BVH_H
 
 #include <vector>
 #include "../core/elemental.h"

@@ -1,4 +1,4 @@
-#include "filianore/bvhx/bvhx.h"
+#include "filianore/accel/bvh.h"
 #include "filianore/core/interaction.h"
 
 namespace filianore
