@@ -15,7 +15,7 @@ namespace filianore
 
         float Get1D()
         {
-            (float)m_mersenneTwister() / (float)m_mersenneTwister.max();
+            return (float)m_mersenneTwister() / (float)m_mersenneTwister.max();
         }
 
         StaticArray<float, 2> Get2D()

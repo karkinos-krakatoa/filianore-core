@@ -40,8 +40,8 @@ namespace filianore
         for (int i = 0; i < nBxDFs; i++)
         {
             if (bxdfs[i]->MatchFlags(type) &&
-                ((reflect && (bxdfs[i]->bxdfType && BxDFType::BSDF_REFLECTION)) ||
-                 (!reflect && (bxdfs[i]->bxdfType && BxDFType::BSDF_REFRACTION))))
+                ((reflect && (bxdfs[i]->bxdfType & BxDFType::BSDF_REFLECTION)) ||
+                 (!reflect && (bxdfs[i]->bxdfType & BxDFType::BSDF_REFRACTION))))
             {
                 f += bxdfs[i]->EvaluateBxDF(woLocal, wiLocal);
             }
@@ -110,7 +110,7 @@ namespace filianore
         if (!(bxdf->bxdfType & BSDF_SPECULAR) && matchingComps > 1)
         {
             bool reflect = Dot(*wiWorld, ng) * Dot(woWorld, ng) > 0;
-            f = 0.;
+            f = Color(0.f);
             for (int i = 0; i < nBxDFs; ++i)
                 if (bxdfs[i]->MatchFlags(type) &&
                     ((reflect && (bxdfs[i]->bxdfType & BSDF_REFLECTION)) ||

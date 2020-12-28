@@ -12,7 +12,7 @@ namespace filianore
 
     void SurfaceInteraction::ComputeScatteringFunctions(const Ray &ray, bool allowMultipleLobes, TransportMode mode)
     {
-        primitive->
+        //primitive->
     }
 
 } // namespace filianore

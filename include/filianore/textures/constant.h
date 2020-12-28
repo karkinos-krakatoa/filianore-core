@@ -1,8 +1,8 @@
 #ifndef _TEXTURE_CONSTANT_H
 #define _TEXTURE_CONSTANT_H
 
-#include "elemental.h"
-#include "texture.h"
+#include "../core/elemental.h"
+#include "../core/texture.h"
 
 namespace filianore
 {
@@ -23,7 +23,7 @@ namespace filianore
 
     private:
         T value;
-    }
+    };
 
 } // namespace filianore
 

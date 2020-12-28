@@ -18,7 +18,7 @@ namespace filianore
 
     bool VisibilityEvaluator::Unoccluded(const Scene &scene) const
     {
-        return !scene.IntersectP(p0.KindleRayTo(p1));
+        return !scene.IntersectP(p0.KindleRayTo(p1.p));
     }
 
 } // namespace filianore

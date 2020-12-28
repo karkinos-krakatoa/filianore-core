@@ -11,11 +11,11 @@ namespace filianore
 	{
 		if (std::abs(v1.params[0]) > std::abs(v1.params[1]))
 		{
-			*v2 = -(StaticArray<T, 3>(-v1.params[2], T(0), v1.params[0]) / std::sqrt(v1.params[0] * v1.params[0] + v1.params[2] * v1.params[2]));
+			*v2 = (StaticArray<T, 3>(-v1.params[2], T(0), v1.params[0]).Neg() / std::sqrt(v1.params[0] * v1.params[0] + v1.params[2] * v1.params[2]));
 		}
 		else
 		{
-			*v2 = -(StaticArray<T, 3>(T(0), v1.params[2], -v1.params[1]) / std::sqrt(v1.params[0] * v1.params[0] + v1.params[2] * v1.params[2]));
+			*v2 = (StaticArray<T, 3>(T(0), v1.params[2], -v1.params[1]).Neg() / std::sqrt(v1.params[0] * v1.params[0] + v1.params[2] * v1.params[2]));
 		}
 		*v3 = Cross(v1, *v2);
 	}

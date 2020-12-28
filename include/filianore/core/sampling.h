@@ -67,7 +67,7 @@ namespace filianore
 
     FILIANORE_INLINE StaticArray<float, 2> ConcentricSampleDisk(const StaticArray<float, 2> &u)
     {
-        StaticArray<float, 2> uOffset = u * 2.f - StaticArray<float, 2>(1);
+        StaticArray<float, 2> uOffset = u * 2.f - StaticArray<float, 2>(1.f);
 
         if (uOffset.x() == 0 && uOffset.y() == 0)
         {
