@@ -11,7 +11,7 @@ namespace filianore
     class Sampler
     {
     public:
-        Sampler() {}
+        virtual ~Sampler() {}
 
         virtual float Get1D() = 0;
 

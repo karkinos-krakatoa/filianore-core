@@ -32,4 +32,8 @@ namespace filianore
         return shape->Centroid();
     }
 
+    void GeometricPrimitive::ComputeScatteringFunctions(const Ray &ray, bool allowMultipleLobes, TransportMode mode) const
+    {
+        }
+
 } // namespace filianore

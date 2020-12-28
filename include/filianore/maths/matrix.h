@@ -1,6 +1,7 @@
 #ifndef _MATRIX_H
 #define _MATRIX_H
 
+#include "../core/elemental.h"
 #include <iostream>
 #include "scalar.h"
 
@@ -116,7 +117,7 @@ namespace filianore
 
 	// Matrix Operations
 	template <typename T, size_t M, size_t N>
-	inline auto operator+(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
+	FILIANORE_INLINE auto operator+(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
 	{
 		Matrix<T, M, N> result;
 		for (size_t m = 0; m < M; ++m)
@@ -130,7 +131,7 @@ namespace filianore
 	}
 
 	template <typename T, size_t M, size_t N>
-	inline auto operator+=(Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
+	FILIANORE_INLINE auto operator+=(Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
 	{
 		for (size_t m = 0; m < M; ++m)
 		{
@@ -143,7 +144,7 @@ namespace filianore
 	}
 
 	template <typename T, size_t M, size_t N>
-	inline auto operator-(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
+	FILIANORE_INLINE auto operator-(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
 	{
 		Matrix<T, M, N> result;
 		for (size_t m = 0; m < M; ++m)
@@ -157,7 +158,7 @@ namespace filianore
 	}
 
 	template <typename T, size_t M, size_t N>
-	inline auto operator-=(Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
+	FILIANORE_INLINE auto operator-=(Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
 	{
 		for (size_t m = 0; m < M; ++m)
 		{
@@ -170,7 +171,7 @@ namespace filianore
 	}
 
 	template <typename T, size_t M, size_t N>
-	inline auto operator*(const Matrix<T, M, N> &a, T s) -> Matrix<T, M, N> const
+	FILIANORE_INLINE auto operator*(const Matrix<T, M, N> &a, T s) -> Matrix<T, M, N> const
 	{
 		Matrix<T, M, N> result;
 		for (size_t m = 0; m < M; ++m)
@@ -184,7 +185,7 @@ namespace filianore
 	}
 
 	template <typename T, size_t M, size_t N>
-	inline auto operator*(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
+	FILIANORE_INLINE auto operator*(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b) -> Matrix<T, M, N> const
 	{
 		Matrix<T, M, N> result;
 		for (size_t m = 0; m < M; ++m)
@@ -201,7 +202,7 @@ namespace filianore
 	}
 
 	template <typename T, typename U, size_t M, size_t N>
-	inline auto Pow(const Matrix<T, M, N> &a, U exp)
+	FILIANORE_INLINE auto Pow(const Matrix<T, M, N> &a, U exp)
 	{
 		using V = decltype(a.data[0][0] * exp);
 		Matrix<V, M, N> result = a;
@@ -215,7 +216,7 @@ namespace filianore
 	}
 
 	template <typename T, size_t M, size_t N>
-	inline auto Transpose(const Matrix<T, M, N> &a)
+	FILIANORE_INLINE auto Transpose(const Matrix<T, M, N> &a)
 	{
 		Matrix<T, M, N> result;
 
@@ -230,7 +231,7 @@ namespace filianore
 	}
 
 	template <typename T, size_t M, size_t N>
-	inline bool operator==(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
+	FILIANORE_INLINE bool operator==(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
 	{
 		for (size_t m = 0; m < M; ++m)
 		{
@@ -244,7 +245,7 @@ namespace filianore
 	}
 
 	template <typename T, size_t M, size_t N>
-	inline bool operator!=(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
+	FILIANORE_INLINE bool operator!=(const Matrix<T, M, N> &a, const Matrix<T, M, N> &b)
 	{
 		for (size_t m = 0; m < M; ++m)
 		{

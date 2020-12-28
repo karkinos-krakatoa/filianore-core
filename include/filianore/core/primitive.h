@@ -19,6 +19,8 @@ namespace filianore
         virtual bool IntersectP(const Ray &ray) const = 0;
 
         virtual StaticArray<float, 3> Centroid() const = 0;
+
+        virtual void ComputeScatteringFunctions(const Ray &ray) const = 0;
     };
 
     class GeometricPrimitive : public Primitive
@@ -39,8 +41,11 @@ namespace filianore
 
         StaticArray<float, 3> Centroid() const;
 
+        void ComputeScatteringFunctions(const Ray &ray) const;
+
     private:
         std::shared_ptr<Shape> shape;
+        std::shared_ptr<Material> material;
     };
 
 } // namespace filianore

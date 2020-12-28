@@ -15,6 +15,12 @@ namespace filianore
 #define FILIANORE_INLINE __attribute__((always_inline))
 #endif
 
+    enum class TransportMode
+    {
+        Radiance,
+        Importance
+    };
+
     // Forward Declrs..
     class Ray;
     struct AABB;
@@ -35,8 +41,11 @@ namespace filianore
     class Spectrum;
 
     class BxDF;
+    class BRDF;
+    class BTDF;
     class BSDF;
     class Material;
+    template <typename T>
     class Texture;
 
     class Medium;
@@ -49,6 +58,10 @@ namespace filianore
     class AreaIlluminant;
     struct Distribution1D;
     class Distribution2D;
+
+    class Scene;
+
+    class MemoryArena;
 
 } // namespace filianore
 

@@ -7,6 +7,8 @@
 
 namespace filianore
 {
+    typedef StaticArray<float, 3> Color;
+
     struct Interaction
     {
         Interaction() : t(0), time(0) {}
@@ -23,7 +25,6 @@ namespace filianore
 
         bool IsSurfaceInteraction() const
         {
-            //return n != StaticArray<float, 3>();
             return true;
         }
 
@@ -63,10 +64,9 @@ namespace filianore
         {
         }
 
-        /*void ComputeScatteringFunctions(const Ray<T, N>& ray, MemoryArena& arena, bool allowMultipleLobes = false,
-			TransportMode mode = TransportMode::Radiance);
+        Color Le(const StaticArray<float, 3> &w) const;
 
-		Spectrum<T> Le(const Vector<T, N>& w) const;*/
+        void ComputeScatteringFunctions(const Ray &ray, bool allowMultipleLobes = false, TransportMode mode = TransportMode::Radiance);
 
         StaticArray<float, 2> uv;
         const Shape *shape = nullptr;

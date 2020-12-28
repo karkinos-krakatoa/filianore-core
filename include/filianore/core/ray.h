@@ -17,6 +17,11 @@ namespace filianore
 
 		Ray() : tMin(Epsilon<float>), tMax(Infinity<float>()), time(0) {}
 
+		Ray(const Ray &ray)
+			: origin(ray.origin), dir(ray.dir), tMin(ray.tMin), tMax(ray.tMax), time(ray.time)
+		{
+		}
+
 		Ray(const StaticArray<float, 3> &_origin, const StaticArray<float, 3> &_dir, float _tMin = Epsilon<float>, float _tMax = Infinity<float>(), float _time = 0)
 			: origin(_origin), dir(_dir), tMin(_tMin), tMax(_tMax), time(_time)
 		{

@@ -202,7 +202,6 @@ namespace filianore
         {
             bb.Extend(prim->WorldBound());
         }
-
         return bb;
     }
 
