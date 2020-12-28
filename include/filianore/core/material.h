@@ -14,7 +14,7 @@ namespace filianore
     public:
         virtual ~Material() {}
 
-        virtual void ComputeScatteringFunctions(SurfaceInteraction *isect, MemoryArena &arena) const = 0;
+        virtual void ComputeScatteringFunctions(SurfaceInteraction *isect) const = 0;
     };
 
 } // namespace filianore

@@ -1,6 +1,7 @@
 #include "filianore/core/primitive.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/aabb.h"
+#include "filianore/core/material.h"
 
 namespace filianore
 {
@@ -32,8 +33,12 @@ namespace filianore
         return shape->Centroid();
     }
 
-    void GeometricPrimitive::ComputeScatteringFunctions(const Ray &ray) const
+    void GeometricPrimitive::ComputeScatteringFunctions(SurfaceInteraction *isect) const
     {
+        if (material)
+        {
+            material->ComputeScatteringFunctions(isect);
+        }
     }
 
 } // namespace filianore

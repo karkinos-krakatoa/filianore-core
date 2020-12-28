@@ -13,7 +13,7 @@ namespace filianore
         LambertMaterial(const std::shared_ptr<Texture<Color>> _kd)
             : kd(_kd) {}
 
-        void ComputeScatteringFunctions(SurfaceInteraction *isect, MemoryArena &arena) const;
+        void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
 
     private:
         std::shared_ptr<Texture<Color>> kd;

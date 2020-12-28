@@ -66,7 +66,7 @@ namespace filianore
 
         Color Le(const StaticArray<float, 3> &w) const;
 
-        void ComputeScatteringFunctions(const Ray &ray, bool allowMultipleLobes = false, TransportMode mode = TransportMode::Radiance);
+        void ComputeScatteringFunctions(const Ray &ray);
 
         StaticArray<float, 2> uv;
         const Shape *shape = nullptr;

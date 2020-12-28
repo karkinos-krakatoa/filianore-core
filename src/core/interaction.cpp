@@ -10,9 +10,12 @@ namespace filianore
         return Color(0.f);
     }
 
-    void SurfaceInteraction::ComputeScatteringFunctions(const Ray &ray, bool allowMultipleLobes, TransportMode mode)
+    void SurfaceInteraction::ComputeScatteringFunctions(const Ray &ray)
     {
-        //primitive->
+        if (primitive)
+        {
+            primitive->ComputeScatteringFunctions(this);
+        }
     }
 
 } // namespace filianore
