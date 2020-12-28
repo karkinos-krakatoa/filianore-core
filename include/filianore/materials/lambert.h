@@ -1,6 +1,7 @@
 #ifndef _LAMBERT_H
 #define _LAMBERT_H
 
+#include "../core/elemental.h"
 #include "../core/material.h"
 
 namespace filianore

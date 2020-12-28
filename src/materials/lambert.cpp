@@ -10,7 +10,9 @@ namespace filianore
 
     void LambertMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect, MemoryArena &arena) const
     {
-        isect->bsdf = ARENA_ALLOCA(arena, BSDF)(*isect);
+        isect->bsdf = std::make_shared<BSDF>(*isect);
+        Color r = kd->Evaluate(*isect);
+        isect->bsdf->Add(new LambertBxDF(r));
     }
 
 } // namespace filianore

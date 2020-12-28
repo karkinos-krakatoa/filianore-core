@@ -32,7 +32,7 @@ set (CMAKE_MODULE_PATH
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -flto")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto")
 
 set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
 
@@ -42,14 +42,27 @@ set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 #-----------------------------------------------------------------------------------
 
 add_library(filianore STATIC
-    src/core/interaction.cpp
-    src/core/primitive.cpp
-
     src/accel/bvh.cpp
 
     src/cameras/physical.cpp
 
-    src/shapes/triangle.cpp)
+    src/core/bsdf.cpp
+    src/core/illuminant.cpp
+    src/core/interaction.cpp
+    src/core/material.cpp
+    src/core/memory.cpp
+    src/core/primitive.cpp
+    src/core/renderer.cpp
+    src/core/scene.cpp
+    src/core/texture.cpp
+
+    src/materials/lambert.cpp
+
+    src/samplers/whitenoise.cpp
+
+    src/shapes/triangle.cpp
+
+    src/textures/constant.cpp)
 
 target_include_directories(filianore PUBLIC
     $<INSTALL_INTERFACE:include>
@@ -78,6 +91,40 @@ endif ()
 set(FULL_CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/filianore)
 
 install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/accel/bvh.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/accel)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/cameras/physical.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/cameras)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/bsdf.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/illuminant.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/interaction.h
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/material.h
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/memory.h
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/primitive.h
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/rect.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/renderer.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampler.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampling.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/scene.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shadingframe.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shape.h
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/texture.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/util.h
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/materials)
+
+install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/matrix.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/scalar.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/static_array.h 
@@ -86,30 +133,16 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/maths)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/accel/bvh.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/accel)
-
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/rect.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampler.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampling.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shape.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/interaction.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/primitive.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/util.h
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
-
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/cameras/physical.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/cameras)
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/whitenoise.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shapes/triangle.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shapes)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/textures/constant.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/textures)
 
 install(TARGETS filianore
     EXPORT filianore_export
