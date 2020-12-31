@@ -56,6 +56,8 @@ add_library(filianore STATIC
     src/core/scene.cpp
     src/core/texture.cpp
 
+    src/illuminants/point.cpp
+
     src/materials/lambert.cpp
 
     src/samplers/whitenoise.cpp
@@ -119,6 +121,10 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/texture.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/util.h
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/point.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/illuminants)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 

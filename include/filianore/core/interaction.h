@@ -23,6 +23,11 @@ namespace filianore
         {
         }
 
+        Interaction(const StaticArray<float, 3> &_p, float _time)
+            : t(0.f), p(_p), time(_time)
+        {
+        }
+
         bool IsSurfaceInteraction() const
         {
             return true;

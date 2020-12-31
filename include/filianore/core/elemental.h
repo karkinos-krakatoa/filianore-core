@@ -38,8 +38,6 @@ namespace filianore
     class PhysicalCamera;
     class Sampler;
 
-    class Spectrum;
-
     class BxDF;
     class BRDF;
     class BTDF;
