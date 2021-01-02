@@ -56,8 +56,11 @@ namespace filianore
 
         StaticArray<float, 3> Centroid() const;
 
+        void ComputeScatteringFunctions(SurfaceInteraction *isect) const {}
+
     private:
-        uint32_t nNodes, nLeafs;
+        uint32_t nNodes,
+            nLeafs;
         uint8_t leafSize;
         std::vector<std::shared_ptr<Primitive>> buildPrims;
         BVHFlatNode *flatTree;

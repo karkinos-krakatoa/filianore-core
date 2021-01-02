@@ -28,12 +28,6 @@ namespace filianore
 		return isnan(x);
 	}
 
-	template <>
-	FILIANORE_INLINE bool IsNaN(const int x)
-	{
-		return false;
-	}
-
 	template <typename T>
 	FILIANORE_INLINE T MaxScalar()
 	{
