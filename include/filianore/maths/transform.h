@@ -1,6 +1,7 @@
 #ifndef _TRANSFORM_H
 #define _TRANSFORM_H
 
+#include <assert.h>
 #include "vec3_math.h"
 #include "matrix.h"
 

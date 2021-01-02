@@ -7,8 +7,6 @@
 namespace filianore
 {
 
-    typedef StaticArray<float, 3> Color;
-
     class Material
     {
     public:

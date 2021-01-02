@@ -7,7 +7,6 @@
 
 namespace filianore
 {
-    typedef StaticArray<float, 3> Color;
 
     struct Interaction
     {

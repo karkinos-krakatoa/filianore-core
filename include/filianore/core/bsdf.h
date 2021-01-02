@@ -8,8 +8,6 @@
 namespace filianore
 {
 
-    typedef StaticArray<float, 3> Color;
-
     enum BxDFType
     {
         BSDF_REFLECTION = 1 << 0,

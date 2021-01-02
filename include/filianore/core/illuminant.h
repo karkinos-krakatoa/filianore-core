@@ -6,7 +6,6 @@
 
 namespace filianore
 {
-    typedef StaticArray<float, 3> Color;
 
     enum class IlluminantType : int
     {
