@@ -9,8 +9,8 @@ namespace filianore
     class PointIlluminant : public Illuminant
     {
     public:
-        PointIlluminant(const StaticArray<float, 3> &_illumPosition, const Color &_I)
-            : Illuminant((int)IlluminantType::DeltaPoint), illumPosition(_illumPosition), I(_I)
+        PointIlluminant(const StaticArray<float, 3> &_illumPosition, const Color &_I, float _Iw)
+            : Illuminant((int)IlluminantType::DeltaPoint), illumPosition(_illumPosition), I(_I), Iw(_Iw)
         {
         }
 
@@ -22,6 +22,7 @@ namespace filianore
     private:
         StaticArray<float, 3> illumPosition;
         Color I;
+        float Iw;
     };
 
 } // namespace filianore

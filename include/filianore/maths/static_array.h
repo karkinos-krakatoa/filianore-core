@@ -80,6 +80,18 @@ namespace filianore
         //     return min;
         // }
 
+        FILIANORE_INLINE bool IsZero()
+        {
+            for (int i = 0; i < N; i++)
+            {
+                if (params[i] != 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         FILIANORE_INLINE StaticArray<T, N> operator+(const StaticArray<T, N> &v) const
         {
             int c = 0;

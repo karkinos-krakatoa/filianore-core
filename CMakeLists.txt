@@ -48,6 +48,7 @@ add_library(filianore STATIC
 
     src/core/bsdf.cpp
     src/core/illuminant.cpp
+    src/core/integrator.cpp
     src/core/interaction.cpp
     src/core/material.cpp
     src/core/memory.cpp
@@ -106,6 +107,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/illuminant.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/integrator.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/interaction.h
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/material.h
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/memory.h
