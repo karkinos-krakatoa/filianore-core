@@ -10,7 +10,7 @@
 namespace filianore
 {
 
-    Color UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, const std::vector<int> &nLightSamples, bool handleMedia)
+    Color UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia)
     {
         Color L(0.f);
 

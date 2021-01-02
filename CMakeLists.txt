@@ -58,7 +58,7 @@ add_library(filianore STATIC
 
     src/illuminants/point.cpp
 
-    src/illuminants/path.cpp
+    src/integrators/path_integrator.cpp
 
     src/materials/lambert.cpp
 
@@ -129,7 +129,7 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/illuminants)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/integrators/path.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/integrators/path_integrator.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/integrators)
 
 install(FILES 

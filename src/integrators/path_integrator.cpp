@@ -1,7 +1,8 @@
-#include "filianore/integrators/path.h"
+#include "filianore/integrators/path_integrator.h"
 #include "filianore/core/camera.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/scene.h"
+#include "filianore/core/bsdf.h"
 
 namespace filianore
 {
@@ -23,7 +24,7 @@ namespace filianore
 
         bool specularBounce = false;
         int bounces;
-        float etaScale = 1;
+        float etaScale = 1.f;
 
         for (int bounces = 0;; bounces++)
         {
@@ -42,8 +43,22 @@ namespace filianore
             {
                 break;
             }
+
+            isect.ComputeScatteringFunctions(ray);
+            if (!isect.bsdf)
+            {
+                isect.KindleRay(ray.dir);
+                bounces--;
+                continue;
+            }
+
+            if (isect.bsdf->NumComponents(BxDFType(BSDF_ALL & ~BSDF_SPECULAR)) > 0.f)
+            {
+                Color Ld = throughput * UniformSampleAllLights(isect, scene, sampler, false);
+                L += Ld;
+            }
         }
 
         return L;
     }
-}
+} // namespace filianore
