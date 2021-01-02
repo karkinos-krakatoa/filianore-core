@@ -21,6 +21,8 @@ namespace filianore
         virtual StaticArray<float, 3> Centroid() const = 0;
 
         virtual void ComputeScatteringFunctions(SurfaceInteraction *isect) const = 0;
+
+        virtual Material *GetMaterial() const = 0;
     };
 
     class GeometricPrimitive : public Primitive
@@ -28,8 +30,8 @@ namespace filianore
     public:
         GeometricPrimitive() {}
 
-        GeometricPrimitive(std::shared_ptr<Shape> &_shape)
-            : shape(_shape)
+        GeometricPrimitive(std::shared_ptr<Shape> &_shape, const std::shared_ptr<Material> &_material)
+            : shape(_shape), material(_material)
         {
         }
 
@@ -42,6 +44,8 @@ namespace filianore
         StaticArray<float, 3> Centroid() const;
 
         void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
+
+        Material *GetMaterial() const;
 
     private:
         std::shared_ptr<Shape> shape;

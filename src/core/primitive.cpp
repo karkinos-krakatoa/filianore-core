@@ -41,4 +41,14 @@ namespace filianore
         }
     }
 
+    Material *GeometricPrimitive::GetMaterial() const
+    {
+        if (material)
+        {
+            return material.get();
+        }
+
+        return nullptr;
+    }
+
 } // namespace filianore

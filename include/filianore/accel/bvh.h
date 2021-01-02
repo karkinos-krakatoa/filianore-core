@@ -58,6 +58,8 @@ namespace filianore
 
         void ComputeScatteringFunctions(SurfaceInteraction *isect) const {}
 
+        Material *GetMaterial() const { return nullptr; }
+
     private:
         uint32_t nNodes,
             nLeafs;
