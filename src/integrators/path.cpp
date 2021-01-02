@@ -1,20 +1,20 @@
-#include "filianore/core/renderer.h"
+#include "filianore/integrators/path.h"
 #include "filianore/core/camera.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/scene.h"
 
 namespace filianore
 {
-    TheRenderer::TheRenderer(int _maxDepth, std::shared_ptr<Camera> _camera, std::shared_ptr<Sampler> _sampler, float _rrThreshold)
-        : maxDepth(_maxDepth), camera(_camera), sampler(_sampler), rrThreshold(_rrThreshold)
+    PathIntegrator::PathIntegrator(int _maxDepth, std::shared_ptr<Sampler> _sampler, float _rrThreshold)
+        : maxDepth(_maxDepth), sampler(_sampler), rrThreshold(_rrThreshold)
     {
     }
 
-    void TheRenderer::PrepareTheRenderer(const Scene &scene, Sampler &sampler)
+    void PathIntegrator::PrepareTheRenderer(const Scene &scene, Sampler &sampler)
     {
     }
 
-    Color TheRenderer::Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const
+    Color PathIntegrator::Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const
     {
         Color L(0.f);
         Color throughput(0.f);
@@ -46,5 +46,4 @@ namespace filianore
 
         return L;
     }
-
-} // namespace filianore
+}

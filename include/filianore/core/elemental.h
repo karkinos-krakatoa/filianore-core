@@ -61,6 +61,9 @@ namespace filianore
 
     class MemoryArena;
 
+    class Integrator;
+    class PathIntegrator;
+
 } // namespace filianore
 
 #endif

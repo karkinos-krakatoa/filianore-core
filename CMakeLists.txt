@@ -53,11 +53,12 @@ add_library(filianore STATIC
     src/core/material.cpp
     src/core/memory.cpp
     src/core/primitive.cpp
-    src/core/renderer.cpp
     src/core/scene.cpp
     src/core/texture.cpp
 
     src/illuminants/point.cpp
+
+    src/illuminants/path.cpp
 
     src/materials/lambert.cpp
 
@@ -114,7 +115,6 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/primitive.h
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/rect.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/renderer.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampler.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampling.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/scene.h 
@@ -127,6 +127,10 @@ install(FILES
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/point.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/illuminants)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/integrators/path.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/integrators)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
