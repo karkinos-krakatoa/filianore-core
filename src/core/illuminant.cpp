@@ -4,6 +4,11 @@
 namespace filianore
 {
 
+    FILIANORE_INLINE bool IsDeltaIlluminant(int flags)
+    {
+        return flags & (int)IlluminantType::DeltaPoint || flags & (int)IlluminantType::DeltaDirectional;
+    }
+
     Illuminant::Illuminant(int _types, int _nSamples)
         : types(_types), nSamples(std::max(1, _nSamples))
     {

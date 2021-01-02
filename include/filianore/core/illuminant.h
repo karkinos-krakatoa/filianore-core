@@ -15,10 +15,7 @@ namespace filianore
         Infinite = 8
     };
 
-    FILIANORE_INLINE bool IsDeltaIlluminant(int flags)
-    {
-        return flags & (int)IlluminantType::DeltaPoint || flags & (int)IlluminantType::DeltaDirectional;
-    }
+    FILIANORE_INLINE bool IsDeltaIlluminant(int flags);
 
     class VisibilityEvaluator
     {
