@@ -26,32 +26,6 @@ namespace filianore
         int bounces;
         float etaScale = 1.f;
 
-        // for (bounces = 0;; bounces++)
-        // {
-        //     SurfaceInteraction isect;
-        //     bool hitFound = scene.Intersect(ray, &isect);
-        //     if (bounces == 0 || specularBounce)
-        //     {
-        //         if (hitFound)
-        //         {
-        //             L += throughput * isect.Le(ray.dir.Neg());
-        //         }
-        //     }
-
-        //     if (!hitFound || bounces >= maxDepth)
-        //     {
-        //         break;
-        //     }
-
-        //     isect.ComputeScatteringFunctions(ray);
-        //     if (!isect.bsdf)
-        //     {
-        //         ray = isect.KindleRay(ray.dir);
-        //         bounces--;
-        //         continue;
-        //     }
-        // }
-
         for (bounces = 0;; bounces++)
         {
             SurfaceInteraction isect;
@@ -73,7 +47,7 @@ namespace filianore
             isect.ComputeScatteringFunctions(ray);
             if (!isect.bsdf)
             {
-                isect.KindleRay(ray.dir);
+                ray = isect.KindleRay(ray.dir);
                 bounces--;
                 continue;
             }
