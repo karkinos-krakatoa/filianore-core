@@ -9,12 +9,12 @@ namespace filianore
         *wi = (illumPosition - ref.p).Normalize();
         *pdf = 1.f;
         *vis = VisibilityEvaluator(ref, Interaction(illumPosition, ref.time));
-        return I / (illumPosition - ref.p).LengthSquared();
+        return (I * Iw) / (illumPosition - ref.p).LengthSquared();
     }
 
     Color PointIlluminant::Power() const
     {
-        return I * 4.f * Pi<float>;
+        return I * Iw * 4.f * Pi<float>;
     }
 
     Color PointIlluminant::Le(const Ray &ray) const

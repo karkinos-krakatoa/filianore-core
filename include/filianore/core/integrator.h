@@ -12,6 +12,9 @@ namespace filianore
     {
     public:
         virtual ~Integrator() {}
+
+        virtual void PrepareTheRenderer(const Scene &scene, Sampler &sampler) = 0;
+        virtual Color Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const = 0;
     };
 
     Color UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia = false);

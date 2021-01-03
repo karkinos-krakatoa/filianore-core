@@ -3,7 +3,6 @@
 
 #include "shadingframe.h"
 #include "../maths/scalar.h"
-#include "interaction.h"
 
 namespace filianore
 {
@@ -67,11 +66,9 @@ namespace filianore
     class BSDF
     {
     public:
-        BSDF(const StaticArray<float, 3> &n, float _eta = 1)
-            : eta(_eta), shadingFrame(n), nBxDFs(0) {}
+        BSDF(const StaticArray<float, 3> &n, float _eta = 1);
 
-        BSDF(const SurfaceInteraction &isect, float _eta = 1)
-            : eta(_eta), shadingFrame(isect.n), nBxDFs(0) {}
+        BSDF(const SurfaceInteraction &isect, float _eta = 1);
 
         void Add(BxDF *bxdf)
         {

@@ -20,6 +20,10 @@ namespace filianore
         StaticArray<float, 3> n = Cross(e1, e2);
 
         float det = -Dot(ray.dir, n);
+        if (det == 0 || det == -0)
+        {
+            return false;
+        }
 
         StaticArray<float, 3> ao = ray.origin - v1.vertex;
         StaticArray<float, 3> dao = Cross(ao, ray.dir);

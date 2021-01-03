@@ -127,7 +127,7 @@ namespace filianore
 
 		FILIANORE_INLINE bool Intersect(const Ray &ray, float *hitt0, float *hitt1) const
 		{
-			float t0 = ray.tMin, t1 = ray.tMax;
+			float t0 = 0.f, t1 = ray.tMax;
 			for (unsigned int i = 0; i < 3; ++i)
 			{
 				float invRayDir = 1.f / ray.dir.params[i];

@@ -1,15 +1,22 @@
 #include "filianore/core/bsdf.h"
 #include "filianore/core/sampling.h"
+#include "filianore/core/interaction.h"
 
 namespace filianore
 {
+
+    BSDF::BSDF(const StaticArray<float, 3> &n, float _eta)
+        : eta(_eta), shadingFrame(n), nBxDFs(0) {}
+
+    BSDF::BSDF(const SurfaceInteraction &isect, float _eta)
+        : eta(_eta), shadingFrame(isect.n), nBxDFs(0) {}
 
     Color LambertBxDF::SampleBxDF(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
     {
         *wi = CosineSampleHemisphere(sample);
         if (wo.z() < 0)
         {
-            wi->params[2] *= -1;
+            wi->params[2] *= -1.f;
         }
         *pdf = Pdf(wo, *wi);
         return EvaluateBxDF(wo, *wi);
@@ -133,18 +140,21 @@ namespace filianore
         StaticArray<float, 3> woLocal = shadingFrame.ToLocal(woWorld);
         StaticArray<float, 3> wiLocal = shadingFrame.ToLocal(wiWorld);
 
+        if (woLocal.z() == 0)
+            return 0.f;
+
         int matchComp = 0;
 
         for (int i = 0; i < nBxDFs; i++)
         {
             if (bxdfs[i]->MatchFlags(type))
             {
+                ++matchComp;
                 pdf += bxdfs[i]->Pdf(woLocal, wiLocal);
-                matchComp++;
             }
         }
 
-        return matchComp > 0 ? pdf / matchComp : 0;
+        return matchComp > 0 ? pdf / (float)matchComp : 0.f;
     }
 
 } // namespace filianore

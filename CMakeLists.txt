@@ -53,6 +53,7 @@ add_library(filianore STATIC
     src/core/material.cpp
     src/core/memory.cpp
     src/core/primitive.cpp
+    src/core/sampling.cpp
     src/core/scene.cpp
     src/core/texture.cpp
 
