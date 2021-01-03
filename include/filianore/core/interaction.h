@@ -39,14 +39,14 @@ namespace filianore
 
         Ray KindleRay(const StaticArray<float, 3> &d) const
         {
-            StaticArray<float, 3> o = p + n * Epsilon<float>;
+            StaticArray<float, 3> o = p + d * Epsilon<float>;
             return Ray(o, d, Epsilon<float>, Infinity<float>(), time);
         }
 
         Ray KindleRayTo(const StaticArray<float, 3> &p2) const
         {
             StaticArray<float, 3> d = p2 - p;
-            StaticArray<float, 3> o = p + n * Epsilon<float>;
+            StaticArray<float, 3> o = p + d * Epsilon<float>;
             return Ray(o, d, Epsilon<float>, 1.f - Epsilon<float>, time);
         }
 

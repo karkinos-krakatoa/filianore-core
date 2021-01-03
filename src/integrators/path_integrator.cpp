@@ -73,16 +73,15 @@ namespace filianore
             isect.ComputeScatteringFunctions(ray);
             if (!isect.bsdf)
             {
-                // isect.KindleRay(ray.dir);
-                // bounces--;
-                // continue;
-                return L;
+                isect.KindleRay(ray.dir);
+                bounces--;
+                continue;
             }
 
             if (isect.bsdf->NumComponents(BxDFType(BSDF_ALL & ~BSDF_SPECULAR)) > 0.f)
             {
                 Color Ld = UniformSampleAllLights(isect, scene, sampler, false) * throughput;
-                L += Ld;
+                L += Ld * throughput;
             }
         }
 
