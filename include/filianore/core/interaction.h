@@ -7,6 +7,8 @@
 
 namespace filianore
 {
+    StaticArray<float, 3> OffsetRayOrigin(const StaticArray<float, 3> &p, const StaticArray<float, 3> &pError,
+                                          const StaticArray<float, 3> &n, const StaticArray<float, 3> &w);
 
     struct Interaction
     {
@@ -39,15 +41,16 @@ namespace filianore
 
         Ray KindleRay(const StaticArray<float, 3> &d) const
         {
-            StaticArray<float, 3> o = p + d * Epsilon<float>;
+            StaticArray<float, 3> o = OffsetRayOrigin(p, StaticArray<float, 3>(0.f), n, d);
             return Ray(o, d, Epsilon<float>, Infinity<float>(), time);
         }
 
-        Ray KindleRayTo(const StaticArray<float, 3> &p2) const
+        Ray KindleRayTo(const Interaction &it) const
         {
-            StaticArray<float, 3> d = p2 - p;
-            StaticArray<float, 3> o = p + d * Epsilon<float>;
-            return Ray(o, d, Epsilon<float>, 1.f - Epsilon<float>, time);
+            StaticArray<float, 3> origin = OffsetRayOrigin(p, StaticArray<float, 3>(0.f), n, it.p - p);
+            StaticArray<float, 3> target = OffsetRayOrigin(it.p, StaticArray<float, 3>(0.f), it.n, origin - it.p);
+            StaticArray<float, 3> d = target - origin;
+            return Ray(origin, d.Normalize(), Epsilon<float>, d.Length() - Epsilon<float>, time);
         }
 
         float time;

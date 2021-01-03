@@ -5,6 +5,12 @@
 namespace filianore
 {
 
+    StaticArray<float, 3> OffsetRayOrigin(const StaticArray<float, 3> &p, const StaticArray<float, 3> &pError,
+                                          const StaticArray<float, 3> &n, const StaticArray<float, 3> &w)
+    {
+        return p + w * Epsilon<float>;
+    }
+
     Color SurfaceInteraction::Le(const StaticArray<float, 3> &w) const
     {
         return Color(0.f);
