@@ -3,6 +3,7 @@
 
 #include "../core/sampler.h"
 #include <cstdlib>
+#include <iostream>
 #include <random>
 
 namespace filianore
@@ -11,11 +12,11 @@ namespace filianore
     class Whitenoise : public Sampler
     {
     public:
-        Whitenoise() {}
+        Whitenoise();
 
         float Get1D()
         {
-            return (float)m_mersenneTwister() / (float)m_mersenneTwister.max();
+            return dist(m_mersenneTwister);
         }
 
         StaticArray<float, 2> Get2D()
@@ -24,7 +25,9 @@ namespace filianore
         }
 
     private:
-        std::mt19937 m_mersenneTwister;
+        std::random_device rd;
+        std::mt19937 m_mersenneTwister{rd()};
+        std::uniform_real_distribution<float> dist{0.f, 1.f};
     };
 
 } // namespace filianore

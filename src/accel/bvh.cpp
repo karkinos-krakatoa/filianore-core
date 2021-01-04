@@ -218,7 +218,8 @@ namespace filianore
 
     bool BVH::IntersectP(const Ray &ray) const
     {
-        return IntersectMain(ray, nullptr, true);
+        SurfaceInteraction isect;
+        return IntersectMain(ray, &isect, true);
     }
 
 } // namespace filianore

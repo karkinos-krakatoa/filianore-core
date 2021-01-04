@@ -65,6 +65,8 @@ namespace filianore
         if (matchingComps == 0)
         {
             *pdf = 0.f;
+            if (sampledType)
+                *sampledType = BxDFType(0);
             return Color(0.f);
         }
         int comp = std::min((int)std::floor(sample.x() * matchingComps), matchingComps - 1);
@@ -81,8 +83,17 @@ namespace filianore
             }
         }
 
+        if (!bxdf)
+        {
+            *pdf = 0.f;
+            if (sampledType)
+                *sampledType = BxDFType(0);
+            return Color(0.f);
+        }
+
         // Remap
-        StaticArray<float, 2> uRemapped(sample.x() * matchingComps - comp, sample.y());
+        StaticArray<float, 2> uRemapped(std::min(sample.x() * (float)matchingComps - (float)comp, 1.f - Epsilon<float>), sample.y());
+        //StaticArray<float, 2> uRemapped(sample.x() * matchingComps - comp, sample.y());
 
         // Sample Chosen BxDF
         StaticArray<float, 3> wi, wo = shadingFrame.ToLocal(woWorld);
@@ -94,6 +105,8 @@ namespace filianore
         Color f = bxdf->SampleBxDF(wo, &wi, uRemapped, pdf, sampledType);
         if (pdf == 0)
         {
+            if (sampledType)
+                *sampledType = BxDFType(0);
             return Color(0.f);
         }
         *wiWorld = shadingFrame.ToWorld(wi);
@@ -116,7 +129,7 @@ namespace filianore
 
         if (!(bxdf->bxdfType & BSDF_SPECULAR) && matchingComps > 1)
         {
-            bool reflect = Dot(*wiWorld, ng) * Dot(woWorld, ng) > 0;
+            bool reflect = Dot(ng, *wiWorld) * Dot(ng, woWorld) > 0;
             f = Color(0.f);
             for (int i = 0; i < nBxDFs; ++i)
                 if (bxdfs[i]->MatchFlags(type) &&

@@ -54,10 +54,10 @@ namespace filianore
 
             if (!f.IsZero())
             {
-                // if (!visEval.Unoccluded(scene))
-                // {
-                //     Li = StaticArray<float, 3>(0.f);
-                // }
+                if (!visEval.Unoccluded(scene))
+                {
+                    Li = StaticArray<float, 3>(0.f);
+                }
 
                 if (!Li.IsZero())
                 {
