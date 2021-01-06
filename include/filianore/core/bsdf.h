@@ -57,7 +57,7 @@ namespace filianore
 
         float Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
         {
-            return Inv2Pi<float>;
+            return ShadingFrame::SameHemisphere(wo, wi) ? ShadingFrame::AbsCosTheta(wi) * Inv2Pi<float> : 0;
         }
 
         Color color;

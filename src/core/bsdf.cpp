@@ -40,6 +40,11 @@ namespace filianore
         StaticArray<float, 3> woLocal = shadingFrame.ToLocal(woWorld);
         StaticArray<float, 3> wiLocal = shadingFrame.ToLocal(wiWorld);
 
+        if (woLocal.z() == 0)
+        {
+            return Color(0.f);
+        }
+
         bool reflect = Dot(shadingFrame.n, wiWorld) * Dot(shadingFrame.n, woWorld) > 0.f;
 
         Color f(0.f);
@@ -166,6 +171,9 @@ namespace filianore
                 pdf += bxdfs[i]->Pdf(woLocal, wiLocal);
             }
         }
+
+        if (matchComp == 0)
+            return 0.f;
 
         return matchComp > 0 ? pdf / (float)matchComp : 0.f;
     }

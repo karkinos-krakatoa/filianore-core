@@ -31,7 +31,7 @@ namespace filianore
 
         bool IsSurfaceInteraction() const
         {
-            return true;
+            return (n.x() != 0.f || n.y() != 0.f || n.z() != 0.f);
         }
 
         bool IsMediumInteraction() const
@@ -50,7 +50,7 @@ namespace filianore
             StaticArray<float, 3> origin = OffsetRayOrigin(p, StaticArray<float, 3>(0.f), n, it.p - p);
             StaticArray<float, 3> target = OffsetRayOrigin(it.p, StaticArray<float, 3>(0.f), it.n, origin - it.p);
             StaticArray<float, 3> d = target - origin;
-            return Ray(origin, d.Normalize(), Epsilon<float>, d.Length() - Epsilon<float>, time);
+            return Ray(origin, d, Epsilon<float>, d.Length() - Epsilon<float>, time);
         }
 
         float time;

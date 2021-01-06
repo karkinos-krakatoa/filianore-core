@@ -14,75 +14,34 @@ namespace filianore
 
     bool Triangle::Intersect(const Ray &ray, SurfaceInteraction *isect) const
     {
-        // StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
-        // StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
-
-        // StaticArray<float, 3> n = Cross(e1, e2);
-
-        // float det = -Dot(ray.dir, n);
-        // if (det == 0 || det == -0)
-        // {
-        //     return false;
-        // }
-
-        // StaticArray<float, 3> ao = ray.origin - v1.vertex;
-        // StaticArray<float, 3> dao = Cross(ao, ray.dir);
-
-        // float invDet = 1.f / det;
-
-        // float u = Dot(e2, dao) * invDet;
-        // float v = -Dot(e1, dao) * invDet;
-
-        // float t = Dot(ao, n) * invDet;
-
-        // if (t > 0 && u > 0 && v > 0 && (u + v) < 1)
-        // {
-        //     StaticArray<float, 3> revRay = ray.dir;
-        //     *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
-
-        //     isect->p = ray.PointAtT(t);
-        //     isect->n = GeometricNormal(isect->p);
-        //     isect->shape = this;
-
-        //     return true;
-        // }
-
-        // return false;
-
         StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
         StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
-        StaticArray<float, 3> s1 = Cross(ray.dir, e2);
-        float divisor = Dot(s1, e1);
 
-        if (divisor == 0.f)
+        StaticArray<float, 3> n = Cross(e1, e2);
+
+        float det = -Dot(ray.dir, n);
+        if (det == 0 || det == -0)
         {
             return false;
         }
 
-        float invDivisor = 1.f / divisor;
+        StaticArray<float, 3> ao = ray.origin - v1.vertex;
+        StaticArray<float, 3> dao = Cross(ao, ray.dir);
 
-        StaticArray<float, 3> d = ray.origin - v1.vertex;
-        float b1 = Dot(d, s1) * invDivisor;
-        if (b1 < 0.f || b1 > 1.f)
-        {
-            return false;
-        }
+        float invDet = 1.f / det;
 
-        StaticArray<float, 3> s2 = Cross(d, e1);
-        float b2 = Dot(ray.dir, s2) * invDivisor;
-        if (b2 < 0.f || b1 + b2 > 1.f)
-        {
-            return false;
-        }
+        float u = Dot(e2, dao) * invDet;
+        float v = -Dot(e1, dao) * invDet;
 
-        float t = Dot(e2, s2) * invDivisor;
-        if (t < ray.tMax && t > ray.tMin)
+        float t = Dot(ao, n) * invDet;
+
+        if (t > 0 && u > 0 && v > 0 && (u + v) < 1)
         {
-            StaticArray<float, 3> revRayDir = ray.dir;
-            *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRayDir.Neg(), this, 0);
+            StaticArray<float, 3> revRay = ray.dir;
+            *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
 
             isect->p = ray.PointAtT(t);
-            isect->n = GeometricNormal(isect->p);
+            isect->n = ShadingNormal(u, v); //GeometricNormal(isect->p);
             isect->shape = this;
 
             return true;
@@ -113,9 +72,10 @@ namespace filianore
         return this->reverseOrientation ? normal.Neg() : normal;
     }
 
-    StaticArray<float, 3> Triangle::ShadingNormal(const StaticArray<float, 3> &_p) const
+    StaticArray<float, 3> Triangle::ShadingNormal(float u, float v) const
     {
-        return ((v1.normal + v2.normal + v3.normal) / 3.f).Normalize();
+        StaticArray<float, 3> ns = v1.normal * (1.f - u - v) + v2.normal * u + v3.normal * v;
+        return ns.Normalize();
     }
 
 } // namespace filianore

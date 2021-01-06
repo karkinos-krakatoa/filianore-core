@@ -23,16 +23,7 @@ namespace filianore
 
     bool VisibilityEvaluator::Unoccluded(const Scene &scene) const
     {
-        bool unoccluded = true;
-        try
-        {
-            unoccluded = !scene.IntersectP(p0.KindleRayTo(p1));
-        }
-        catch (const std::exception &e)
-        {
-            unoccluded = false;
-        }
-        return unoccluded;
+        return !scene.IntersectP(p0.KindleRayTo(p1));
     }
 
 } // namespace filianore
