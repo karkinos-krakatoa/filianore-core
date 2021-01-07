@@ -75,7 +75,13 @@ namespace filianore
 
         void ComputeScatteringFunctions(const Ray &ray);
 
-        StaticArray<float, 2> uv;
+        struct
+        {
+            StaticArray<float, 3> n;
+        } Shading;
+
+        StaticArray<float, 2>
+            uv;
         const Shape *shape = nullptr;
         const Primitive *primitive = nullptr;
         std::shared_ptr<BSDF> bsdf = nullptr;
