@@ -49,7 +49,7 @@ namespace filianore
 	template <typename T>
 	FILIANORE_INLINE T Gamma(int n)
 	{
-		return (n * MachineEpsilon<T>()) / (1 - n * MachineEpsilon<T>());
+		return (n * MachineEpsilon<T>()) / (1.f - n * MachineEpsilon<T>());
 	}
 
 	template <typename T>
