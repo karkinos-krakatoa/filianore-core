@@ -9,15 +9,23 @@ namespace filianore
 	template <typename T>
 	FILIANORE_INLINE void CoordinateSystem(const StaticArray<T, 3> &v1, StaticArray<T, 3> *v2, StaticArray<T, 3> *v3)
 	{
-		if (std::abs(v1.params[0]) > std::abs(v1.params[1]))
+		if (std::abs(v1.x()) > std::abs(v1.y()))
 		{
-			*v2 = (StaticArray<T, 3>(-v1.params[2], T(0), v1.params[0]).Neg() / std::sqrt(v1.params[0] * v1.params[0] + v1.params[2] * v1.params[2]));
+			T invLen = T(1) / std::sqrt(v1.x() * v1.x() + v1.z() * v1.z());
+			*v2 = StaticArray<T, 3>(v1.z() * invLen, 0.f, -v1.x() * invLen);
 		}
 		else
 		{
-			*v2 = (StaticArray<T, 3>(T(0), v1.params[2], -v1.params[1]).Neg() / std::sqrt(v1.params[0] * v1.params[0] + v1.params[2] * v1.params[2]));
+			T invLen = T(1) / std::sqrt(v1.y() * v1.y() + v1.z() * v1.z());
+			*v2 = StaticArray<T, 3>(0.f, v1.z() * invLen, -v1.y() * invLen);
 		}
-		*v3 = Cross(v1, *v2);
+		*v3 = Cross(*v2, v1);
+	}
+
+	template <typename T>
+	FILIANORE_INLINE StaticArray<T, 3> Abs(const StaticArray<T, 3> &a)
+	{
+		return StaticArray<T, 3>(std::abs(a.params[0]), std::abs(a.params[1]), std::abs(a.params[2]));
 	}
 
 	template <typename T>

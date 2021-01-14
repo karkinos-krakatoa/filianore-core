@@ -6,10 +6,16 @@ namespace filianore
 {
 
     BSDF::BSDF(const StaticArray<float, 3> &n, float _eta)
-        : eta(_eta), shadingFrame(n), nBxDFs(0) {}
+        : eta(_eta), nBxDFs(0)
+    {
+        shadingFrame = ShadingFrame(n);
+    }
 
     BSDF::BSDF(const SurfaceInteraction &isect, float _eta)
-        : eta(_eta), shadingFrame(isect.n), nBxDFs(0) {}
+        : eta(_eta), nBxDFs(0)
+    {
+        shadingFrame = ShadingFrame(isect.n);
+    }
 
     Color LambertBxDF::SampleBxDF(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
     {

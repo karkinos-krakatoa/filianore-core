@@ -14,36 +14,81 @@ namespace filianore
 
     bool Triangle::Intersect(const Ray &ray, SurfaceInteraction *isect) const
     {
-        StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
-        StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
+        // StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
+        // StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
 
-        StaticArray<float, 3> n = Cross(e1, e2);
+        // StaticArray<float, 3> n = Cross(e1, e2);
 
-        float det = -Dot(ray.dir, n);
-        if (det == 0 || det == -0)
+        // float det = -Dot(ray.dir, n);
+        // assert(det != 0);
+        // if (det == 0)
+        // {
+        //     return false;
+        // }
+
+        // StaticArray<float, 3> ao = ray.origin - v1.vertex;
+        // StaticArray<float, 3> dao = Cross(ao, ray.dir);
+
+        // float invDet = 1.f / det;
+
+        // float u = Dot(e2, dao) * invDet;
+        // float v = -Dot(e1, dao) * invDet;
+
+        // float t = Dot(ao, n) * invDet;
+
+        // if (t > 0 && u > 0 && v > 0 && (u + v) < 1)
+        // {
+        //     StaticArray<float, 3> revRay = ray.dir;
+        //     *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), StaticArray<float, 3>(), this, 0);
+
+        //     isect->p = ray.PointAtT(t);
+        //     isect->n = ShadingNormal(u, v); //GeometricNormal(isect->p);
+        //     isect->shape = this;
+
+        //     return true;
+        // }
+
+        // return false;
+
+        const float EPSILON = 0.0000001f;
+
+        StaticArray<float, 3> edge1, edge2, h, s, q;
+        float a, f, u, v;
+
+        edge1 = v2.vertex - v1.vertex;
+        edge2 = v3.vertex - v1.vertex;
+
+        h = Cross(ray.dir, edge2);
+        a = Dot(edge1, h);
+        if (a > -EPSILON && a < EPSILON)
         {
             return false;
         }
 
-        StaticArray<float, 3> ao = ray.origin - v1.vertex;
-        StaticArray<float, 3> dao = Cross(ao, ray.dir);
+        f = 1.f / a;
+        s = ray.origin - v1.vertex;
+        u = f * Dot(s, h);
+        if (u < 0.f || u > 1.f)
+        {
+            return false;
+        }
 
-        float invDet = 1.f / det;
+        q = Cross(s, edge1);
+        v = f * Dot(ray.dir, q);
+        if (v < 0.f || u + v > 1.f)
+        {
+            return false;
+        }
 
-        float u = Dot(e2, dao) * invDet;
-        float v = -Dot(e1, dao) * invDet;
-
-        float t = Dot(ao, n) * invDet;
-
-        if (t > 0 && u > 0 && v > 0 && (u + v) < 1)
+        float t = f * Dot(edge2, q);
+        if (t > EPSILON)
         {
             StaticArray<float, 3> revRay = ray.dir;
-            *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
+            *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), StaticArray<float, 3>(), this, 0);
 
             isect->p = ray.PointAtT(t);
             isect->n = ShadingNormal(u, v); //GeometricNormal(isect->p);
             isect->shape = this;
-
             return true;
         }
 

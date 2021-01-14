@@ -103,7 +103,7 @@ namespace filianore
 			int axis = 0;
 			if (d.x() < d.y())
 				axis = 1;
-			if (d.params[axis] < d.z())
+			if (d.y() < d.z())
 				axis = 2;
 			return axis;
 		}
@@ -127,27 +127,17 @@ namespace filianore
 
 		FILIANORE_INLINE bool Intersect(const Ray &ray, float *hitt0, float *hitt1) const
 		{
-			float t0 = 0.f, t1 = ray.tMax;
-			for (unsigned int i = 0; i < 3; ++i)
-			{
-				float invRayDir = 1.f / ray.dir.params[i];
-				float tnear = (pMin.params[i] - ray.origin.params[i]) * invRayDir;
-				float tfar = (pMax.params[i] - ray.origin.params[i]) * invRayDir;
+			StaticArray<float, 3> invRayDir = StaticArray<float, 3>(1.f) / ray.dir;
+			StaticArray<float, 3> tbot = invRayDir * (pMin - ray.origin);
+			StaticArray<float, 3> ttop = invRayDir * (pMax - ray.origin);
 
-				if (tnear > tfar)
-					std::swap(tnear, tfar);
-				t0 = tnear > t0 ? tnear : t0;
-				t1 = tfar < t1 ? tfar : t1;
+			StaticArray<float, 3> tmin = VecMin(ttop, tbot);
+			StaticArray<float, 3> tmax = VecMax(ttop, tbot);
 
-				if (t0 > t1)
-					return false;
-			}
+			*hitt0 = std::max(std::max(tmin.x(), tmin.y()), tmin.z());
+			*hitt1 = std::min(std::min(tmax.x(), tmax.y()), tmax.z());
 
-			if (hitt0)
-				*hitt0 = t0;
-			if (hitt1)
-				*hitt1 = t1;
-			return true;
+			return !(*hitt0 > *hitt1) && *hitt1 > 0;
 		}
 	};
 } // namespace filianore
