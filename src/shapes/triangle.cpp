@@ -84,7 +84,7 @@ namespace filianore
         if (t > EPSILON)
         {
             StaticArray<float, 3> revRay = ray.dir;
-            *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), StaticArray<float, 3>(), this, 0);
+            *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
 
             isect->p = ray.PointAtT(t);
             isect->n = ShadingNormal(u, v); //GeometricNormal(isect->p);

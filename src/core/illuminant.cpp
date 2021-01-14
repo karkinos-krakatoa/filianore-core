@@ -21,7 +21,7 @@ namespace filianore
         return Color(0.f);
     }
 
-    bool VisibilityEvaluator::Unoccluded(const Scene &scene) const
+    bool VisibilityEvaluator::Occluded(const Scene &scene) const
     {
         return !scene.IntersectP(p0.KindleRayTo(p1));
     }
