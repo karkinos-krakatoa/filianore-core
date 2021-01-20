@@ -27,7 +27,7 @@ namespace filianore
 
         const Interaction &P0() const { return p0; }
         const Interaction &P1() const { return p1; }
-        bool Occluded(const Scene &scene) const;
+        bool Unoccluded(const Scene &scene) const;
 
     private:
         Interaction p0, p1;

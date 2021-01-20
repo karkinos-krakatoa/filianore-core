@@ -26,12 +26,14 @@ namespace filianore
 
         StaticArray<float, 3> ToLocal(const StaticArray<float, 3> &v) const
         {
-            return (StaticArray<float, 3>(Dot(v, s), Dot(v, t), Dot(v, n)).Normalize());
+            return StaticArray<float, 3>(Dot(v, s), Dot(v, t), Dot(v, n));
         }
 
         StaticArray<float, 3> ToWorld(const StaticArray<float, 3> &v) const
         {
-            return ((s * v.x()) + (t * v.y()) + (n * v.z())).Normalize();
+            return StaticArray<float, 3>(s.x() * v.x() + t.x() * v.y() + n.x() * v.z(),
+                                         s.y() * v.x() + t.y() * v.y() + n.y() * v.z(),
+                                         s.z() * v.x() + t.z() * v.y() + n.z() * v.z());
         }
 
         FILIANORE_INLINE static float CosTheta(const StaticArray<float, 3> &v) { return v.z(); }

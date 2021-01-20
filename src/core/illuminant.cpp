@@ -21,9 +21,15 @@ namespace filianore
         return Color(0.f);
     }
 
-    bool VisibilityEvaluator::Occluded(const Scene &scene) const
+    bool VisibilityEvaluator::Unoccluded(const Scene &scene) const
     {
-        return !scene.IntersectP(p0.KindleRayTo(p1));
+        SurfaceInteraction isect;
+        bool hit = scene.Intersect(p0.KindleRayTo(p1.p), &isect);
+        if (hit)
+        {
+            return false;
+        }
+        return true;
     }
 
 } // namespace filianore

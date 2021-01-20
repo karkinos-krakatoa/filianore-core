@@ -292,19 +292,6 @@ namespace filianore
     }
 
     template <typename T, size_t N>
-    FILIANORE_INLINE StaticArray<T, N> Faceforward(const StaticArray<T, N> &n, const StaticArray<T, N> &v)
-    {
-        T dot = Dot(n, v);
-        if (dot != 0)
-        {
-            return dot > 0 ? n : -n;
-        }
-        StaticArray<T, N> offset = StaticArray<T, N>(T(0.0001), 0, 0);
-        dot = Dot(n + offset, v);
-        return dot > 0 ? n : -n;
-    }
-
-    template <typename T, size_t N>
     FILIANORE_INLINE bool Refract(const StaticArray<T, N> &wi, const StaticArray<T, N> &n, const T &eta, StaticArray<T, N> *wt)
     {
         T cosI = Dot(wi, n);

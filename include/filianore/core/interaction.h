@@ -7,8 +7,6 @@
 
 namespace filianore
 {
-    StaticArray<float, 3> OffsetRayOrigin(const StaticArray<float, 3> &p, const StaticArray<float, 3> &pError,
-                                          const StaticArray<float, 3> &n, const StaticArray<float, 3> &w);
 
     struct Interaction
     {
@@ -41,16 +39,12 @@ namespace filianore
 
         Ray KindleRay(const StaticArray<float, 3> &d) const
         {
-            StaticArray<float, 3> o = OffsetRayOrigin(p, StaticArray<float, 3>(0.f), n, d);
-            return Ray(o, d, Epsilon<float>, Infinity<float>(), time);
+            return Ray(p + n * Epsilon<float>, d, Epsilon<float>, Infinity<float>());
         }
 
-        Ray KindleRayTo(const Interaction &it) const
+        Ray KindleRayTo(const StaticArray<float, 3> &p2) const
         {
-            StaticArray<float, 3> origin = OffsetRayOrigin(p, StaticArray<float, 3>(0.f), n, it.p - p);
-            StaticArray<float, 3> target = OffsetRayOrigin(it.p, StaticArray<float, 3>(0.f), it.n, origin - it.p);
-            StaticArray<float, 3> d = target - origin;
-            return Ray(origin, d, Epsilon<float>, d.Length() - Epsilon<float>, time);
+            return Ray(p + n * Epsilon<float>, p2 - p, Epsilon<float>, 1.f - Epsilon<float>);
         }
 
         float time;
@@ -75,13 +69,8 @@ namespace filianore
 
         void ComputeScatteringFunctions(const Ray &ray);
 
-        struct
-        {
-            StaticArray<float, 3> n;
-        } Shading;
-
-        StaticArray<float, 2>
-            uv;
+        StaticArray<float, 3> ns;
+        StaticArray<float, 2> uv;
         const Shape *shape = nullptr;
         const Primitive *primitive = nullptr;
         std::shared_ptr<BSDF> bsdf = nullptr;

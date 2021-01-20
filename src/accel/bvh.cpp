@@ -37,7 +37,6 @@ namespace filianore
                 for (uint32_t o = 0; o < node.nPrims; ++o)
                 {
                     SurfaceInteraction current;
-
                     const std::shared_ptr<Primitive> obj = (buildPrims)[node.start + o];
                     bool hit = obj->Intersect(ray, &current);
 

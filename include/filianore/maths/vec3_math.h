@@ -36,6 +36,19 @@ namespace filianore
 	}
 
 	template <typename T>
+	FILIANORE_INLINE StaticArray<T, 3> Faceforward(const StaticArray<T, 3> &n, const StaticArray<T, 3> &v)
+	{
+		T dot = Dot(n, v);
+		if (dot != T(0))
+		{
+			return dot > T(0) ? n : StaticArray<T, 3>(-n.x(), -n.y(), -n.z());
+		}
+		StaticArray<T, 3> offset = StaticArray<T, 3>(T(0.0001), T(0), T(0));
+		dot = Dot(n + offset, v);
+		return dot > T(0) ? n : StaticArray<T, 3>(-n.x(), -n.y(), -n.z());
+	}
+
+	template <typename T>
 	FILIANORE_INLINE StaticArray<T, 3> Vec3Permute(const StaticArray<T, 3> &a, int x, int y, int z)
 	{
 		return StaticArray<T, 3>(a.params[x], a.params[y], a.params[z]);
