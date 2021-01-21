@@ -16,9 +16,9 @@ namespace filianore
 
     Illuminant::~Illuminant() {}
 
-    Color Illuminant::Le(const Ray &ray) const
+    Spectrum<float> Illuminant::Le(const Ray &ray) const
     {
-        return Color(0.f);
+        return Spectrum<float>(0.f);
     }
 
     bool VisibilityEvaluator::Unoccluded(const Scene &scene) const

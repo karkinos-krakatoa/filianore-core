@@ -4,10 +4,10 @@
 
 namespace filianore
 {
-    Scene::Scene(std::shared_ptr<Primitive> _primitive, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
-        : primitive(_primitive), illuminants(_illuminants)
+    Scene::Scene(const std::shared_ptr<Primitive> &_scenePrims, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
+        : scenePrims(_scenePrims), illuminants(_illuminants)
     {
-        sceneBound = _primitive->WorldBound();
+        worldBound = scenePrims->WorldBound();
 
         for (const auto &illuminant : _illuminants)
         {
@@ -17,11 +17,11 @@ namespace filianore
 
     bool Scene::Intersect(const Ray &ray, SurfaceInteraction *isect) const
     {
-        return primitive->Intersect(ray, isect);
+        return scenePrims->Intersect(ray, isect);
     }
 
     bool Scene::IntersectP(const Ray &ray) const
     {
-        return primitive->IntersectP(ray);
+        return scenePrims->IntersectP(ray);
     }
 }

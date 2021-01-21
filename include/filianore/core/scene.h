@@ -13,37 +13,21 @@ namespace filianore
     public:
         Scene() {}
 
-        Scene(const std::shared_ptr<Primitive> &_scenePrims)
-            : scenePrims(_scenePrims), illuminants(NULL)
-        {
-            worldBound = _scenePrims->WorldBound();
-        }
-
-        Scene(const std::shared_ptr<Primitive> &_scenePrims, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
-            : scenePrims(_scenePrims), illuminants(_illuminants)
-        {
-            worldBound = _scenePrims->WorldBound();
-        }
+        Scene(const std::shared_ptr<Primitive> &_scenePrims, const std::vector<std::shared_ptr<Illuminant>> &_illuminants);
 
         const AABB &WorldBound() const
         {
             return worldBound;
         }
 
-        bool Intersect(const Ray &ray, SurfaceInteraction *isect) const
-        {
-            return scenePrims->Intersect(ray, isect);
-        }
+        bool Intersect(const Ray &ray, SurfaceInteraction *isect) const;
 
-        bool IntersectP(const Ray &ray) const
-        {
-            return scenePrims->IntersectP(ray);
-        }
+        bool IntersectP(const Ray &ray) const;
 
         std::vector<std::shared_ptr<Illuminant>> illuminants;
 
     private:
-        std::shared_ptr<Primitive> scenePrims;
+        const std::shared_ptr<Primitive> scenePrims;
         AABB worldBound;
     };
 

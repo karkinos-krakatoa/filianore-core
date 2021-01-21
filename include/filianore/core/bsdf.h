@@ -2,6 +2,7 @@
 #define _BSDF_H
 
 #include "bxdf.h"
+#include "../maths/vec3_math.h"
 
 namespace filianore
 {
@@ -9,11 +10,7 @@ namespace filianore
     class BSDF
     {
     public:
-        BSDF(const SurfaceInteraction &isect, float _eta = 1.f)
-            : eta(_eta), n(isect.n)
-        {
-            CoordinateSystem(n, &s, &t);
-        }
+        BSDF(const SurfaceInteraction &isect, float _eta = 1.f);
 
         ~BSDF() {}
 

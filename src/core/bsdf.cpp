@@ -1,7 +1,14 @@
 #include "filianore/core/bsdf.h"
+#include "filianore/core/interaction.h"
 
 namespace filianore
 {
+
+    BSDF::BSDF(const SurfaceInteraction &isect, float _eta)
+        : eta(_eta), n(isect.n)
+    {
+        CoordinateSystem<float>(n, &s, &t);
+    }
 
     int BSDF::NumComponents(BxDFType flags) const
     {
