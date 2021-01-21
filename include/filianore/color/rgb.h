@@ -198,8 +198,8 @@ namespace filianore
             RGBSpectrum result;
 
             result.r = Clamp<float>(r, low, high);
-            result.g = Clamp<float>(r, low, high);
-            result.b = Clamp<float>(r, low, high);
+            result.g = Clamp<float>(g, low, high);
+            result.b = Clamp<float>(b, low, high);
 
             return result;
         }

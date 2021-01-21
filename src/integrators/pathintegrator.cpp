@@ -75,7 +75,7 @@ namespace filianore
             ray = isect.KindleRay(wi);
         }
 
-        return RGBSpectrum(1.f, 0.f, 0.f);
+        return L;
     }
 
 } // namespace filianore

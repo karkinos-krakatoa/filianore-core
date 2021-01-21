@@ -62,7 +62,7 @@ namespace filianore
 
         SurfaceInteraction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 3> &_n, const StaticArray<float, 2> &_uv,
                            const StaticArray<float, 3> &_wo, const Shape *_shape, float _time)
-            : Interaction(_t, _p, _n, _wo, _time), uv(_uv)
+            : Interaction(_t, _p, _n, _wo, _time), uv(_uv), shape(_shape)
         {
         }
 
