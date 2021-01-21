@@ -8,7 +8,7 @@
 namespace filianore
 {
 
-    void PathIntegrator::PrepareYourself(const Scene &scene, Sampler &sampler)
+    void PathIntegrator::PrepareTheRenderer(const Scene &scene, Sampler &sampler)
     {
     }
 
