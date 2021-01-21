@@ -36,11 +36,11 @@ namespace filianore
 
         bool IsBlack() const
         {
-            if (r != 0.f || g != 0.f || b != 0.f)
+            if (r == 0.f && g == 0.f && b == 0.f)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         RGBSpectrum &operator=(const RGBSpectrum &clr)
@@ -53,9 +53,9 @@ namespace filianore
 
         bool operator==(const RGBSpectrum &clr) const
         {
-            if (r != clr.r || g != clr.g || b != clr.b)
-                return false;
-            return true;
+            if (r == clr.r && g == clr.g && b == clr.b)
+                return true;
+            return false;
         }
 
         bool operator!=(const RGBSpectrum &clr) const

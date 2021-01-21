@@ -51,6 +51,14 @@ namespace filianore
 
             if (!f.IsBlack())
             {
+                if (!handleMedia)
+                {
+                    if (!visEval.Unoccluded(scene))
+                    {
+                        Li = RGBSpectrum(0.f);
+                    }
+                }
+
                 if (!Li.IsBlack())
                 {
                     if (IsDeltaIlluminant(illuminant.types))

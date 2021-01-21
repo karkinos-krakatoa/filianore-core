@@ -46,7 +46,6 @@ namespace filianore
     template <typename T>
     class Texture;
 
-    class Spectrum;
     class RGBSpectrum;
 
     class Medium;

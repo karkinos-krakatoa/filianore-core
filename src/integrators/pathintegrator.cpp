@@ -1,5 +1,4 @@
 #include "filianore/integrators/pathintegrator.h"
-#include "filianore/color/spectrumcomplete.h"
 #include "filianore/core/shadingcore.h"
 #include "filianore/core/bsdf.h"
 #include "filianore/core/sampler.h"
@@ -76,7 +75,7 @@ namespace filianore
             ray = isect.KindleRay(wi);
         }
 
-        return L;
+        return RGBSpectrum(1.f, 0.f, 0.f);
     }
 
 } // namespace filianore
