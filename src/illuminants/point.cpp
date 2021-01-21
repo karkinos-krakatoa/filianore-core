@@ -4,22 +4,24 @@
 namespace filianore
 {
 
-    Color PointIlluminant::SampleLi(const Interaction &ref, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf, VisibilityEvaluator *vis) const
+    Spectrum<float> PointIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
+                                              VisibilityEvaluator *visEval) const
     {
-        *wi = (illumPosition - ref.p).Normalize();
+        *wi = (position - isect.p).Normalize();
         *pdf = 1.f;
-        *vis = VisibilityEvaluator(ref, Interaction(illumPosition, ref.time));
-        return (I * Iw) / ((illumPosition - ref.p).LengthSquared());
+
+        *visEval = VisibilityEvaluator(isect, Interaction(position, isect.time));
+
+        return (color * intensity) / (position - isect.p).LengthSquared();
     }
 
-    Color PointIlluminant::Power() const
+    Spectrum<float> PointIlluminant::Power() const
     {
-        return I * Iw * 4.f * Pi<float>;
+        return color * intensity * 4.f * Pi<float>;
     }
 
-    Color PointIlluminant::Le(const Ray &ray) const
+    void PointIlluminant::PrepareIlluminant(const Scene &scene)
     {
-        return Color(0.f);
     }
 
     float PointIlluminant::PdfLi(const Interaction &ref, const StaticArray<float, 3> &wi) const

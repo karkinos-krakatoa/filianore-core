@@ -59,11 +59,13 @@ add_library(filianore STATIC
 
     src/illuminants/point.cpp
 
-    src/integrators/path_integrator.cpp
+    src/integrators/pathintegrator.cpp
 
     src/materials/lambert.cpp
 
     src/samplers/whitenoise.cpp
+
+    src/shading/lambertreflection.cpp
 
     src/shapes/triangle.cpp
 
@@ -113,6 +115,7 @@ install(FILES
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/bsdf.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/bxdf.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/illuminant.h 
@@ -126,7 +129,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampler.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampling.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/scene.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shadingframe.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shadingcore.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shape.h
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/texture.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/util.h
@@ -137,7 +140,7 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/illuminants)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/integrators/path_integrator.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/integrators/pathintegrator.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/integrators)
 
 install(FILES 
@@ -154,6 +157,10 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/whitenoise.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/lambertreflection.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
 
 install(FILES 

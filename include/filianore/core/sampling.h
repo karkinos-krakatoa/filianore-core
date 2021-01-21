@@ -18,17 +18,17 @@ namespace filianore
 
     FILIANORE_INLINE float GenericRandNumber();
 
-    FILIANORE_INLINE StaticArray<float, 2> UniformSampleDisk(const StaticArray<float, 2> &u);
+    // FILIANORE_INLINE StaticArray<float, 2> UniformSampleDisk(const StaticArray<float, 2> &u);
 
-    FILIANORE_INLINE StaticArray<float, 3> UniformSampleHemisphere(const StaticArray<float, 2> &u);
+    // FILIANORE_INLINE StaticArray<float, 3> UniformSampleHemisphere(const StaticArray<float, 2> &u);
 
-    FILIANORE_INLINE float UniformHemispherePdf();
+    // FILIANORE_INLINE float UniformHemispherePdf();
 
-    FILIANORE_INLINE StaticArray<float, 2> ConcentricSampleDisk(const StaticArray<float, 2> &u);
+    // FILIANORE_INLINE StaticArray<float, 2> ConcentricSampleDisk(const StaticArray<float, 2> &u);
 
-    FILIANORE_INLINE StaticArray<float, 3> CosineSampleHemisphere(const StaticArray<float, 2> &u);
+    // FILIANORE_INLINE StaticArray<float, 3> CosineSampleHemisphere(const StaticArray<float, 2> &u);
 
-    FILIANORE_INLINE float CosineHemispherePdf(float cosTheta);
+    // FILIANORE_INLINE float CosineHemispherePdf(float cosTheta);
 
 } // namespace filianore
 

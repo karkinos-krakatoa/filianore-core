@@ -323,8 +323,6 @@ namespace filianore
         return (T(1) - t) * v0 + t * v1;
     }
 
-    typedef StaticArray<float, 3> Color;
-
 } // namespace filianore
 
 #endif

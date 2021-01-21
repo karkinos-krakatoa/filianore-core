@@ -1,187 +1,182 @@
 #include "filianore/core/bsdf.h"
-#include "filianore/core/sampling.h"
-#include "filianore/core/interaction.h"
 
 namespace filianore
 {
 
-    BSDF::BSDF(const StaticArray<float, 3> &n, float _eta)
-        : eta(_eta), nBxDFs(0)
-    {
-        shadingFrame = ShadingFrame(n);
-    }
-
-    BSDF::BSDF(const SurfaceInteraction &isect, float _eta)
-        : eta(_eta), nBxDFs(0)
-    {
-        shadingFrame = ShadingFrame(isect.n);
-    }
-
-    Color LambertBxDF::SampleBxDF(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
-    {
-        *wi = CosineSampleHemisphere(sample);
-        if (wo.z() < 0)
-        {
-            wi->params[2] *= -1.f;
-        }
-        *pdf = Pdf(wo, *wi);
-        return EvaluateBxDF(wo, *wi);
-    }
-
-    int BSDF::NumComponents(const BxDFType &flags) const
+    int BSDF::NumComponents(BxDFType flags) const
     {
         int num = 0;
-        for (int i = 0; i < nBxDFs; i++)
+        for (int i = 0; i < nBxDFs; ++i)
         {
-            if (bxdfs[i]->MatchFlags(flags))
+            if (bxdfs[i]->MatchesFlags(flags))
             {
-                num++;
+                ++num;
             }
         }
         return num;
     }
 
-    Color BSDF::EvaluateBSDF(const StaticArray<float, 3> &woWorld, const StaticArray<float, 3> &wiWorld, const BxDFType &type) const
+    StaticArray<float, 3> BSDF::ToLocal(const StaticArray<float, 3> &v) const
     {
-        StaticArray<float, 3> woLocal = shadingFrame.ToLocal(woWorld);
-        StaticArray<float, 3> wiLocal = shadingFrame.ToLocal(wiWorld);
+        return StaticArray<float, 3>(Dot(v, s), Dot(v, t), Dot(v, n)).Normalize();
+    }
 
-        if (woLocal.z() == 0)
+    StaticArray<float, 3> BSDF::ToWorld(const StaticArray<float, 3> &v) const
+    {
+        return (s * v.x() + t * v.y() + n * v.z()).Normalize();
+    }
+
+    Spectrum<float> BSDF::Evaluate(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags) const
+    {
+        StaticArray<float, 3> wi = ToLocal(wiW);
+        StaticArray<float, 3> wo = ToLocal(woW);
+
+        if (wo.z() == 0)
         {
-            return Color(0.f);
+            return Spectrum<float>(0);
         }
 
-        bool reflect = Dot(shadingFrame.n, wiWorld) * Dot(shadingFrame.n, woWorld) > 0.f;
+        bool reflect = Dot(wiW, n) * Dot(woW, n) > 0;
 
-        Color f(0.f);
-
-        for (int i = 0; i < nBxDFs; i++)
+        Spectrum<float> bsdf_total(0);
+        for (int i = 0; i < nBxDFs; ++i)
         {
-            if (bxdfs[i]->MatchFlags(type) &&
-                ((reflect && (bxdfs[i]->bxdfType & BxDFType::BSDF_REFLECTION)) ||
-                 (!reflect && (bxdfs[i]->bxdfType & BxDFType::BSDF_REFRACTION))))
+            if (bxdfs[i]->MatchesFlags(flags) &&
+                ((reflect && (bxdfs[i]->bxDFType & BSDF_REFLECTION)) ||
+                 (!reflect && (bxdfs[i]->bxDFType & BSDF_TRANSMISSION))))
             {
-                f += bxdfs[i]->EvaluateBxDF(woLocal, wiLocal);
+                bsdf_total += bxdfs[i]->Evaluate(wo, wi);
             }
         }
 
-        return f;
+        return bsdf_total;
     }
 
-    Color BSDF::SampleBSDF(const StaticArray<float, 3> &woWorld, StaticArray<float, 3> *wiWorld, const StaticArray<float, 2> &sample,
-                           float *pdf, const BxDFType &type, BxDFType *sampledType) const
+    Spectrum<float> BSDF::Sample(const StaticArray<float, 3> &woW, StaticArray<float, 3> *wiW, const StaticArray<float, 2> &u, float *pdf,
+                                 BxDFType flags, BxDFType *sampledType) const
     {
-        // Choose BxDFs to sample
-        int matchingComps = NumComponents(type);
-        if (matchingComps == 0)
+        int matchComps = NumComponents(flags);
+        if (matchComps == 0)
         {
             *pdf = 0.f;
             if (sampledType)
+            {
                 *sampledType = BxDFType(0);
-            return Color(0.f);
+            }
+            return Spectrum<float>();
         }
-        int comp = std::min((int)std::floor(sample.x() * matchingComps), matchingComps - 1);
 
-        // Get BxDf
+        int comp = std::min((int)std::floor(u.x() * matchComps), matchComps - 1);
+
         BxDF *bxdf = nullptr;
         int count = comp;
-        for (int i = 0; i < nBxDFs; i++)
+        for (int i = 0; i < nBxDFs; ++i)
         {
-            if (bxdfs[i]->MatchFlags(type) && count-- == 0)
+            if (bxdfs[i]->MatchesFlags(flags) && count-- == 0)
             {
                 bxdf = bxdfs[i];
                 break;
             }
         }
 
-        if (!bxdf)
+        if (bxdf != nullptr)
         {
-            *pdf = 0.f;
-            if (sampledType)
-                *sampledType = BxDFType(0);
-            return Color(0.f);
-        }
+            // Resampled u - This is because the u[0] was used above - so it's no longer uniformly distributed
+            StaticArray<float, 2> uReadjusted(u.x() * (float)matchComps - (float)comp, u.y());
 
-        // Remap
-        StaticArray<float, 2> uRemapped(std::min(sample.x() * (float)matchingComps - (float)comp, 1.f - Epsilon<float>), sample.y());
-        //StaticArray<float, 2> uRemapped(sample.x() * matchingComps - comp, sample.y());
-
-        // Sample Chosen BxDF
-        StaticArray<float, 3> wi, wo = shadingFrame.ToLocal(woWorld);
-        *pdf = 0.f;
-        if (sampledType)
-        {
-            *sampledType = bxdf->bxdfType;
-        }
-        Color f = bxdf->SampleBxDF(wo, &wi, uRemapped, pdf, sampledType);
-        if (pdf == 0)
-        {
-            if (sampledType)
-                *sampledType = BxDFType(0);
-            return Color(0.f);
-        }
-        *wiWorld = shadingFrame.ToWorld(wi);
-
-        if (!(bxdf->bxdfType & BSDF_SPECULAR) && matchingComps > 1)
-        {
-            for (int i = 0; i < nBxDFs; i++)
+            StaticArray<float, 3> wi, wo = ToLocal(woW);
+            if (wo.z() == 0)
             {
-                if (bxdfs[i] != bxdf && bxdfs[i]->MatchFlags(type))
+                return Spectrum<float>();
+            }
+
+            *pdf = 0.f;
+
+            if (sampledType)
+            {
+                *sampledType = bxdf->bxDFType;
+            }
+
+            Spectrum<float> f = bxdf->Sample(wo, &wi, uReadjusted, pdf, sampledType);
+
+            if (*pdf == 0)
+            {
+                if (sampledType)
                 {
-                    *pdf += bxdfs[i]->Pdf(wo, wi);
+                    *sampledType = BxDFType(0);
+                }
+                return Spectrum<float>();
+            }
+
+            *wiW = ToWorld(wi);
+
+            if (!(bxdf->bxDFType & BSDF_SPECULAR) && matchComps > 1)
+            {
+                for (int i = 0; i < nBxDFs; ++i)
+                {
+                    if (bxdfs[i] != bxdf && bxdfs[i]->MatchesFlags(flags))
+                    {
+                        *pdf += bxdfs[i]->Pdf(wo, wi);
+                    }
                 }
             }
+
+            if (matchComps > 1)
+            {
+                *pdf /= matchComps;
+            }
+
+            if (!(bxdf->bxDFType & BSDF_SPECULAR))
+            {
+                bool reflect = Dot(*wiW, n) * Dot(woW, n) > 0;
+                f = Spectrum<float>();
+
+                for (int i = 0; i < nBxDFs; ++i)
+                {
+                    if (bxdfs[i]->MatchesFlags(flags) &&
+                        ((reflect && (bxdfs[i]->bxDFType & BSDF_REFLECTION)) ||
+                         (!reflect && (bxdfs[i]->bxDFType & BSDF_TRANSMISSION))))
+                    {
+                        f += bxdfs[i]->Evaluate(wo, wi);
+                    }
+                }
+            }
+
+            return f;
         }
 
-        if (matchingComps > 1)
-        {
-            *pdf /= (float)matchingComps;
-        }
-
-        if (!(bxdf->bxdfType & BSDF_SPECULAR) && matchingComps > 1)
-        {
-            bool reflect = Dot(ng, *wiWorld) * Dot(ng, woWorld) > 0;
-            f = Color(0.f);
-            for (int i = 0; i < nBxDFs; ++i)
-                if (bxdfs[i]->MatchFlags(type) &&
-                    ((reflect && (bxdfs[i]->bxdfType & BSDF_REFLECTION)) ||
-                     (!reflect && (bxdfs[i]->bxdfType & BSDF_REFRACTION))))
-                    f += bxdfs[i]->EvaluateBxDF(wo, wi);
-        }
-
-        return f;
+        return Spectrum<float>();
     }
 
-    float BSDF::Pdf(const StaticArray<float, 3> &woWorld, const StaticArray<float, 3> &wiWorld, const BxDFType &type) const
+    float BSDF::Pdf(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags) const
     {
-        float pdf = 0.f;
-
         if (nBxDFs == 0)
         {
-            return pdf;
+            return 0.f;
         }
 
-        StaticArray<float, 3> woLocal = shadingFrame.ToLocal(woWorld);
-        StaticArray<float, 3> wiLocal = shadingFrame.ToLocal(wiWorld);
+        StaticArray<float, 3> wi = ToLocal(wiW);
+        StaticArray<float, 3> wo = ToLocal(woW);
 
-        if (woLocal.z() == 0)
-            return 0.f;
-
-        int matchComp = 0;
-
-        for (int i = 0; i < nBxDFs; i++)
+        if (wo.z() == 0)
         {
-            if (bxdfs[i]->MatchFlags(type))
+            return 0.f;
+        }
+
+        float pdf = 0;
+        int matchingComps = 0;
+
+        for (int i = 0; i < nBxDFs; ++i)
+        {
+            if (bxdfs[i]->MatchesFlags(flags))
             {
-                ++matchComp;
-                pdf += bxdfs[i]->Pdf(woLocal, wiLocal);
+                ++matchingComps;
+                pdf += bxdfs[i]->Pdf(wo, wi);
             }
         }
 
-        if (matchComp == 0)
-            return 0.f;
-
-        return matchComp > 0 ? pdf / (float)matchComp : 0.f;
+        float pdfEval = matchingComps > 0 ? pdf / matchingComps : 0.f;
+        return pdfEval;
     }
 
 } // namespace filianore

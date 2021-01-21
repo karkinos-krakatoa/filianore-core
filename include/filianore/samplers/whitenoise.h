@@ -24,6 +24,8 @@ namespace filianore
             return StaticArray<float, 2>(Get1D(), Get1D());
         }
 
+        void PrepareNextSample() {}
+
     private:
         std::random_device rd;
         std::mt19937 m_mersenneTwister{rd()};

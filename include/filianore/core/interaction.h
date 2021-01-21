@@ -4,6 +4,7 @@
 #include "elemental.h"
 #include "ray.h"
 #include "../maths/transform.h"
+#include "../color/spectrum.h"
 
 namespace filianore
 {
@@ -65,7 +66,7 @@ namespace filianore
         {
         }
 
-        Color Le(const StaticArray<float, 3> &w) const;
+        Spectrum<float> Le(const StaticArray<float, 3> &w) const;
 
         void ComputeScatteringFunctions(const Ray &ray);
 

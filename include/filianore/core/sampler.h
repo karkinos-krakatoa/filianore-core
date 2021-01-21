@@ -16,6 +16,8 @@ namespace filianore
         virtual float Get1D() = 0;
 
         virtual StaticArray<float, 2> Get2D() = 0;
+
+        virtual void PrepareNextSample() = 0;
     };
 
 } // namespace filianore

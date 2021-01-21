@@ -46,6 +46,9 @@ namespace filianore
     template <typename T>
     class Texture;
 
+    template <typename T>
+    class Spectrum;
+
     class Medium;
     class MediumInteraction;
     struct MediumInterface;
