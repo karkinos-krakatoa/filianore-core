@@ -17,7 +17,7 @@ namespace filianore
 
         void PrepareTheRenderer(const Scene &scene, Sampler &sampler);
 
-        Spectrum<float> Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const;
+        RGBSpectrum Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const;
 
     private:
         const int maxDepth;

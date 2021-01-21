@@ -107,6 +107,7 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/cie.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/rgb.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectrum.h
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectrumcomplete.h
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectrumfoundation.h

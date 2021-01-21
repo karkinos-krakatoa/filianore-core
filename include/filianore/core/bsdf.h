@@ -25,10 +25,10 @@ namespace filianore
 
         StaticArray<float, 3> ToWorld(const StaticArray<float, 3> &v) const;
 
-        Spectrum<float> Evaluate(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags = BSDF_ALL) const;
+        RGBSpectrum Evaluate(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags = BSDF_ALL) const;
 
-        Spectrum<float> Sample(const StaticArray<float, 3> &woW, StaticArray<float, 3> *wiW, const StaticArray<float, 2> &u, float *pdf,
-                               BxDFType flags = BSDF_ALL, BxDFType *sampledType = nullptr) const;
+        RGBSpectrum Sample(const StaticArray<float, 3> &woW, StaticArray<float, 3> *wiW, const StaticArray<float, 2> &u, float *pdf,
+                           BxDFType flags = BSDF_ALL, BxDFType *sampledType = nullptr) const;
 
         float Pdf(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags = BSDF_ALL) const;
 

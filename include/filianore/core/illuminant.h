@@ -39,10 +39,10 @@ namespace filianore
         virtual ~Illuminant();
         Illuminant(int _types, int _nSamples = 1);
 
-        virtual Spectrum<float> SampleLi(const Interaction &ref, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf, VisibilityEvaluator *vis) const = 0;
-        virtual Spectrum<float> Power() const = 0;
+        virtual RGBSpectrum SampleLi(const Interaction &ref, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf, VisibilityEvaluator *vis) const = 0;
+        virtual RGBSpectrum Power() const = 0;
         virtual void PrepareIlluminant(const Scene &scene) {}
-        virtual Spectrum<float> Le(const Ray &ray) const;
+        virtual RGBSpectrum Le(const Ray &ray) const;
         virtual float PdfLi(const Interaction &ref, const StaticArray<float, 3> &wi) const = 0;
 
         const int types;

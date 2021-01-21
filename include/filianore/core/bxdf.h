@@ -1,7 +1,8 @@
 #ifndef _BXDF_H
 #define _BXDF_H
 
-#include "../color/spectrum.h"
+#include "../maths/static_array.h"
+#include "../color/rgb.h"
 
 namespace filianore
 {
@@ -30,9 +31,9 @@ namespace filianore
             return (bxDFType & t) == bxDFType;
         }
 
-        virtual Spectrum<float> Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const = 0;
+        virtual RGBSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const = 0;
 
-        virtual Spectrum<float> Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const = 0;
+        virtual RGBSpectrum Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const = 0;
 
         virtual float Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const = 0;
 

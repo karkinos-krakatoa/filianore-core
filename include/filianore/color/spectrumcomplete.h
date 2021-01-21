@@ -5,24 +5,24 @@
 
 namespace filianore
 {
-    static Spectrum<float> rgbRefl2SpectWhite;
-    static Spectrum<float> rgbRefl2SpectCyan;
-    static Spectrum<float> rgbRefl2SpectMagenta;
-    static Spectrum<float> rgbRefl2SpectYellow;
-    static Spectrum<float> rgbRefl2SpectRed;
-    static Spectrum<float> rgbRefl2SpectGreen;
-    static Spectrum<float> rgbRefl2SpectBlue;
-    static Spectrum<float> rgbIllum2SpectWhite;
-    static Spectrum<float> rgbIllum2SpectCyan;
-    static Spectrum<float> rgbIllum2SpectMagenta;
-    static Spectrum<float> rgbIllum2SpectYellow;
-    static Spectrum<float> rgbIllum2SpectRed;
-    static Spectrum<float> rgbIllum2SpectGreen;
-    static Spectrum<float> rgbIllum2SpectBlue;
+    static Spectrum rgbRefl2SpectWhite;
+    static Spectrum rgbRefl2SpectCyan;
+    static Spectrum rgbRefl2SpectMagenta;
+    static Spectrum rgbRefl2SpectYellow;
+    static Spectrum rgbRefl2SpectRed;
+    static Spectrum rgbRefl2SpectGreen;
+    static Spectrum rgbRefl2SpectBlue;
+    static Spectrum rgbIllum2SpectWhite;
+    static Spectrum rgbIllum2SpectCyan;
+    static Spectrum rgbIllum2SpectMagenta;
+    static Spectrum rgbIllum2SpectYellow;
+    static Spectrum rgbIllum2SpectRed;
+    static Spectrum rgbIllum2SpectGreen;
+    static Spectrum rgbIllum2SpectBlue;
 
-    static Spectrum<float> SpectralReflectanceFromRGB(const StaticArray<float, 3> &rgb)
+    static Spectrum SpectralReflectanceFromRGB(const StaticArray<float, 3> &rgb)
     {
-        Spectrum<float> res;
+        Spectrum res;
 
         if (rgb.params[0] <= rgb.params[1] && rgb.params[0] <= rgb.params[2])
         {
@@ -73,9 +73,9 @@ namespace filianore
         return res;
     }
 
-    static Spectrum<float> SpectralIlluminanceFromRGB(const StaticArray<float, 3> &rgb)
+    static Spectrum SpectralIlluminanceFromRGB(const StaticArray<float, 3> &rgb)
     {
-        Spectrum<float> res;
+        Spectrum res;
 
         if (rgb.params[0] <= rgb.params[1] && rgb.params[0] <= rgb.params[2])
         {
@@ -151,7 +151,7 @@ namespace filianore
         }
     }
 
-    static StaticArray<float, 3> SpectrumtoRGB(const Spectrum<float> &s)
+    static StaticArray<float, 3> SpectrumtoRGB(const Spectrum &s)
     {
         StaticArray<float, 3> xyz, rgb;
         for (int i = 0; i < WavelengthSamplesSize; ++i)

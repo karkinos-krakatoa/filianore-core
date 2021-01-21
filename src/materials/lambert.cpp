@@ -11,7 +11,10 @@ namespace filianore
     void LambertMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
     {
         isect->bsdf = std::make_shared<BSDF>(*isect);
-        Spectrum<float> r = kd->Evaluate(*isect);
+
+        RGBSpectrum r = kd->Evaluate(*isect);
+        r = r.SpecClamp();
+
         isect->bsdf->Add(new LambertReflection(r));
     }
 

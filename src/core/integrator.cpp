@@ -8,9 +8,9 @@
 namespace filianore
 {
 
-    Spectrum<float> UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia)
+    RGBSpectrum UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia)
     {
-        Spectrum<float> L(0.f);
+        RGBSpectrum L(0.f);
 
         for (size_t i = 0; i < scene.illuminants.size(); i++)
         {
@@ -25,22 +25,22 @@ namespace filianore
         return L;
     }
 
-    Spectrum<float> EstimateDirect(const Interaction &it, const StaticArray<float, 2> &uShading, const Illuminant &illuminant, const StaticArray<float, 2> &uLight,
-                                   const Scene &scene, Sampler &sampler, bool handleMedia, bool specular)
+    RGBSpectrum EstimateDirect(const Interaction &it, const StaticArray<float, 2> &uShading, const Illuminant &illuminant, const StaticArray<float, 2> &uLight,
+                               const Scene &scene, Sampler &sampler, bool handleMedia, bool specular)
     {
         BxDFType bsdfFlags = specular ? BSDF_ALL : BxDFType(BSDF_ALL & ~BSDF_SPECULAR);
-        Spectrum<float> Ld(0);
+        RGBSpectrum Ld(0);
 
         // MIS - Illuminant
         StaticArray<float, 3> wi;
         float illumPdf = 0, scatteringPdf = 0;
         VisibilityEvaluator visEval;
 
-        Spectrum<float> Li = illuminant.SampleLi(it, uLight, &wi, &illumPdf, &visEval);
+        RGBSpectrum Li = illuminant.SampleLi(it, uLight, &wi, &illumPdf, &visEval);
         if (illumPdf > 0 && !Li.IsBlack())
         {
             // Evaluate BSDF for Illum Sample
-            Spectrum<float> f(0);
+            RGBSpectrum f(0);
 
             if (it.IsSurfaceInteraction())
             {

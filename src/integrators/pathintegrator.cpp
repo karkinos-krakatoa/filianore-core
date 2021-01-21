@@ -12,9 +12,9 @@ namespace filianore
     {
     }
 
-    Spectrum<float> PathIntegrator::Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const
+    RGBSpectrum PathIntegrator::Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const
     {
-        Spectrum<float> L(0.f), throughput(1.f);
+        RGBSpectrum L(0.f), throughput(1.f);
         Ray ray(_ray);
         bool specularBounce = false;
         int bounces;
@@ -48,7 +48,7 @@ namespace filianore
 
             if (isect.bsdf->NumComponents(BxDFType(BSDF_ALL & ~BSDF_SPECULAR)) > 0)
             {
-                Spectrum<float> Ld = throughput * UniformSampleAllLights(isect, scene, sampler, false);
+                RGBSpectrum Ld = throughput * UniformSampleAllLights(isect, scene, sampler, false);
                 L += Ld;
             }
 
@@ -57,7 +57,7 @@ namespace filianore
             float pdf;
             BxDFType flags;
 
-            Spectrum<float> f = isect.bsdf->Sample(wo, &wi, sampler.Get2D(), &pdf, BSDF_ALL, &flags);
+            RGBSpectrum f = isect.bsdf->Sample(wo, &wi, sampler.Get2D(), &pdf, BSDF_ALL, &flags);
 
             if (f.IsBlack() || pdf == 0)
             {

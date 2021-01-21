@@ -4,6 +4,7 @@
 #include "primitive.h"
 #include "illuminant.h"
 #include "aabb.h"
+#include <vector>
 
 namespace filianore
 {

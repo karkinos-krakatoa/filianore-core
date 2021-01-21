@@ -4,8 +4,8 @@
 namespace filianore
 {
 
-    Spectrum<float> PointIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
-                                              VisibilityEvaluator *visEval) const
+    RGBSpectrum PointIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
+                                          VisibilityEvaluator *visEval) const
     {
         *wi = (position - isect.p).Normalize();
         *pdf = 1.f;
@@ -15,7 +15,7 @@ namespace filianore
         return (color * intensity) / (position - isect.p).LengthSquared();
     }
 
-    Spectrum<float> PointIlluminant::Power() const
+    RGBSpectrum PointIlluminant::Power() const
     {
         return color * intensity * 4.f * Pi<float>;
     }

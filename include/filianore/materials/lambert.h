@@ -10,13 +10,13 @@ namespace filianore
     class LambertMaterial : public Material
     {
     public:
-        LambertMaterial(const std::shared_ptr<Texture<Spectrum<float>>> _kd)
+        LambertMaterial(const std::shared_ptr<Texture<RGBSpectrum>> _kd)
             : kd(_kd) {}
 
         void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
 
     private:
-        std::shared_ptr<Texture<Spectrum<float>>> kd;
+        std::shared_ptr<Texture<RGBSpectrum>> kd;
     };
 
 } // namespace filianore

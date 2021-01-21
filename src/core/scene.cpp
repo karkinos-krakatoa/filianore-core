@@ -9,7 +9,7 @@ namespace filianore
     {
         worldBound = scenePrims->WorldBound();
 
-        for (const auto &illuminant : _illuminants)
+        for (const auto &illuminant : illuminants)
         {
             illuminant->PrepareIlluminant(*this);
         }

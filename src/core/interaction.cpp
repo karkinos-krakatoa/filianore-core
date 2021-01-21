@@ -6,9 +6,9 @@
 namespace filianore
 {
 
-    Spectrum<float> SurfaceInteraction::Le(const StaticArray<float, 3> &w) const
+    RGBSpectrum SurfaceInteraction::Le(const StaticArray<float, 3> &w) const
     {
-        return Spectrum<float>(0.f);
+        return RGBSpectrum(0.f);
     }
 
     void SurfaceInteraction::ComputeScatteringFunctions(const Ray &ray)

@@ -2,6 +2,7 @@
 #define _SPECTRUM_H
 
 #include "spectrumfoundation.h"
+#include <assert.h>
 
 namespace filianore
 {
@@ -11,11 +12,10 @@ namespace filianore
         ILLUMINANT
     };
 
-    template <typename T>
     class Spectrum
     {
     public:
-        T spectrumValues[WavelengthSamplesSize];
+        float spectrumValues[WavelengthSamplesSize];
 
         Spectrum()
         {
@@ -25,7 +25,7 @@ namespace filianore
             }
         }
 
-        Spectrum(T v)
+        Spectrum(float v)
         {
             for (int i = 0; i < WavelengthSamplesSize; ++i)
             {
@@ -53,14 +53,14 @@ namespace filianore
             return true;
         }
 
-        T Luminance()
+        float Luminance()
         {
-            T luminance = 0;
+            float luminance = 0;
             for (int i = 0; i < WavelengthSamplesSize; ++i)
             {
                 luminance += CIE_Y[i] * spectrumValues[i];
             }
-            return luminance * T(WavelengthEnd - WavelengthStart) / T(CIE_Y_Integral * WavelengthSamplesSize);
+            return luminance * float(WavelengthEnd - WavelengthStart) / float(CIE_Y_Integral * WavelengthSamplesSize);
         }
 
         Spectrum &operator=(const Spectrum &clr)
@@ -87,7 +87,7 @@ namespace filianore
             return !(*this == clr);
         }
 
-        T ValueAtWavelength(const T wavelength) const
+        float ValueAtWavelength(const float wavelength) const
         {
             for (int w = 0; w < WavelengthSamplesSize; w++)
             {
@@ -96,16 +96,17 @@ namespace filianore
                     return spectrumValues[w];
                 }
             }
+            return 0.f;
         }
 
-        T ValueAtWavelengthIndex(const int wavelengthIdx)
+        float ValueAtWavelengthIndex(const int wavelengthIdx)
         {
             return spectrumValues[wavelengthIdx];
         }
 
-        T MaxSpectralValue() const
+        float MaxSpectralValue() const
         {
-            T mx = spectrumValues[0];
+            float mx = spectrumValues[0];
             for (int i = 0; i < WavelengthSamplesSize; ++i)
             {
                 mx = std::max(mx, spectrumValues[i]);
@@ -191,7 +192,7 @@ namespace filianore
             return *this;
         }
 
-        Spectrum operator*(T s) const
+        Spectrum operator*(float s) const
         {
             Spectrum clr1 = *this;
             for (int i = 0; i < WavelengthSamplesSize; ++i)
@@ -201,7 +202,7 @@ namespace filianore
             return clr1;
         }
 
-        Spectrum operator*=(T s)
+        Spectrum operator*=(float s)
         {
             for (int i = 0; i < WavelengthSamplesSize; ++i)
             {
@@ -210,7 +211,7 @@ namespace filianore
             return *this;
         }
 
-        Spectrum operator/(T s) const
+        Spectrum operator/(float s) const
         {
             Spectrum clr1 = *this;
             for (int i = 0; i < WavelengthSamplesSize; ++i)
@@ -221,7 +222,7 @@ namespace filianore
             return clr1;
         }
 
-        Spectrum operator/=(T s)
+        Spectrum operator/=(float s)
         {
             for (int i = 0; i < WavelengthSamplesSize; ++i)
             {
@@ -231,33 +232,30 @@ namespace filianore
             return *this;
         }
 
-        Spectrum SpecClamp(T low = 0.f, T high = Infinity<T>())
+        Spectrum SpecClamp(float low = 0.f, float high = Infinity<float>())
         {
             Spectrum result;
             for (int i = 0; i < WavelengthSamplesSize; ++i)
             {
-                result.spectrumValues[i] = Clamp<T>(spectrumValues[i], low, high);
+                result.spectrumValues[i] = Clamp<float>(spectrumValues[i], low, high);
             }
             return result;
         }
     };
 
-    template <typename T>
-    static Spectrum<T> SpecScalarMult(const Spectrum<T> &clr, T s)
+    static Spectrum SpecScalarMult(const Spectrum &clr, float s)
     {
         return clr * s;
     }
 
-    template <typename T>
-    static Spectrum<T> SpecScalarDiv(const Spectrum<T> &clr, T s)
+    static Spectrum SpecScalarDiv(const Spectrum &clr, float s)
     {
         return clr / s;
     }
 
-    template <typename T>
-    static Spectrum<T> SpecSqrt(const Spectrum<T> &clr)
+    static Spectrum SpecSqrt(const Spectrum &clr)
     {
-        Spectrum<T> result;
+        Spectrum result;
         for (int i = 0; i < WavelengthSamplesSize; ++i)
         {
             result.spectrumValues[i] = std::sqrt(clr.spectrumValues[i]);
@@ -265,13 +263,12 @@ namespace filianore
         return result;
     }
 
-    template <typename T>
-    static Spectrum<T> SpecPow(const Spectrum<T> &clr, const T exp)
+    static Spectrum SpecPow(const Spectrum &clr, float exp)
     {
-        Spectrum<T> result;
+        Spectrum result;
         for (int i = 0; i < WavelengthSamplesSize; ++i)
         {
-            result.spectrumValues[i] = std::powf(clr.spectrumValues[i], exp);
+            result.spectrumValues[i] = std::pow(clr.spectrumValues[i], exp);
         }
         return result;
     }
