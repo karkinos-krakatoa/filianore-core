@@ -237,6 +237,25 @@ namespace filianore
         return result;
     }
 
+    static RGBSpectrum GammaCorrect(RGBSpectrum &rgb)
+    {
+        if (rgb.r >= 0.018f)
+            rgb.r = (1.099f * powf(rgb.r, 0.45f)) - 0.099f;
+        else
+            rgb.r *= ((1.099f * powf(0.018f, 0.45f)) - 0.099f) / 0.018f;
+        if (rgb.g >= 0.018f)
+            rgb.g = (1.099f * powf(rgb.g, 0.45f)) - 0.099f;
+        else
+            rgb.g *= ((1.099f * powf(0.018f, 0.45f)) - 0.099f) / 0.018f;
+        if (rgb.b >= 0.018f)
+            rgb.b = (1.099f * powf(rgb.b, 0.45f)) - 0.099f;
+        else
+            rgb.b *= ((1.099f * powf(0.018f, 0.45f)) - 0.099f) / 0.018f;
+
+        // Return the gamma-corrected color
+        return rgb;
+    }
+
 } // namespace filianore
 
 #endif

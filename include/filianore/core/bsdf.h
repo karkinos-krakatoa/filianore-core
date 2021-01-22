@@ -35,7 +35,7 @@ namespace filianore
         const float eta;
 
     private:
-        const StaticArray<float, 3> n;
+        const StaticArray<float, 3> ng, ns;
         StaticArray<float, 3> s, t;
 
         int nBxDFs = 0;

@@ -34,7 +34,8 @@ namespace filianore
             *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
 
             isect->p = ray.PointAtT(t);
-            isect->n = GeometricNormal(isect->p);
+            isect->n = GeometricNormal(n);
+            isect->ns = GeometricNormal(n); //ShadingNormal(u, v, isect->n);
 
             return true;
         }
@@ -52,22 +53,25 @@ namespace filianore
         return 0.5f * Cross((v2.vertex - v1.vertex), (v3.vertex - v1.vertex)).Length();
     }
 
-    StaticArray<float, 3> Triangle::GeometricNormal(const StaticArray<float, 3> &_p) const
+    StaticArray<float, 3> Triangle::GeometricNormal(StaticArray<float, 3> &initialNormal) const
     {
-        if (allNormalsInMesh)
-        {
-            return ((v1.normal + v2.normal + v3.normal) / 3.f).Normalize();
-        }
-        StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
-        StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
-        StaticArray<float, 3> normal = Cross(e1, e2).Normalize();
-        return this->reverseOrientation ? normal.Neg() : normal;
+        // StaticArray<float, 3> initNormal = initialNormal;
+
+        // StaticArray<float, 3> p0 = v2.vertex - v1.vertex;
+        // StaticArray<float, 3> p1 = v3.vertex - v1.vertex;
+        // StaticArray<float, 3> faceNormal = initNormal;
+
+        // StaticArray<float, 3> vertexNormal = (v1.normal + v2.normal + v3.normal) / 3.f;
+        // float dot = Dot(faceNormal, v1.normal);
+
+        // return (dot < 0.f) ? faceNormal.Neg() : faceNormal;
+        return initialNormal.Normalize();
     }
 
-    StaticArray<float, 3> Triangle::ShadingNormal(float u, float v) const
+    StaticArray<float, 3> Triangle::ShadingNormal(float u, float v, StaticArray<float, 3> geometricNormal) const
     {
         StaticArray<float, 3> ns = v1.normal * (1.f - u - v) + v2.normal * u + v3.normal * v;
-        return ns.Normalize();
+        return ns;
     }
 
 } // namespace filianore

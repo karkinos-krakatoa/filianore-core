@@ -6,7 +6,7 @@ namespace filianore
 
     RGBSpectrum LambertReflection::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
-        return R / Pi<float>;
+        return R * InvPi<float>;
     }
 
     RGBSpectrum LambertReflection::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
@@ -15,7 +15,7 @@ namespace filianore
 
         if (wo.z() < 0)
         {
-            wi->params[2] *= -1;
+            wi->params[2] *= -1.f;
         }
 
         *pdf = Pdf(wo, *wi);
@@ -26,7 +26,7 @@ namespace filianore
 
     float LambertReflection::Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
-        return SameHemisphere(wo, wi) ? AbsCosTheta(wi) / Pi<float> : 0.f;
+        return SameHemisphere(wo, wi) ? AbsCosTheta(wi) * InvPi<float> : 0.f;
     }
 
 } // namespace filianore

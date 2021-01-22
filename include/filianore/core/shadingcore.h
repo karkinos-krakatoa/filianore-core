@@ -85,7 +85,7 @@ namespace filianore
 
     inline float CosineHemispherePdf(float cosTheta)
     {
-        return cosTheta / Pi<float>;
+        return cosTheta * InvPi<float>;
     }
 
     inline StaticArray<float, 3> UniformSampleHemisphere(const StaticArray<float, 2> &u)

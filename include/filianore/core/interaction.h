@@ -14,13 +14,17 @@ namespace filianore
         Interaction() : t(0), time(0) {}
 
         Interaction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 3> &_wo, float _time)
-            : t(_t), p(_p), wo(_wo), time(_time)
+            : t(_t), p(_p), time(_time)
         {
+            wo = _wo;
+            wo = wo.Normalize();
         }
 
         Interaction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 3> &_n, const StaticArray<float, 3> &_wo, float _time)
-            : t(_t), p(_p), n(_n), wo(_wo), time(_time)
+            : t(_t), p(_p), n(_n), time(_time)
         {
+            wo = _wo;
+            wo = wo.Normalize();
         }
 
         Interaction(const StaticArray<float, 3> &_p, float _time)
