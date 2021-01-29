@@ -15,7 +15,16 @@ namespace filianore
         Infinite = 8
     };
 
-    FILIANORE_INLINE bool IsDeltaIlluminant(int flags);
+    enum class DecayRate : int
+    {
+        NoDecay = 0,
+        Linear = 1,
+        Quadratic = 2,
+        Cubic = 3
+    };
+
+    FILIANORE_INLINE bool
+    IsDeltaIlluminant(int flags);
 
     class VisibilityEvaluator
     {
@@ -37,7 +46,7 @@ namespace filianore
     {
     public:
         virtual ~Illuminant();
-        Illuminant(int _types, int _nSamples = 1);
+        Illuminant(int _types, int _nSamples = 1, short _decayRate = 2, RGBSpectrum _shadowColor = RGBSpectrum(0.f));
 
         virtual RGBSpectrum SampleLi(const Interaction &ref, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf, VisibilityEvaluator *vis) const = 0;
         virtual RGBSpectrum Power() const = 0;
@@ -45,8 +54,12 @@ namespace filianore
         virtual RGBSpectrum Le(const Ray &ray) const;
         virtual float PdfLi(const Interaction &ref, const StaticArray<float, 3> &wi) const = 0;
 
+        float EvaluateDecayRate(const StaticArray<float, 3> &d) const;
+
         const int types;
         const int nSamples;
+        const short decayRate;
+        const RGBSpectrum shadowColor;
     };
 
 } // namespace filianore

@@ -73,6 +73,15 @@ namespace filianore
             }
 
             ray = isect.KindleRay(wi);
+
+            RGBSpectrum rrBeta = throughput * etaScale;
+            if (rrBeta.MaxSpectralValue() < rrThreshold && bounces > 3)
+            {
+                float q = std::max(0.05f, 1.f - rrBeta.MaxSpectralValue());
+                if (sampler.Get1D() < q)
+                    break;
+                throughput /= 1.f - q;
+            }
         }
 
         return L;

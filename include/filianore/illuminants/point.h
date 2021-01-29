@@ -9,8 +9,8 @@ namespace filianore
     class PointIlluminant : public Illuminant
     {
     public:
-        PointIlluminant(const StaticArray<float, 3> &_pos, const RGBSpectrum &_color, float _intensity)
-            : Illuminant((int)IlluminantType::DeltaPoint), color(_color), position(_pos), intensity(_intensity)
+        PointIlluminant(const StaticArray<float, 3> &_pos, const RGBSpectrum &_color, float _intensity, short _decayRate, RGBSpectrum _shadowColor)
+            : Illuminant((int)IlluminantType::DeltaPoint, 1, _decayRate, _shadowColor), color(_color), position(_pos), intensity(_intensity)
         {
         }
 

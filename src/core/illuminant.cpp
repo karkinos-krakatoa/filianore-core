@@ -9,8 +9,8 @@ namespace filianore
         return flags & (int)IlluminantType::DeltaPoint || flags & (int)IlluminantType::DeltaDirectional;
     }
 
-    Illuminant::Illuminant(int _types, int _nSamples)
-        : types(_types), nSamples(std::max(1, _nSamples))
+    Illuminant::Illuminant(int _types, int _nSamples, short _decayRate, RGBSpectrum _shadowColor)
+        : types(_types), nSamples(std::max(1, _nSamples)), decayRate(_decayRate), shadowColor(_shadowColor)
     {
     }
 
@@ -19,6 +19,25 @@ namespace filianore
     RGBSpectrum Illuminant::Le(const Ray &ray) const
     {
         return RGBSpectrum(0.f);
+    }
+
+    float Illuminant::EvaluateDecayRate(const StaticArray<float, 3> &d) const
+    {
+        float dL = d.Length();
+
+        switch (decayRate)
+        {
+        case (short)DecayRate::NoDecay:
+            return 1.f;
+        case (short)DecayRate::Linear:
+            return dL;
+        case (short)DecayRate::Quadratic:
+            return dL * dL;
+        case (short)DecayRate::Cubic:
+            return dL * dL * dL;
+        default:
+            return dL * dL;
+        }
     }
 
     bool VisibilityEvaluator::Unoccluded(const Scene &scene) const

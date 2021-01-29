@@ -12,7 +12,7 @@ namespace filianore
 
         *visEval = VisibilityEvaluator(isect, Interaction(position, isect.time));
 
-        return (color * intensity) / (position - isect.p).LengthSquared();
+        return (color * intensity) / EvaluateDecayRate(position - isect.p);
     }
 
     RGBSpectrum PointIlluminant::Power() const
