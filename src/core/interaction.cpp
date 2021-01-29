@@ -19,4 +19,25 @@ namespace filianore
         }
     }
 
+    void SurfaceInteraction::SetShadingGeometry(const StaticArray<float, 3> &_dpdu, const StaticArray<float, 3> &_dpdv,
+                                                const StaticArray<float, 3> &_dndu, const StaticArray<float, 3> &_dndv,
+                                                bool orientationIsAuthoritative)
+    {
+        shading.n = Cross(_dpdu, _dpdv).Normalize();
+
+        if (orientationIsAuthoritative)
+        {
+            n = Faceforward(n, shading.n);
+        }
+        else
+        {
+            shading.n = Faceforward(shading.n, n);
+        }
+
+        dpdu = _dpdu;
+        dpdv = _dpdv;
+        dndu = _dndu;
+        dndv = _dndv;
+    }
+
 } // namespace filianore

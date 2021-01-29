@@ -5,7 +5,7 @@ namespace filianore
 {
 
     BSDF::BSDF(const SurfaceInteraction &isect, float _eta)
-        : eta(_eta), ng(isect.n), ns(isect.ns)
+        : eta(_eta), ng(isect.n), ns(isect.shading.n)
     {
         CoordinateSystem<float>(ns, &s, &t);
         s = s.Normalize();

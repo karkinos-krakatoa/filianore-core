@@ -49,9 +49,6 @@ namespace filianore
 		float Area() const;
 
 	private:
-		StaticArray<float, 3> GeometricNormal(StaticArray<float, 3> &_p) const;
-		StaticArray<float, 3> ShadingNormal(float u, float v, StaticArray<float, 3> geometricNormal) const;
-
 		TriangleEntity v1, v2, v3;
 		bool allNormalsInMesh;
 	};
