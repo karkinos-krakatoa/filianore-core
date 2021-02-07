@@ -58,9 +58,8 @@ namespace filianore
         if (cosTheta > cosPenumbraAngle)
             return 1.f;
 
-        // float actualFalloff = (cosTheta - cosConeAngle) / (cosPenumbraAngle - cosConeAngle);
-        // return actualFalloff * actualFalloff * actualFalloff * actualFalloff * 0.f;
-        return 1.f;
+        float t = Clamp<float>((cosTheta - cosConeAngle) / (cosPenumbraAngle - cosConeAngle), 0.f, 1.f);
+        return t * t * (3.f - 2.f * t);
     }
 
 } // namespace filianore
