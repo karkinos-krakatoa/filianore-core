@@ -8,7 +8,8 @@ namespace filianore
 
     RGBSpectrum SurfaceInteraction::Le(const StaticArray<float, 3> &w) const
     {
-        return RGBSpectrum(0.f);
+        const AreaIlluminant *areaIllum = primitive->GetAreaIlluminant();
+        return areaIllum ? areaIllum->L(*this, w) : RGBSpectrum(0.f);
     }
 
     void SurfaceInteraction::ComputeScatteringFunctions(const Ray &ray)

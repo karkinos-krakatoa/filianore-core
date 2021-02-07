@@ -60,6 +60,8 @@ namespace filianore
 
         Material *GetMaterial() const { return nullptr; }
 
+        AreaIlluminant *GetAreaIlluminant() const { return nullptr; }
+
     private:
         uint32_t nNodes,
             nLeafs;

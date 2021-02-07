@@ -5,8 +5,8 @@ namespace filianore
 {
 
     DirectionalIlluminant::DirectionalIlluminant(const Transform &_lightToWorld, const StaticArray<float, 3> &_dirIllum,
-                                                 const RGBSpectrum &_color, float _intensity, RGBSpectrum _shadowColor)
-        : Illuminant(_lightToWorld, (int)IlluminantType::DeltaPoint, 1, 0.f, _shadowColor), color(_color), intensity(_intensity)
+                                                 const RGBSpectrum &_color, float _intensity, const RGBSpectrum &_shadowColor)
+        : Illuminant(_lightToWorld, (int)IlluminantType::DeltaDirectional, 1, 0.f, _shadowColor), color(_color), intensity(_intensity)
     {
         worldCenter = StaticArray<float, 3>(0.f);
         worldRadius = 1000.f;

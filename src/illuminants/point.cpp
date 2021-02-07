@@ -4,7 +4,7 @@
 namespace filianore
 {
 
-    PointIlluminant::PointIlluminant(const Transform &_lightToWorld, const RGBSpectrum &_color, float _intensity, short _decayRate, RGBSpectrum _shadowColor)
+    PointIlluminant::PointIlluminant(const Transform &_lightToWorld, const RGBSpectrum &_color, float _intensity, short _decayRate, const RGBSpectrum &_shadowColor)
         : Illuminant(_lightToWorld, (int)IlluminantType::DeltaPoint, 1, _decayRate, _shadowColor), color(_color), intensity(_intensity)
     {
         posIllum = StaticArray<float, 3>(0.f);

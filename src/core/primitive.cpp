@@ -51,4 +51,14 @@ namespace filianore
         return nullptr;
     }
 
+    AreaIlluminant *GeometricPrimitive::GetAreaIlluminant() const
+    {
+        if (areaIllum)
+        {
+            return areaIllum.get();
+        }
+
+        return nullptr;
+    }
+
 } // namespace filianore

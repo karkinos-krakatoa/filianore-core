@@ -23,6 +23,8 @@ namespace filianore
         virtual void ComputeScatteringFunctions(SurfaceInteraction *isect) const = 0;
 
         virtual Material *GetMaterial() const = 0;
+
+        virtual AreaIlluminant *GetAreaIlluminant() const = 0;
     };
 
     class GeometricPrimitive : public Primitive
@@ -31,7 +33,12 @@ namespace filianore
         GeometricPrimitive() {}
 
         GeometricPrimitive(std::shared_ptr<Shape> &_shape, const std::shared_ptr<Material> &_material)
-            : shape(_shape), material(_material)
+            : shape(_shape), material(_material), areaIllum(nullptr)
+        {
+        }
+
+        GeometricPrimitive(std::shared_ptr<Shape> &_shape, const std::shared_ptr<Material> &_material, const std::shared_ptr<AreaIlluminant> &_areaIllum)
+            : shape(_shape), material(_material), areaIllum(_areaIllum)
         {
         }
 
@@ -47,9 +54,12 @@ namespace filianore
 
         Material *GetMaterial() const;
 
+        virtual AreaIlluminant *GetAreaIlluminant() const;
+
     private:
         std::shared_ptr<Shape> shape;
         std::shared_ptr<Material> material;
+        std::shared_ptr<AreaIlluminant> areaIllum;
     };
 
 } // namespace filianore

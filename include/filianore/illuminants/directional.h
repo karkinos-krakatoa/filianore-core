@@ -10,7 +10,7 @@ namespace filianore
     {
     public:
         DirectionalIlluminant(const Transform &_lightToWorld, const StaticArray<float, 3> &_dirIllum,
-                              const RGBSpectrum &_color, float _intensity, RGBSpectrum _shadowColor);
+                              const RGBSpectrum &_color, float _intensity, const RGBSpectrum &_shadowColor);
 
         RGBSpectrum SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
                              VisibilityEvaluator *visEval) const;

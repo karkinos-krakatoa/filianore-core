@@ -11,7 +11,7 @@ namespace filianore
     public:
         SpotIlluminant(const Transform &_lightToWorld, const StaticArray<float, 3> &_dirIllum,
                        float _coneAngle, float _penumbraAngle, bool angleInRadians, bool usehalfAngles, const RGBSpectrum &_color,
-                       float _intensity, short _decayRate, RGBSpectrum _shadowColor);
+                       float _intensity, short _decayRate, const RGBSpectrum &_shadowColor);
 
         RGBSpectrum SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
                              VisibilityEvaluator *visEval) const;

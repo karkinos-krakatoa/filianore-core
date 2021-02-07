@@ -46,7 +46,7 @@ namespace filianore
     {
     public:
         virtual ~Illuminant();
-        Illuminant(const Transform &_illumToWorld, int _types, int _nSamples = 1, short _decayRate = 2, RGBSpectrum _shadowColor = RGBSpectrum(0.f));
+        Illuminant(const Transform &_illumToWorld, int _types, int _nSamples = 1, short _decayRate = 2, const RGBSpectrum &_shadowColor = RGBSpectrum(0.f));
 
         virtual RGBSpectrum SampleLi(const Interaction &ref, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf, VisibilityEvaluator *vis) const = 0;
         virtual RGBSpectrum Power() const = 0;
@@ -61,6 +61,14 @@ namespace filianore
         const short decayRate;
         const RGBSpectrum shadowColor;
         const Transform illumToWorld;
+    };
+
+    class AreaIlluminant : public Illuminant
+    {
+    public:
+        AreaIlluminant(const Transform &_lightToWorld, short _decayRate, const RGBSpectrum &_shadowColor);
+
+        virtual RGBSpectrum L(const Interaction &isect, const StaticArray<float, 3> &w) const = 0;
     };
 
 } // namespace filianore

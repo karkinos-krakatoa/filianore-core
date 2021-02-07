@@ -6,7 +6,7 @@ namespace filianore
 
     SpotIlluminant::SpotIlluminant(const Transform &_lightToWorld, const StaticArray<float, 3> &_dirIllum,
                                    float _coneAngle, float _penumbraAngle, bool angleInRadians, bool usehalfAngles, const RGBSpectrum &_color,
-                                   float _intensity, short _decayRate, RGBSpectrum _shadowColor)
+                                   float _intensity, short _decayRate, const RGBSpectrum &_shadowColor)
         : Illuminant(_lightToWorld, (int)IlluminantType::DeltaPoint, 1, _decayRate, _shadowColor), color(_color), intensity(_intensity)
     {
         float coneAngle = angleInRadians ? _coneAngle : Radians<float>(_coneAngle);
