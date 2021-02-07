@@ -59,6 +59,7 @@ add_library(filianore STATIC
 
     src/illuminants/point.cpp
     src/illuminants/spot.cpp
+    src/illuminants/directional.cpp
 
     src/integrators/pathintegrator.cpp
 
@@ -136,6 +137,7 @@ install(FILES
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/point.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/spot.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/directional.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/illuminants)
 
 install(FILES 
