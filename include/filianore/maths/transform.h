@@ -95,15 +95,15 @@ namespace filianore
 
 	static Transform Translate(const StaticArray<float, 3> &delta)
 	{
-		Matrix<float, 4, 4> m(1, 0, 0, delta.x(),
-							  0, 1, 0, delta.y(),
-							  0, 0, 1, delta.z(),
-							  0, 0, 0, 1);
+		Matrix<float, 4, 4> m(1.f, 0.f, 0.f, delta.x(),
+							  0.f, 1.f, 0.f, delta.y(),
+							  0.f, 0.f, 1.f, delta.z(),
+							  0.f, 0.f, 0.f, 1.f);
 
-		Matrix<float, 4, 4> mInv(1, 0, 0, -delta.x(),
-								 0, 1, 0, -delta.y(),
-								 0, 0, 1, -delta.z(),
-								 0, 0, 0, 1);
+		Matrix<float, 4, 4> mInv(1.f, 0.f, 0.f, -delta.x(),
+								 0.f, 1.f, 0.f, -delta.y(),
+								 0.f, 0.f, 1.f, -delta.z(),
+								 0.f, 0.f, 0.f, 1.f);
 
 		return Transform(m, mInv);
 	}
@@ -125,41 +125,59 @@ namespace filianore
 		return Transform(m, mInv);
 	}
 
-	static Transform RotateX(float angle)
+	static Transform RotateX(float angle, bool inRadians = false)
 	{
-		float sin_t = std::sin(Radians<float>(angle));
-		float cos_t = std::cos(Radians<float>(angle));
+		float sin_t = std::sin(angle);
+		float cos_t = std::cos(angle);
 
-		Matrix<float, 4, 4> m(1, 0, 0, 0,
-							  0, cos_t, -sin_t, 0,
-							  0, -sin_t, cos_t, 0,
-							  0, 0, 0, 1);
+		if (!inRadians)
+		{
+			sin_t = std::sin(Radians<float>(angle));
+			cos_t = std::cos(Radians<float>(angle));
+		}
+
+		Matrix<float, 4, 4> m(1.f, 0.f, 0.f, 0.f,
+							  0.f, cos_t, -sin_t, 0.f,
+							  0.f, sin_t, cos_t, 0.f,
+							  0.f, 0.f, 0.f, 1.f);
 
 		return Transform(m, Transpose(m));
 	}
 
-	static Transform RotateY(float angle)
+	static Transform RotateY(float angle, bool inRadians = false)
 	{
-		float sin_t = std::sin(Radians<float>(angle));
-		float cos_t = std::cos(Radians<float>(angle));
+		float sin_t = std::sin(angle);
+		float cos_t = std::cos(angle);
 
-		Matrix<float, 4, 4> m(cos_t, 0, sin_t, 0,
-							  0, 1, 0, 0,
-							  -sin_t, 0, cos_t, 0,
-							  0, 0, 0, 1);
+		if (!inRadians)
+		{
+			sin_t = std::sin(Radians<float>(angle));
+			cos_t = std::cos(Radians<float>(angle));
+		}
+
+		Matrix<float, 4, 4> m(cos_t, 0.f, sin_t, 0.f,
+							  0.f, 1.f, 0.f, 0.f,
+							  -sin_t, 0.f, cos_t, 0.f,
+							  0.f, 0.f, 0.f, 1.f);
 
 		return Transform(m, Transpose(m));
 	}
 
-	static Transform RotateZ(float angle)
+	static Transform RotateZ(float angle, bool inRadians = false)
 	{
-		float sin_t = std::sin(Radians<float>(angle));
-		float cos_t = std::cos(Radians<float>(angle));
+		float sin_t = std::sin(angle);
+		float cos_t = std::cos(angle);
 
-		Matrix<float, 4, 4> m(cos_t, -sin_t, 0, 0,
-							  sin_t, cos_t, 0, 0,
-							  0, 0, 1, 0,
-							  0, 0, 0, 1);
+		if (!inRadians)
+		{
+			sin_t = std::sin(Radians<float>(angle));
+			cos_t = std::cos(Radians<float>(angle));
+		}
+
+		Matrix<float, 4, 4> m(cos_t, -sin_t, 0.f, 0.f,
+							  sin_t, cos_t, 0.f, 0.f,
+							  0.f, 0.f, 1.f, 0.f,
+							  0.f, 0.f, 0.f, 1.f);
 
 		return Transform(m, Transpose(m));
 	}

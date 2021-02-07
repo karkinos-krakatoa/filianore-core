@@ -9,8 +9,8 @@ namespace filianore
         return flags & (int)IlluminantType::DeltaPoint || flags & (int)IlluminantType::DeltaDirectional;
     }
 
-    Illuminant::Illuminant(int _types, int _nSamples, short _decayRate, RGBSpectrum _shadowColor)
-        : types(_types), nSamples(std::max(1, _nSamples)), decayRate(_decayRate), shadowColor(_shadowColor)
+    Illuminant::Illuminant(const Transform &_illumToWorld, int _types, int _nSamples, short _decayRate, RGBSpectrum _shadowColor)
+        : illumToWorld(_illumToWorld), types(_types), nSamples(std::max(1, _nSamples)), decayRate(_decayRate), shadowColor(_shadowColor)
     {
     }
 
