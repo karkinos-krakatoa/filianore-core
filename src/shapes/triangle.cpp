@@ -80,4 +80,19 @@ namespace filianore
         return 0.5f * Cross((v2.vertex - v1.vertex), (v3.vertex - v1.vertex)).Length();
     }
 
+    Interaction Triangle::Sample(const StaticArray<float, 2> &u, float *pdf) const
+    {
+        const StaticArray<float, 3> &p1 = v1.vertex;
+        const StaticArray<float, 3> &p2 = v2.vertex;
+        const StaticArray<float, 3> &p3 = v3.vertex;
+
+        Interaction it;
+
+        it.p = v1.vertex + (v2.vertex - v1.vertex) * u.x() + (v3.vertex - v1.vertex) * u.y();
+        it.n = Cross(v2.vertex - v1.vertex, v3.vertex - v1.vertex).Normalize();
+        *pdf = 1.f / Area();
+
+        return it;
+    }
+
 } // namespace filianore

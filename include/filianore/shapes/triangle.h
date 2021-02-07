@@ -48,6 +48,9 @@ namespace filianore
 
 		float Area() const;
 
+		using Shape::Sample;
+		Interaction Sample(const StaticArray<float, 2> &u, float *pdf) const;
+
 	private:
 		TriangleEntity v1, v2, v3;
 		bool allNormalsInMesh;
