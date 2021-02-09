@@ -32,11 +32,6 @@ namespace filianore
     public:
         GeometricPrimitive() {}
 
-        GeometricPrimitive(std::shared_ptr<Shape> &_shape, const std::shared_ptr<Material> &_material)
-            : shape(_shape), material(_material), areaIllum(nullptr)
-        {
-        }
-
         GeometricPrimitive(std::shared_ptr<Shape> &_shape, const std::shared_ptr<Material> &_material, const std::shared_ptr<AreaIlluminant> &_areaIllum)
             : shape(_shape), material(_material), areaIllum(_areaIllum)
         {
@@ -50,11 +45,11 @@ namespace filianore
 
         StaticArray<float, 3> Centroid() const;
 
-        void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
-
         Material *GetMaterial() const;
 
-        virtual AreaIlluminant *GetAreaIlluminant() const;
+        AreaIlluminant *GetAreaIlluminant() const;
+
+        void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
 
     private:
         std::shared_ptr<Shape> shape;
