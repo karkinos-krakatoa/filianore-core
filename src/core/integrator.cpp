@@ -75,61 +75,61 @@ namespace filianore
         }
 
         // MIS - BSDF
-        // if (!IsDeltaIlluminant(illuminant.types))
-        // {
-        //     RGBSpectrum f;
-        //     bool sampledSpecular = false;
-        //     if (it.IsSurfaceInteraction())
-        //     {
-        //         BxDFType sampledType;
-        //         const SurfaceInteraction &isect = (const SurfaceInteraction &)it;
-        //         f = isect.bsdf->Sample(isect.wo, &wi, uShading, &scatteringPdf, bsdfFlags, &sampledType);
-        //         f *= AbsDot(wi, isect.n);
-        //         sampledSpecular = (sampledType & BSDF_SPECULAR) != 0;
-        //     }
-        //     else
-        //     {
-        //         // Medium
-        //     }
+        if (!IsDeltaIlluminant(illuminant.types))
+        {
+            RGBSpectrum f;
+            bool sampledSpecular = false;
+            if (it.IsSurfaceInteraction())
+            {
+                BxDFType sampledType;
+                const SurfaceInteraction &isect = (const SurfaceInteraction &)it;
+                f = isect.bsdf->Sample(isect.wo, &wi, uShading, &scatteringPdf, bsdfFlags, &sampledType);
+                f *= AbsDot(wi, isect.n);
+                sampledSpecular = (sampledType & BSDF_SPECULAR) != 0;
+            }
+            else
+            {
+                // Medium
+            }
 
-        //     if (!f.IsBlack() && scatteringPdf > 0)
-        //     {
-        //         float weight = 1.f;
-        //         if (!sampledSpecular)
-        //         {
-        //             illumPdf = illuminant.PdfLi(it, wi);
-        //             if (illumPdf == 0)
-        //             {
-        //                 return Ld;
-        //             }
-        //             weight = PowerHeuristic(1, scatteringPdf, 1, illumPdf);
-        //         }
+            if (!f.IsBlack() && scatteringPdf > 0)
+            {
+                float weight = 1.f;
+                if (!sampledSpecular)
+                {
+                    illumPdf = illuminant.PdfLi(it, wi);
+                    if (illumPdf == 0)
+                    {
+                        return Ld;
+                    }
+                    weight = PowerHeuristic(1, scatteringPdf, 1, illumPdf);
+                }
 
-        //         SurfaceInteraction illuminantIsect;
-        //         Ray ray = it.KindleRay(wi);
-        //         RGBSpectrum Tr(1.f);
+                SurfaceInteraction illuminantIsect;
+                Ray ray = it.KindleRay(wi);
+                RGBSpectrum Tr(1.f);
 
-        //         bool foundSurfaceInteraction = scene.Intersect(ray, &illuminantIsect);
+                bool foundSurfaceInteraction = scene.Intersect(ray, &illuminantIsect);
 
-        //         RGBSpectrum Li;
-        //         if (foundSurfaceInteraction)
-        //         {
-        //             if (illuminantIsect.primitive->GetAreaIlluminant() == &illuminant)
-        //             {
-        //                 Li = illuminantIsect.Le(wi.Neg());
-        //             }
-        //         }
-        //         else
-        //         {
-        //             Li = illuminant.Le(ray);
-        //         }
+                RGBSpectrum Li;
+                if (foundSurfaceInteraction)
+                {
+                    if (illuminantIsect.primitive->GetAreaIlluminant() == &illuminant)
+                    {
+                        Li = illuminantIsect.Le(wi.Neg());
+                    }
+                }
+                else
+                {
+                    Li = illuminant.Le(ray);
+                }
 
-        //         if (!Li.IsBlack())
-        //         {
-        //             Ld += f * Li * Tr * weight / scatteringPdf;
-        //         }
-        //     }
-        // }
+                if (!Li.IsBlack())
+                {
+                    Ld += f * Li * Tr * weight / scatteringPdf;
+                }
+            }
+        }
 
         return Ld;
     }

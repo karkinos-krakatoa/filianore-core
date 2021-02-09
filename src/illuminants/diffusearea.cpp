@@ -13,7 +13,7 @@ namespace filianore
 
     RGBSpectrum DiffuseAreaIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf, VisibilityEvaluator *visEval) const
     {
-        Interaction ist = this->shape->Sample(isect, u, pdf);
+        Interaction ist = shape->Sample(isect, u, pdf);
 
         if (*pdf == 0 || (ist.p - isect.p).LengthSquared() == 0)
         {

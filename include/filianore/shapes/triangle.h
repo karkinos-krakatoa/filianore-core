@@ -19,7 +19,7 @@ namespace filianore
 		{
 		}
 
-		TriangleEntity(const StaticArray<float, 3> &_v, const StaticArray<float, 3> &_n, bool _normalFound = false, const StaticArray<float, 2> &_uv = StaticArray<float, 2>())
+		TriangleEntity(const StaticArray<float, 3> &_v, const StaticArray<float, 3> &_n = StaticArray<float, 3>(), bool _normalFound = false, const StaticArray<float, 2> &_uv = StaticArray<float, 2>())
 			: vertex(_v), normal(_n), normalFound(_normalFound), uv(_uv)
 		{
 		}
