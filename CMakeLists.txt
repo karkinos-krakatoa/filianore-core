@@ -58,6 +58,8 @@ add_library(filianore STATIC
     src/core/shape.cpp
     src/core/texture.cpp
 
+    src/creators/shapecreator.cpp
+
     src/illuminants/point.cpp
     src/illuminants/spot.cpp
     src/illuminants/directional.cpp
@@ -135,6 +137,10 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/texture.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/util.h
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
+
+install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/creators/shapecreator.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/creators)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/point.h 
