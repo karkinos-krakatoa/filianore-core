@@ -46,6 +46,10 @@ namespace filianore
         bool hit = scene.Intersect(p0.KindleRayTo(p1.p), &isect);
         if (hit)
         {
+            // if (isect.primitive->GetAreaIlluminant() != nullptr)
+            // {
+            //     return true;
+            // }
             return false;
         }
         return true;

@@ -21,10 +21,10 @@ namespace filianore
             return RGBSpectrum(0.f);
         }
 
-        *wi = (ist.p - isect.p).Neg().Normalize();
+        *wi = (ist.p - isect.p).Normalize();
         *visEval = VisibilityEvaluator(isect, ist);
 
-        return L(ist, *wi) * intensity;
+        return L(ist, StaticArray<float, 3>(-wi->x(), -wi->y(), -wi->z())) * intensity / (Pi<float> * EvaluateDecayRate(ist.p - isect.p));
     }
 
     RGBSpectrum DiffuseAreaIlluminant::Power() const

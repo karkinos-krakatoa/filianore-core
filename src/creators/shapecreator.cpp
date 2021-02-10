@@ -8,14 +8,14 @@ namespace filianore
     std::vector<std::shared_ptr<Shape>> ShapeCreator::CreateQuad(const Transform &_transform)
     {
         // First Triangle
-        StaticArray<float, 3> t1_v1(1.f, 1.f, 1.f);
-        StaticArray<float, 3> t1_v2(1.f, -1.f, 1.f);
-        StaticArray<float, 3> t1_v3(-1.f, 1.f, 1.f);
+        StaticArray<float, 3> t1_v1(1.f, -1.f, 0.f);
+        StaticArray<float, 3> t1_v2(-1.f, -1.f, 0.f);
+        StaticArray<float, 3> t1_v3(-1.f, 1.f, 0.f);
 
         // Second Triangle
-        StaticArray<float, 3> t2_v1(-1.f, 1.f, 1.f);
-        StaticArray<float, 3> t2_v2(1.f, -1.f, 1.f);
-        StaticArray<float, 3> t2_v3(-1.f, -1.f, 1.f);
+        StaticArray<float, 3> t2_v1(1.f, -1.f, 0.f);
+        StaticArray<float, 3> t2_v2(-1.f, 1.f, 0.f);
+        StaticArray<float, 3> t2_v3(1.f, 1.f, 0.f);
 
         std::vector<StaticArray<float, 3>> vertices = {t1_v1, t1_v2, t1_v3, t2_v1, t2_v2, t2_v3};
 
