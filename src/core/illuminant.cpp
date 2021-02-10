@@ -24,20 +24,23 @@ namespace filianore
     float Illuminant::EvaluateDecayRate(const StaticArray<float, 3> &d) const
     {
         float dL = d.Length();
+        float strength = dL * dL;
 
         switch (decayRate)
         {
         case (short)DecayRate::NoDecay:
-            return 1.f;
+            strength = 1.f;
         case (short)DecayRate::Linear:
-            return dL;
+            strength = dL;
         case (short)DecayRate::Quadratic:
-            return dL * dL;
+            strength = dL * dL;
         case (short)DecayRate::Cubic:
-            return dL * dL * dL;
+            strength = dL * dL * dL;
         default:
-            return dL * dL;
+            strength = dL * dL;
         }
+
+        return strength * Pi<float>;
     }
 
     bool VisibilityEvaluator::Unoccluded(const Scene &scene) const
@@ -46,10 +49,6 @@ namespace filianore
         bool hit = scene.Intersect(p0.KindleRayTo(p1.p), &isect);
         if (hit)
         {
-            // if (isect.primitive->GetAreaIlluminant() != nullptr)
-            // {
-            //     return true;
-            // }
             return false;
         }
         return true;

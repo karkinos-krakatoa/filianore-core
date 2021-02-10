@@ -19,10 +19,10 @@ namespace filianore
 
         std::vector<StaticArray<float, 3>> vertices = {t1_v1, t1_v2, t1_v3, t2_v1, t2_v2, t2_v3};
 
-        // for (size_t i = 0; i < vertices.size(); ++i)
-        // {
-        //     vertices[i] = _transform.PointTransform(vertices[i]);
-        // }
+        for (size_t i = 0; i < vertices.size(); ++i)
+        {
+            vertices[i] = _transform.PointTransform(vertices[i]);
+        }
 
         TriangleEntity t1_e1(vertices[0], StaticArray<float, 3>());
         TriangleEntity t1_e2(vertices[1], StaticArray<float, 3>());
