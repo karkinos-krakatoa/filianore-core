@@ -24,7 +24,7 @@ namespace filianore
         *wi = (ist.p - isect.p).Normalize();
         *visEval = VisibilityEvaluator(isect, ist);
 
-        return L(ist, StaticArray<float, 3>(-wi->x(), -wi->y(), -wi->z())) * intensity / (Pi<float> * EvaluateDecayRate(ist.p - isect.p));
+        return L(ist, StaticArray<float, 3>(-wi->x(), -wi->y(), -wi->z())) * intensity / EvaluateDecayRate(ist.p - isect.p);
     }
 
     RGBSpectrum DiffuseAreaIlluminant::Power() const

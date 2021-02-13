@@ -1,5 +1,4 @@
 #include "filianore/materials/lambert.h"
-#include "filianore/materials/lambert.h"
 #include "filianore/shading/lambertreflection.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/bsdf.h"
