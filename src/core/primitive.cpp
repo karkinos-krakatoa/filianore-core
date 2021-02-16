@@ -43,22 +43,12 @@ namespace filianore
 
     Material *GeometricPrimitive::GetMaterial() const
     {
-        if (material)
-        {
-            return material.get();
-        }
-
-        return nullptr;
+        return material.get();
     }
 
     AreaIlluminant *GeometricPrimitive::GetAreaIlluminant() const
     {
-        if (areaIllum)
-        {
-            return areaIllum.get();
-        }
-
-        return nullptr;
+        return areaIllum.get();
     }
 
 } // namespace filianore

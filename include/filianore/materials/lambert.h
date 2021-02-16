@@ -1,5 +1,5 @@
-#ifndef _LAMBERT_H
-#define _LAMBERT_H
+#ifndef _LAMBERT_MATERIAL_H
+#define _LAMBERT_MATERIAL_H
 
 #include "../core/elemental.h"
 #include "../core/material.h"

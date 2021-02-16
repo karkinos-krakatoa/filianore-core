@@ -38,6 +38,9 @@ namespace filianore
     class PhysicalCamera;
     class Sampler;
 
+    class Fresnel;
+    class FresnelDielectric;
+
     class BxDF;
     class BRDF;
     class BTDF;

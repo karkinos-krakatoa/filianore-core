@@ -68,9 +68,13 @@ add_library(filianore STATIC
     src/integrators/pathintegrator.cpp
 
     src/materials/lambert.cpp
+    src/materials/mirror.cpp
 
     src/samplers/whitenoise.cpp
 
+    src/shading/fresneldielectric.cpp
+    src/shading/speculartransmission.cpp
+    src/shading/specularreflection.cpp
     src/shading/lambertreflection.cpp
 
     src/shapes/triangle.cpp
@@ -121,6 +125,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/bxdf.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/fresnel.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/illuminant.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/integrator.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/interaction.h
@@ -155,6 +160,7 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/mirror.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/materials)
 
 install(FILES 
@@ -171,6 +177,9 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/lambertreflection.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/specularreflection.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresneldielectric.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/speculartransmission.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
 
 install(FILES 
