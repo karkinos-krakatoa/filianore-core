@@ -10,13 +10,13 @@ namespace filianore
     class MirrorMaterial : public Material
     {
     public:
-        MirrorMaterial(const std::shared_ptr<Texture<RGBSpectrum>> _kr)
+        MirrorMaterial(const std::shared_ptr<Texture<PrincipalSpectrum>> _kr)
             : kr(_kr) {}
 
         void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
 
     private:
-        std::shared_ptr<Texture<RGBSpectrum>> kr;
+        std::shared_ptr<Texture<PrincipalSpectrum>> kr;
     };
 
 } // namespace filianore

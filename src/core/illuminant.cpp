@@ -9,16 +9,16 @@ namespace filianore
         return flags & (int)IlluminantType::DeltaPoint || flags & (int)IlluminantType::DeltaDirectional;
     }
 
-    Illuminant::Illuminant(const Transform &_illumToWorld, int _types, int _nSamples, short _decayRate, const RGBSpectrum &_shadowColor)
+    Illuminant::Illuminant(const Transform &_illumToWorld, int _types, int _nSamples, short _decayRate, const PrincipalSpectrum &_shadowColor)
         : illumToWorld(_illumToWorld), types(_types), nSamples(std::max(1, _nSamples)), decayRate(_decayRate), shadowColor(_shadowColor)
     {
     }
 
     Illuminant::~Illuminant() {}
 
-    RGBSpectrum Illuminant::Le(const Ray &ray) const
+    PrincipalSpectrum Illuminant::Le(const Ray &ray) const
     {
-        return RGBSpectrum(0.f);
+        return PrincipalSpectrum(0.f);
     }
 
     float Illuminant::EvaluateDecayRate(const StaticArray<float, 3> &d) const
@@ -54,7 +54,7 @@ namespace filianore
         return true;
     }
 
-    AreaIlluminant::AreaIlluminant(const Transform &_lightToWorld, short _decayRate, const RGBSpectrum &_shadowColor)
+    AreaIlluminant::AreaIlluminant(const Transform &_lightToWorld, short _decayRate, const PrincipalSpectrum &_shadowColor)
         : Illuminant(_lightToWorld, (int)IlluminantType::Area, 1, _decayRate, _shadowColor)
     {
     }

@@ -11,8 +11,8 @@ namespace filianore
     {
         isect->bsdf = std::make_shared<BSDF>(*isect);
 
-        RGBSpectrum r = kd->Evaluate(*isect);
-        r = r.SpecClamp();
+        PrincipalSpectrum r = kd->Evaluate(*isect);
+        r = r.SpectrumClamp();
 
         isect->bsdf->Add(new LambertReflection(r));
     }

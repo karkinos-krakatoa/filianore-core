@@ -46,12 +46,12 @@ namespace filianore
     {
     public:
         virtual ~Illuminant();
-        Illuminant(const Transform &_illumToWorld, int _types, int _nSamples = 1, short _decayRate = 2, const RGBSpectrum &_shadowColor = RGBSpectrum(0.f));
+        Illuminant(const Transform &_illumToWorld, int _types, int _nSamples = 1, short _decayRate = 2, const PrincipalSpectrum &_shadowColor = PrincipalSpectrum(0.f));
 
-        virtual RGBSpectrum SampleLi(const Interaction &ref, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf, VisibilityEvaluator *vis) const = 0;
-        virtual RGBSpectrum Power() const = 0;
+        virtual PrincipalSpectrum SampleLi(const Interaction &ref, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf, VisibilityEvaluator *vis) const = 0;
+        virtual PrincipalSpectrum Power() const = 0;
         virtual void PrepareIlluminant(const Scene &scene) {}
-        virtual RGBSpectrum Le(const Ray &ray) const;
+        virtual PrincipalSpectrum Le(const Ray &ray) const;
         virtual float PdfLi(const Interaction &ref, const StaticArray<float, 3> &wi) const = 0;
 
         float EvaluateDecayRate(const StaticArray<float, 3> &d) const;
@@ -59,16 +59,16 @@ namespace filianore
         const int types;
         const int nSamples;
         const short decayRate;
-        const RGBSpectrum shadowColor;
+        const PrincipalSpectrum shadowColor;
         const Transform illumToWorld;
     };
 
     class AreaIlluminant : public Illuminant
     {
     public:
-        AreaIlluminant(const Transform &_lightToWorld, short _decayRate, const RGBSpectrum &_shadowColor);
+        AreaIlluminant(const Transform &_lightToWorld, short _decayRate, const PrincipalSpectrum &_shadowColor);
 
-        virtual RGBSpectrum L(const Interaction &isect, const StaticArray<float, 3> &w) const = 0;
+        virtual PrincipalSpectrum L(const Interaction &isect, const StaticArray<float, 3> &w) const = 0;
     };
 
 } // namespace filianore

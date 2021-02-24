@@ -34,19 +34,19 @@ namespace filianore
         return (s * v.x() + t * v.y() + ns * v.z());
     }
 
-    RGBSpectrum BSDF::Evaluate(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags) const
+    PrincipalSpectrum BSDF::Evaluate(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags) const
     {
         StaticArray<float, 3> wi = ToLocal(wiW);
         StaticArray<float, 3> wo = ToLocal(woW);
 
         if (wo.z() == 0)
         {
-            return RGBSpectrum(0.f);
+            return PrincipalSpectrum(0.f);
         }
 
         bool reflect = Dot(wiW, ng) * Dot(woW, ng) > 0;
 
-        RGBSpectrum bsdf_total(0);
+        PrincipalSpectrum bsdf_total(0);
         for (int i = 0; i < nBxDFs; ++i)
         {
             if (bxdfs[i]->MatchesFlags(flags) &&
@@ -60,8 +60,8 @@ namespace filianore
         return bsdf_total;
     }
 
-    RGBSpectrum BSDF::Sample(const StaticArray<float, 3> &woW, StaticArray<float, 3> *wiW, const StaticArray<float, 2> &u, float *pdf,
-                             BxDFType flags, BxDFType *sampledType) const
+    PrincipalSpectrum BSDF::Sample(const StaticArray<float, 3> &woW, StaticArray<float, 3> *wiW, const StaticArray<float, 2> &u, float *pdf,
+                                   BxDFType flags, BxDFType *sampledType) const
     {
         int matchComps = NumComponents(flags);
         if (matchComps == 0)
@@ -71,7 +71,7 @@ namespace filianore
             {
                 *sampledType = BxDFType(0);
             }
-            return RGBSpectrum(0.f);
+            return PrincipalSpectrum(0.f);
         }
 
         int comp = std::min((int)std::floor(u.x() * matchComps), matchComps - 1);
@@ -93,7 +93,7 @@ namespace filianore
         StaticArray<float, 3> wi, wo = ToLocal(woW);
         if (wo.z() == 0)
         {
-            return RGBSpectrum(0.f);
+            return PrincipalSpectrum(0.f);
         }
 
         *pdf = 0.f;
@@ -103,7 +103,7 @@ namespace filianore
             *sampledType = bxdf->bxDFType;
         }
 
-        RGBSpectrum f = bxdf->Sample(wo, &wi, uReadjusted, pdf, sampledType);
+        PrincipalSpectrum f = bxdf->Sample(wo, &wi, uReadjusted, pdf, sampledType);
 
         if (*pdf == 0)
         {
@@ -111,7 +111,7 @@ namespace filianore
             {
                 *sampledType = BxDFType(0);
             }
-            return RGBSpectrum(0.f);
+            return PrincipalSpectrum(0.f);
         }
 
         *wiW = ToWorld(wi);
@@ -135,7 +135,7 @@ namespace filianore
         if (!(bxdf->bxDFType & BSDF_SPECULAR))
         {
             bool reflect = Dot(*wiW, ng) * Dot(woW, ng) > 0;
-            f = RGBSpectrum(0.f);
+            f = PrincipalSpectrum(0.f);
 
             for (int i = 0; i < nBxDFs; ++i)
             {

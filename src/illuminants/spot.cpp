@@ -5,8 +5,8 @@ namespace filianore
 {
 
     SpotIlluminant::SpotIlluminant(const Transform &_lightToWorld, const StaticArray<float, 3> &_dirIllum,
-                                   float _coneAngle, float _penumbraAngle, bool angleInRadians, bool usehalfAngles, const RGBSpectrum &_color,
-                                   float _intensity, short _decayRate, const RGBSpectrum &_shadowColor)
+                                   float _coneAngle, float _penumbraAngle, bool angleInRadians, bool usehalfAngles, const PrincipalSpectrum &_color,
+                                   float _intensity, short _decayRate, const PrincipalSpectrum &_shadowColor)
         : Illuminant(_lightToWorld, (int)IlluminantType::DeltaPoint, 1, _decayRate, _shadowColor), color(_color), intensity(_intensity)
     {
         float coneAngle = angleInRadians ? _coneAngle : Radians<float>(_coneAngle);
@@ -21,8 +21,8 @@ namespace filianore
         dirIllum = _lightToWorld.VectorTransform(_dirIllum);
     }
 
-    RGBSpectrum SpotIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
-                                         VisibilityEvaluator *visEval) const
+    PrincipalSpectrum SpotIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
+                                               VisibilityEvaluator *visEval) const
     {
         *wi = (posIllum - isect.p).Normalize();
         *pdf = 1.f;
@@ -32,9 +32,9 @@ namespace filianore
         return (color * intensity * Falloff(StaticArray<float, 3>(-wi->params[0], -wi->params[1], -wi->params[2]))) / EvaluateDecayRate(posIllum - isect.p);
     }
 
-    RGBSpectrum SpotIlluminant::Power() const
+    PrincipalSpectrum SpotIlluminant::Power() const
     {
-        return RGBSpectrum(intensity * 2 * Pi<float> * (1.f - .5f * (cosConeAngle + cosPenumbraAngle)));
+        return PrincipalSpectrum(intensity * 2 * Pi<float> * (1.f - .5f * (cosConeAngle + cosPenumbraAngle)));
     }
 
     void SpotIlluminant::PrepareIlluminant(const Scene &scene)

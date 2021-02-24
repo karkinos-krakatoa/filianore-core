@@ -45,6 +45,9 @@ add_library(filianore STATIC
     src/accel/bvh.cpp
 
     src/cameras/physical.cpp
+  
+    src/color/spectruminits.cpp
+    src/color/spectrumoperations.cpp
 
     src/core/bsdf.cpp
     src/core/illuminant.cpp
@@ -116,7 +119,12 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/cameras)
 
 install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/basespectrum.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/cie.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/principalspectrum.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/rgb.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectruminits.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectrumoperations.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/color)
 
 install(FILES 

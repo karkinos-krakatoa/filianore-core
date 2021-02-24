@@ -5,7 +5,7 @@ namespace filianore
 {
 
     DirectionalIlluminant::DirectionalIlluminant(const Transform &_lightToWorld, const StaticArray<float, 3> &_dirIllum,
-                                                 const RGBSpectrum &_color, float _intensity, const RGBSpectrum &_shadowColor)
+                                                 const PrincipalSpectrum &_color, float _intensity, const PrincipalSpectrum &_shadowColor)
         : Illuminant(_lightToWorld, (int)IlluminantType::DeltaDirectional, 1, 0.f, _shadowColor), color(_color), intensity(_intensity)
     {
         worldCenter = StaticArray<float, 3>(0.f);
@@ -14,8 +14,8 @@ namespace filianore
         dirIllum = _lightToWorld.VectorTransform(_dirIllum).Neg().Normalize();
     }
 
-    RGBSpectrum DirectionalIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
-                                                VisibilityEvaluator *visEval) const
+    PrincipalSpectrum DirectionalIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
+                                                      VisibilityEvaluator *visEval) const
     {
         *wi = dirIllum;
         *pdf = 1.f;
@@ -26,9 +26,9 @@ namespace filianore
         return (color * intensity);
     }
 
-    RGBSpectrum DirectionalIlluminant::Power() const
+    PrincipalSpectrum DirectionalIlluminant::Power() const
     {
-        return RGBSpectrum(Pi<float> * worldRadius * worldRadius);
+        return PrincipalSpectrum(Pi<float> * worldRadius * worldRadius);
     }
 
     void DirectionalIlluminant::PrepareIlluminant(const Scene &scene)

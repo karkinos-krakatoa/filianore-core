@@ -10,12 +10,12 @@ namespace filianore
     {
     public:
         DirectionalIlluminant(const Transform &_lightToWorld, const StaticArray<float, 3> &_dirIllum,
-                              const RGBSpectrum &_color, float _intensity, const RGBSpectrum &_shadowColor);
+                              const PrincipalSpectrum &_color, float _intensity, const PrincipalSpectrum &_shadowColor);
 
-        RGBSpectrum SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
-                             VisibilityEvaluator *visEval) const;
+        PrincipalSpectrum SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
+                                   VisibilityEvaluator *visEval) const;
 
-        RGBSpectrum Power() const;
+        PrincipalSpectrum Power() const;
 
         void PrepareIlluminant(const Scene &scene);
 
@@ -24,7 +24,7 @@ namespace filianore
     private:
         StaticArray<float, 3> dirIllum;
         const float intensity;
-        const RGBSpectrum color;
+        const PrincipalSpectrum color;
         StaticArray<float, 3> worldCenter;
         float worldRadius;
     };

@@ -4,12 +4,12 @@
 namespace filianore
 {
 
-    RGBSpectrum LambertReflection::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
+    PrincipalSpectrum LambertReflection::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
         return R * InvPi<float>;
     }
 
-    RGBSpectrum LambertReflection::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
+    PrincipalSpectrum LambertReflection::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
     {
         *wi = CosineHemisphereSample(sample);
 

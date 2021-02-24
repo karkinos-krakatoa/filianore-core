@@ -4,15 +4,15 @@
 namespace filianore
 {
 
-    PointIlluminant::PointIlluminant(const Transform &_lightToWorld, const RGBSpectrum &_color, float _intensity, short _decayRate, const RGBSpectrum &_shadowColor)
+    PointIlluminant::PointIlluminant(const Transform &_lightToWorld, const PrincipalSpectrum &_color, float _intensity, short _decayRate, const PrincipalSpectrum &_shadowColor)
         : Illuminant(_lightToWorld, (int)IlluminantType::DeltaPoint, 1, _decayRate, _shadowColor), color(_color), intensity(_intensity)
     {
         posIllum = StaticArray<float, 3>(0.f);
         posIllum = _lightToWorld.PointTransform(posIllum);
     }
 
-    RGBSpectrum PointIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
-                                          VisibilityEvaluator *visEval) const
+    PrincipalSpectrum PointIlluminant::SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
+                                                VisibilityEvaluator *visEval) const
     {
         *wi = (posIllum - isect.p).Normalize();
         *pdf = 1.f;
@@ -22,9 +22,9 @@ namespace filianore
         return (color * intensity) / EvaluateDecayRate(posIllum - isect.p);
     }
 
-    RGBSpectrum PointIlluminant::Power() const
+    PrincipalSpectrum PointIlluminant::Power() const
     {
-        return RGBSpectrum(intensity * 4.f * Pi<float>);
+        return PrincipalSpectrum(intensity * 4.f * Pi<float>);
     }
 
     void PointIlluminant::PrepareIlluminant(const Scene &scene)

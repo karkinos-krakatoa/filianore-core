@@ -4,7 +4,7 @@
 #include "elemental.h"
 #include "ray.h"
 #include "../maths/transform.h"
-#include "../color/rgb.h"
+#include "../color/principalspectrum.h"
 
 namespace filianore
 {
@@ -79,7 +79,7 @@ namespace filianore
             shading.dndv = _dndv;
         }
 
-        RGBSpectrum Le(const StaticArray<float, 3> &w) const;
+        PrincipalSpectrum Le(const StaticArray<float, 3> &w) const;
 
         void ComputeScatteringFunctions(const Ray &ray);
         void SetShadingGeometry(const StaticArray<float, 3> &_dpdu, const StaticArray<float, 3> &_dpdv,

@@ -2,7 +2,7 @@
 #define _FRESNEL_H
 
 #include "../maths/static_array.h"
-#include "../color/rgb.h"
+#include "../color/principalspectrum.h"
 
 namespace filianore
 {
@@ -12,7 +12,7 @@ namespace filianore
     public:
         virtual ~Fresnel() {}
 
-        virtual RGBSpectrum Evaluate(float cosI) const = 0;
+        virtual PrincipalSpectrum Evaluate(float cosI) const = 0;
     };
 
 } // namespace filianore

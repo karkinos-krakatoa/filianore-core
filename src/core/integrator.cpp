@@ -8,9 +8,9 @@
 namespace filianore
 {
 
-    RGBSpectrum UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia)
+    PrincipalSpectrum UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia)
     {
-        RGBSpectrum L(0.f);
+        PrincipalSpectrum L(0.f);
 
         for (size_t i = 0; i < scene.illuminants.size(); i++)
         {
@@ -25,22 +25,22 @@ namespace filianore
         return L;
     }
 
-    RGBSpectrum EstimateDirect(const Interaction &it, const StaticArray<float, 2> &uShading, const Illuminant &illuminant, const StaticArray<float, 2> &uLight,
-                               const Scene &scene, Sampler &sampler, bool handleMedia, bool specular)
+    PrincipalSpectrum EstimateDirect(const Interaction &it, const StaticArray<float, 2> &uShading, const Illuminant &illuminant, const StaticArray<float, 2> &uLight,
+                                     const Scene &scene, Sampler &sampler, bool handleMedia, bool specular)
     {
         BxDFType bsdfFlags = specular ? BSDF_ALL : BxDFType(BSDF_ALL & ~BSDF_SPECULAR);
-        RGBSpectrum Ld(0);
+        PrincipalSpectrum Ld(0);
 
         // MIS - Illuminant
         StaticArray<float, 3> wi;
         float illumPdf = 0, scatteringPdf = 0;
         VisibilityEvaluator visEval;
 
-        RGBSpectrum Li = illuminant.SampleLi(it, uLight, &wi, &illumPdf, &visEval);
+        PrincipalSpectrum Li = illuminant.SampleLi(it, uLight, &wi, &illumPdf, &visEval);
         if (illumPdf > 0 && !Li.IsBlack())
         {
             // Evaluate BSDF for Illum Sample
-            RGBSpectrum f(0);
+            PrincipalSpectrum f(0);
 
             if (it.IsSurfaceInteraction())
             {
@@ -77,7 +77,7 @@ namespace filianore
         // MIS - BSDF
         if (!IsDeltaIlluminant(illuminant.types))
         {
-            RGBSpectrum f;
+            PrincipalSpectrum f;
             bool sampledSpecular = false;
             if (it.IsSurfaceInteraction())
             {
@@ -107,11 +107,11 @@ namespace filianore
 
                 SurfaceInteraction illuminantIsect;
                 Ray ray = it.KindleRay(wi);
-                RGBSpectrum Tr(1.f);
+                PrincipalSpectrum Tr(1.f);
 
                 bool foundSurfaceInteraction = scene.Intersect(ray, &illuminantIsect);
 
-                RGBSpectrum Li;
+                PrincipalSpectrum Li;
                 if (foundSurfaceInteraction)
                 {
                     if (illuminantIsect.primitive->GetAreaIlluminant() == &illuminant)

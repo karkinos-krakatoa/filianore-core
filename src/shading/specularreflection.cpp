@@ -4,12 +4,12 @@
 namespace filianore
 {
 
-    RGBSpectrum SpecularReflection::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
+    PrincipalSpectrum SpecularReflection::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
-        return RGBSpectrum(0.f);
+        return PrincipalSpectrum(0.f);
     }
 
-    RGBSpectrum SpecularReflection::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
+    PrincipalSpectrum SpecularReflection::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
     {
         *wi = StaticArray<float, 3>(-wo.x(), -wo.y(), wo.z());
         *pdf = 1.f;

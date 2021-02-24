@@ -11,9 +11,9 @@ namespace filianore
     {
     }
 
-    RGBSpectrum PathIntegrator::Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const
+    PrincipalSpectrum PathIntegrator::Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const
     {
-        RGBSpectrum L(0.f), throughput(1.f);
+        PrincipalSpectrum L(0.f), throughput(1.f);
         Ray ray(_ray);
         bool specularBounce = false;
         int bounces;
@@ -47,7 +47,7 @@ namespace filianore
 
             if (isect.bsdf->NumComponents(BxDFType(BSDF_ALL & ~BSDF_SPECULAR)) > 0)
             {
-                RGBSpectrum Ld = throughput * UniformSampleAllLights(isect, scene, sampler, false);
+                PrincipalSpectrum Ld = throughput * UniformSampleAllLights(isect, scene, sampler, false);
                 L += Ld;
             }
 
@@ -56,7 +56,7 @@ namespace filianore
             float pdf;
             BxDFType flags;
 
-            RGBSpectrum f = isect.bsdf->Sample(wo, &wi, sampler.Get2D(), &pdf, BSDF_ALL, &flags);
+            PrincipalSpectrum f = isect.bsdf->Sample(wo, &wi, sampler.Get2D(), &pdf, BSDF_ALL, &flags);
 
             if (f.IsBlack() || pdf == 0)
             {
@@ -74,10 +74,10 @@ namespace filianore
 
             ray = isect.KindleRay(wi);
 
-            RGBSpectrum rrBeta = throughput * etaScale;
-            if (rrBeta.MaxSpectralValue() < rrThreshold && bounces > 3)
+            PrincipalSpectrum rrBeta = throughput * etaScale;
+            if (rrBeta.MaxComponentValue() < rrThreshold && bounces > 3)
             {
-                float q = std::max(0.05f, 1.f - rrBeta.MaxSpectralValue());
+                float q = std::max(0.05f, 1.f - rrBeta.MaxComponentValue());
                 if (sampler.Get1D() < q)
                     break;
                 throughput /= 1.f - q;

@@ -49,6 +49,15 @@ namespace filianore
     template <typename T>
     class Texture;
 
+    enum class SpectrumType
+    {
+        REFLECTANCE,
+        ILLUMINANT
+    };
+
+    template <int nSpectrumSamples>
+    class BaseSpectrum;
+    class PrincipalSpectrum;
     class RGBSpectrum;
 
     class Medium;

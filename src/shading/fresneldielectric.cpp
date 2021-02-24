@@ -6,7 +6,7 @@
 namespace filianore
 {
 
-    RGBSpectrum FresnelDielectric::Evaluate(float cosI) const
+    PrincipalSpectrum FresnelDielectric::Evaluate(float cosI) const
     {
         float cosThetaI = Clamp<float>(cosThetaI, -1.f, 1.f);
 
