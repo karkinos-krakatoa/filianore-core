@@ -14,7 +14,8 @@ namespace filianore
         PrincipalSpectrum r = kr->Evaluate(*isect);
         r = r.SpectrumClamp();
 
-        isect->bsdf->Add(new SpecularReflection(r));
+        std::unique_ptr<BxDF> specRefl = std::make_unique<SpecularReflection>(r);
+        isect->bsdf->Add(specRefl);
     }
 
 } // namespace filianore

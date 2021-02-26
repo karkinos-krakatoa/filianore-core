@@ -1,6 +1,8 @@
 #ifndef _BSDF_H
 #define _BSDF_H
 
+#include <memory>
+#include <vector>
 #include "bxdf.h"
 #include "../maths/vec3_math.h"
 
@@ -14,9 +16,10 @@ namespace filianore
 
         ~BSDF() {}
 
-        void Add(BxDF *b)
+        void Add(std::unique_ptr<BxDF> &_bxdf)
         {
-            bxdfs[nBxDFs++] = b;
+            bxdfs.emplace_back(std::move(_bxdf));
+            nBxDFs++;
         }
 
         int NumComponents(BxDFType flags = BSDF_ALL) const;
@@ -40,7 +43,7 @@ namespace filianore
 
         int nBxDFs = 0;
         static constexpr int MaxBxDFs = 8;
-        BxDF *bxdfs[MaxBxDFs];
+        std::vector<std::unique_ptr<BxDF>> bxdfs;
     };
 
 } // namespace filianore

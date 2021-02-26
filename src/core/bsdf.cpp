@@ -82,7 +82,7 @@ namespace filianore
         {
             if (bxdfs[i]->MatchesFlags(flags) && count-- == 0)
             {
-                bxdf = bxdfs[i];
+                bxdf = bxdfs[i].get();
                 break;
             }
         }
@@ -120,7 +120,7 @@ namespace filianore
         {
             for (int i = 0; i < nBxDFs; ++i)
             {
-                if (bxdfs[i] != bxdf && bxdfs[i]->MatchesFlags(flags))
+                if (bxdfs[i].get() != bxdf && bxdfs[i]->MatchesFlags(flags))
                 {
                     *pdf += bxdfs[i]->Pdf(wo, wi);
                 }
