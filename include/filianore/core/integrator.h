@@ -3,6 +3,7 @@
 
 #include "primitive.h"
 #include "material.h"
+#include "renderparams.h"
 
 namespace filianore
 {
@@ -12,8 +13,13 @@ namespace filianore
     public:
         virtual ~Integrator() {}
 
+        Integrator(const RenderParams &_renderParams)
+            : renderParams(_renderParams) {}
+
         virtual void PrepareTheRenderer(const Scene &scene, Sampler &sampler) = 0;
         virtual PrincipalSpectrum Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const = 0;
+
+        RenderParams renderParams;
     };
 
     PrincipalSpectrum UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia = false);

@@ -142,6 +142,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/primitive.h
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/rect.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/renderparams.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampler.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampling.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/scene.h 

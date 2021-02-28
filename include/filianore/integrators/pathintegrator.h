@@ -10,8 +10,8 @@ namespace filianore
     class PathIntegrator : public Integrator
     {
     public:
-        PathIntegrator(int _diffuseRayDepth, int _specularRayDepth, float _rrThreshold = 1.f)
-            : diffuseRayDepth(_diffuseRayDepth), specularRayDepth(_specularRayDepth), rrThreshold(_rrThreshold)
+        PathIntegrator(const RenderParams &_renderParams, float _rrThreshold = 1.f)
+            : Integrator(_renderParams), rrThreshold(_rrThreshold)
         {
         }
 
@@ -20,8 +20,6 @@ namespace filianore
         PrincipalSpectrum Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const;
 
     private:
-        const int diffuseRayDepth;
-        const int specularRayDepth;
         const float rrThreshold;
     };
 
