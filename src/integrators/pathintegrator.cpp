@@ -32,7 +32,7 @@ namespace filianore
                 }
             }
 
-            if (!hitFound || bounces >= maxDepth)
+            if (!hitFound)
             {
                 break;
             }
@@ -59,6 +59,11 @@ namespace filianore
             PrincipalSpectrum f = isect.bsdf->Sample(wo, &wi, sampler.Get2D(), &pdf, BSDF_ALL, &flags);
 
             if (f.IsBlack() || pdf == 0)
+            {
+                break;
+            }
+
+            if (((diffuseRayDepth == bounces) && (flags & BSDF_DIFFUSE)) || ((specularRayDepth == bounces) && (flags & BSDF_SPECULAR)))
             {
                 break;
             }
