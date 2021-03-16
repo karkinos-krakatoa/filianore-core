@@ -7,8 +7,7 @@ namespace filianore
     bool BVH::IntersectMain(const Ray &_ray, SurfaceInteraction *isect, bool occlusion) const
     {
         Ray ray = _ray;
-        *isect = SurfaceInteraction(0, StaticArray<float, 3>(), StaticArray<float, 2>(), StaticArray<float, 3>(),
-                                    StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 3>(), ray.dir.Neg(), NULL, 0);
+        *isect = SurfaceInteraction(0, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), ray.dir.Neg(), NULL, 0);
 
         isect->t = Infinity<float>();
         isect->shape = NULL;

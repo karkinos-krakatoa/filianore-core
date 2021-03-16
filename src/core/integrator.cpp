@@ -45,7 +45,7 @@ namespace filianore
             if (it.IsSurfaceInteraction())
             {
                 const SurfaceInteraction &isect = (const SurfaceInteraction &)it;
-                f = isect.bsdf->Evaluate(isect.wo, wi, bsdfFlags) * AbsDot(wi, isect.shading.n);
+                f = isect.bsdf->Evaluate(isect.wo, wi, bsdfFlags) * AbsDot(wi, isect.n);
                 scatteringPdf = isect.bsdf->Pdf(isect.wo, wi, bsdfFlags);
             }
 

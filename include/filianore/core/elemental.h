@@ -1,8 +1,26 @@
 #ifndef _ELEMENTAL_H
 #define _ELEMENTAL_H
 
+#include <stdio.h>
 #include <string>
 #include <memory>
+#include <cstring>
+#ifdef FILIANORE_HAVE_MALLOC_H
+#include <malloc.h> // for _alloca, memalign
+#endif
+#ifdef FILIANORE_HAVE_ALLOCA_H
+#include <alloca.h>
+#endif
+
+#if defined(_WIN32) || defined(_WIN64)
+#define FILIANORE_IS_WINDOWS
+#endif
+
+#ifndef FILIANORE_L1_CACHE_LINE_SIZE
+#define FILIANORE_L1_CACHE_LINE_SIZE 64
+#endif
+
+#define ALLOCA(TYPE, COUNT) (TYPE *)alloca((COUNT) * sizeof(TYPE))
 
 namespace filianore
 {
@@ -23,6 +41,8 @@ namespace filianore
 
     // Forward Declrs..
     class Ray;
+    template <typename T>
+    class Rect;
     struct AABB;
     class Transform;
 
@@ -75,8 +95,23 @@ namespace filianore
 
     class MemoryArena;
 
-    class Integrator;
+    class SamplerIntegrator;
     class PathIntegrator;
+
+    // Global Inline Functions
+    inline uint32_t FloatToBits(float f)
+    {
+        uint32_t ui;
+        memcpy(&ui, &f, sizeof(float));
+        return ui;
+    }
+
+    inline float BitsToFloat(uint32_t ui)
+    {
+        float f;
+        memcpy(&f, &ui, sizeof(uint32_t));
+        return f;
+    }
 
 } // namespace filianore
 

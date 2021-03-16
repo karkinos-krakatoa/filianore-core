@@ -258,7 +258,7 @@ namespace filianore
 		return false;
 	}
 
-	// Inverse - Credit to PBRT for this one
+	// Inverse - Credit to FILIANORE for this one
 	template <typename T, size_t M, size_t N>
 	auto Inverse(const Matrix<float, M, N> &a)
 	{

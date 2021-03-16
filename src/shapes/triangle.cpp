@@ -14,60 +14,33 @@ namespace filianore
 
     bool Triangle::Intersect(const Ray &ray, SurfaceInteraction *isect) const
     {
-        const StaticArray<float, 3> &p1 = v1.vertex;
-        const StaticArray<float, 3> &p2 = v2.vertex;
-        const StaticArray<float, 3> &p3 = v3.vertex;
+        StaticArray<float, 3> e1 = v2.vertex - v1.vertex;
+        StaticArray<float, 3> e2 = v3.vertex - v1.vertex;
 
-        StaticArray<float, 3> e1 = p2 - p1;
-        StaticArray<float, 3> e2 = p3 - p1;
+        StaticArray<float, 3> n = Cross(e1, e2);
 
-        StaticArray<float, 3> s1 = Cross(ray.dir, e2);
-        float det = Dot(s1, e1);
+        float det = -Dot(ray.dir, n);
 
-        if (det == 0.0f)
-            return false;
+        StaticArray<float, 3> ao = ray.origin - v1.vertex;
+        StaticArray<float, 3> dao = Cross(ao, ray.dir);
 
-        float invDet = 1.f / det;
+        float u = Dot(e2, dao) / det;
+        float v = -Dot(e1, dao) / det;
+        float t = Dot(ao, n) / det;
 
-        StaticArray<float, 3> s = ray.origin - p1;
-        float b1 = Dot(s, s1) * invDet;
-        if (b1 < 0.0f || b1 > 1.0f)
-            return false;
-
-        StaticArray<float, 3> s2 = Cross(s, e1);
-        float b2 = Dot(ray.dir, s2) * invDet;
-        if (b2 < 0.0f || b1 + b2 > 1.0f)
-            return false;
-
-        float b0 = 1.f - b1 - b2;
-
-        float thit = Dot(e2, s2) * invDet;
-        if (thit < ray.tMin || thit > ray.tMax)
-            return false;
-
-        StaticArray<float, 3> dpdu, dpdv;
-        StaticArray<float, 3> dp02 = p1 - p3, dp12 = p2 - p3;
-        StaticArray<float, 2> duv02 = v1.uv - v3.uv, duv12 = v2.uv - v3.uv;
-        float determinant = (duv02.params[0] * duv12.params[1]) * (duv02.params[1] - duv12.params[0]);
-        if (determinant == 0)
+        if ((t < ray.tMax && t > ray.tMin) && u > 0 && v > 0 && (u + v) < 1.f)
         {
-            CoordinateSystem((Cross(e1, e2)), &dpdu, &dpdv);
-        }
-        else
-        {
-            float inv = 1.f / determinant;
-            dpdu = (dp02 * duv12.params[1] - dp12 * duv02.params[1]) * inv;
-            dpdv = (dp02 * -duv12.params[0] + dp12 * duv02.params[0]) * inv;
+            StaticArray<float, 3> revRay = ray.dir;
+            *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
+
+            isect->p = ray.PointAtT(t);
+            isect->uv = StaticArray<float, 2>(u, v);
+            isect->n = Cross(e1, e2).Normalize();
+
+            return true;
         }
 
-        // Start filling the SurfaceInteraction structure
-        StaticArray<float, 3> pHit = p1 * b0 + p2 * b1 + p3 * b2;
-        StaticArray<float, 2> uvHit = v1.uv * b0 + v2.uv * b1 + v3.uv * b2;
-        StaticArray<float, 3> revRay = ray.dir;
-
-        *isect = SurfaceInteraction(thit, pHit, uvHit, dpdu, dpdv, StaticArray<float, 3>(), StaticArray<float, 3>(), revRay.Neg(), this, 0.f);
-
-        return true;
+        return false;
     }
 
     StaticArray<float, 3> Triangle::Centroid() const

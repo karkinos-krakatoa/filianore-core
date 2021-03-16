@@ -5,35 +5,37 @@
 
 namespace filianore
 {
-    struct Rect
+    template <typename T>
+    class Rect
     {
-        StaticArray<float, 2> pMin, pMax;
+    public:
+        StaticArray<T, 2> pMin, pMax;
 
         Rect() = default;
 
-        FILIANORE_INLINE Rect(const StaticArray<float, 2> &p) : pMin(p), pMax(p) {}
+        FILIANORE_INLINE Rect(const StaticArray<T, 2> &p) : pMin(p), pMax(p) {}
 
-        FILIANORE_INLINE Rect(const StaticArray<float, 2> &_min, const StaticArray<float, 2> &_max)
+        FILIANORE_INLINE Rect(const StaticArray<T, 2> &_min, const StaticArray<T, 2> &_max)
             : pMin(_min), pMax(_max)
         {
         }
 
         FILIANORE_INLINE static Rect Full()
         {
-            float maxF = std::numeric_limits<float>::max();
+            T maxF = std::numeric_limits<T>::max();
 
             return Rect(
-                StaticArray<float, 2>(-maxF, -maxF),
-                StaticArray<float, 2>(maxF, maxF));
+                StaticArray<T, 2>(-maxF, -maxF),
+                StaticArray<T, 2>(maxF, maxF));
         }
 
         FILIANORE_INLINE static Rect Empty()
         {
-            float maxF = std::numeric_limits<float>::max();
+            T maxF = std::numeric_limits<T>::max();
 
             return Rect(
-                StaticArray<float, 2>(maxF, maxF),
-                StaticArray<float, 2>(-maxF, -maxF));
+                StaticArray<T, 2>(maxF, maxF),
+                StaticArray<T, 2>(-maxF, -maxF));
         }
 
         FILIANORE_INLINE void Shrink(const Rect &box)
@@ -45,7 +47,7 @@ namespace filianore
             pMax.params[1] = std::min(pMax.y(), box.pMax.y());
         }
 
-        FILIANORE_INLINE void Extend(const StaticArray<float, 2> &p)
+        FILIANORE_INLINE void Extend(const StaticArray<T, 2> &p)
         {
             pMin.params[0] = std::min(pMin.x(), p.x());
             pMin.params[1] = std::min(pMin.y(), p.y());
@@ -63,24 +65,24 @@ namespace filianore
             pMax.params[1] = std::max(pMax.y(), box.pMax.y());
         }
 
-        FILIANORE_INLINE StaticArray<float, 2> Diagonal() const
+        FILIANORE_INLINE StaticArray<T, 2> Diagonal() const
         {
             return pMax - pMin;
         }
 
-        FILIANORE_INLINE StaticArray<float, 2> Center() const
+        FILIANORE_INLINE StaticArray<T, 2> Center() const
         {
             return (pMax + pMin) * 0.5f;
         }
 
-        FILIANORE_INLINE float SurfaceArea() const
+        FILIANORE_INLINE T SurfaceArea() const
         {
             return (pMax.x() - pMin.x()) * (pMax.y() - pMin.y());
         }
 
         FILIANORE_INLINE int LargestAxis() const
         {
-            StaticArray<float, 2> d = Diagonal();
+            StaticArray<T, 2> d = Diagonal();
             int axis = 0;
             if (d.x() < d.y())
                 axis = 1;
@@ -92,9 +94,9 @@ namespace filianore
             return Diagonal().params[LargestAxis()];
         }
 
-        FILIANORE_INLINE StaticArray<float, 2> Offset(const StaticArray<float, 2> &p) const
+        FILIANORE_INLINE StaticArray<T, 2> Offset(const StaticArray<T, 2> &p) const
         {
-            StaticArray<float, 2> o = p - pMin;
+            StaticArray<T, 2> o = p - pMin;
             if (pMax.x() > pMin.x())
                 o.params[0] /= pMax.x() - pMin.x();
             if (pMax.y() > pMin.y())

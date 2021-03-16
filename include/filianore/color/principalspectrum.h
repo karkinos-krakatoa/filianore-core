@@ -7,7 +7,7 @@ namespace filianore
 {
     static const int sampledWavelengthStart = 400;
     static const int sampledWavelengthEnd = 700;
-    static const int nSpectralSamples = 100;
+    static const int nSpectralSamples = 60;
 
     class PrincipalSpectrum : public BaseSpectrum<nSpectralSamples>
     {
