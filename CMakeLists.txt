@@ -106,11 +106,13 @@ add_library(filianore STATIC
 
     src/integrators/pathintegrator.cpp
 
+    src/materials/matte.cpp
     src/materials/lambert.cpp
     src/materials/mirror.cpp
 
     src/samplers/whitenoise.cpp
 
+    src/shading/orennayarbrdf.cpp
     src/shading/fresneldielectric.cpp
     src/shading/speculartransmission.cpp
     src/shading/specularreflection.cpp
@@ -204,6 +206,7 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/integrators)
 
 install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/matte.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/mirror.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/materials)
@@ -221,6 +224,7 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
 
 install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/orennayarbrdf.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/lambertreflection.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/specularreflection.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresneldielectric.h 
