@@ -116,7 +116,7 @@ add_library(filianore STATIC
     src/shading/fresneldielectric.cpp
     src/shading/speculartransmission.cpp
     src/shading/specularreflection.cpp
-    src/shading/lambertreflection.cpp
+    src/shading/lambertbrdf.cpp
 
     src/shapes/triangle.cpp
 
@@ -225,7 +225,7 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/orennayarbrdf.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/lambertreflection.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/lambertbrdf.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/specularreflection.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresneldielectric.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/speculartransmission.h 

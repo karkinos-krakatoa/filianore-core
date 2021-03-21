@@ -1,15 +1,15 @@
-#ifndef _LAMBERT_REFLECTION_H
-#define _LAMBERT_REFLECTION_H
+#ifndef _LAMBERT_BRDF_H
+#define _LAMBERT_BRDF_H
 
 #include "../core/bxdf.h"
 
 namespace filianore
 {
 
-    class LambertReflection : public BxDF
+    class LambertBRDF : public BxDF
     {
     public:
-        LambertReflection(const PrincipalSpectrum &_R)
+        LambertBRDF(const PrincipalSpectrum &_R)
             : R(_R), BxDF(BxDFType(BSDF_REFLECTION | BSDF_DIFFUSE))
         {
         }

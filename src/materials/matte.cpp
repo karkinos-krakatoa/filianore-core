@@ -1,6 +1,6 @@
 #include "filianore/materials/matte.h"
 #include "filianore/shading/orennayarbrdf.h"
-#include "filianore/shading/lambertreflection.h"
+#include "filianore/shading/lambertbrdf.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/bsdf.h"
 #include "filianore/core/texture.h"
@@ -18,8 +18,8 @@ namespace filianore
 
         if (rough == 0)
         {
-            std::unique_ptr<BxDF> lambertBrdf = std::make_unique<LambertReflection>(r);
-            isect->bsdf->Add(lambertBrdf);
+            std::unique_ptr<BxDF> lambBRDF = std::make_unique<LambertBRDF>(r);
+            isect->bsdf->Add(lambBRDF);
         }
         else
         {
