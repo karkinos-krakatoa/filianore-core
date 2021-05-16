@@ -3,8 +3,6 @@
 
 #include <cassert>
 #include <stack>
-#include <functional>
-#include <iostream>
 #include <optional>
 
 namespace filianore
@@ -40,10 +38,6 @@ namespace filianore
     class TopDownBuilder
     {
     public:
-        size_t taskSpawnThreshold = 1024;
-        size_t maxDepth = 64;
-        size_t maxLeafSize = 16;
-
         ~TopDownBuilder() {}
 
         template <typename... Args>

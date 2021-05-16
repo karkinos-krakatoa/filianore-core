@@ -7,6 +7,11 @@
 
 namespace filianore
 {
+    static constexpr size_t maxDepth = 64;
+    static constexpr size_t maxLeafSize = 16;
+    static constexpr size_t taskSpawnThreshold = 1024;
+    static constexpr float traversalCost = 1.f;
+
     template <size_t Bits>
     struct SizedIntegerType
     {
