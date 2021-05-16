@@ -1,9 +1,17 @@
 #ifndef _BVHX_UTILS_H
 #define _BVHX_UTILS_H
 
+#include <cstring>
+#include <cstdint>
+#include <atomic>
+#include <memory>
+#include <queue>
+#include <algorithm>
 #include <cmath>
 #include <climits>
 #include <type_traits>
+#include "../core/aabb.h"
+#include "../core/primitive.h"
 
 namespace filianore
 {
@@ -37,6 +45,32 @@ namespace filianore
         using Signed = int16_t;
         using Unsigned = uint16_t;
     };
+
+    std::pair<std::unique_ptr<AABB[]>, std::unique_ptr<StaticArray<float, 3>[]>> ComputeBoundingBoxesAndCenters(const std::vector<std::shared_ptr<Primitive>> &primitives, size_t primitiveCount)
+    {
+        std::unique_ptr<AABB[]> bbounds = std::make_unique<AABB[]>(primitiveCount);
+        std::unique_ptr<StaticArray<float, 3>[]> centroids = std::make_unique<StaticArray<float, 3>[]>(primitiveCount);
+
+#pragma omp parallel for
+        for (size_t i = 0; i < primitiveCount; ++i)
+        {
+            bbounds[i] = primitives[i]->WorldBound();
+            centroids[i] = primitives[i]->Centroid();
+        }
+
+        return std::make_pair(std::move(bbounds), std::move(centroids));
+    }
+
+    AABB ComputeGlobalBounds(const AABB *bbounds, size_t count)
+    {
+        AABB bbox = AABB::Empty();
+        for (size_t i = 0; i < count; ++i)
+        {
+            bbox.Extend(bbounds[i]);
+        }
+
+        return bbox;
+    }
 }
 
 #endif
