@@ -99,7 +99,8 @@ namespace filianore
     class PathIntegrator;
 
     // Global Inline Functions
-    inline uint32_t FloatToBits(float f)
+    inline uint32_t
+    FloatToBits(float f)
     {
         uint32_t ui;
         memcpy(&ui, &f, sizeof(float));

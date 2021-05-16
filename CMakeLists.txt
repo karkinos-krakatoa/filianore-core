@@ -149,6 +149,13 @@ endif ()
 set(FULL_CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/filianore)
 
 install(FILES 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/utils.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/bvhx.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/topdownbuilder.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuilder.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvhx)
+
+install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/accel/bvh.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/accel)
 
