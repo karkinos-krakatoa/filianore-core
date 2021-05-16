@@ -154,6 +154,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/topdownbuilder.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuildtask.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuilder.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/primitiveintersectors.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvhx)
 
 install(FILES 
