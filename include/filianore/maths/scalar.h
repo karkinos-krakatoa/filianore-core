@@ -29,6 +29,18 @@ namespace filianore
 	}
 
 	template <typename T>
+	const T &RobustMin(const T &x, const T &y)
+	{
+		return x < y ? x : y;
+	}
+
+	template <typename T>
+	const T &RobustMax(const T &x, const T &y)
+	{
+		return x > y ? x : y;
+	}
+
+	template <typename T>
 	FILIANORE_INLINE T MaxScalar()
 	{
 		return std::numeric_limits<T>::max();
