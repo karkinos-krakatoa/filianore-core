@@ -47,10 +47,10 @@ namespace filianore
     };
 
     template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
-    float AddUlpMagnitude(T x, unsigned ulps)
+    T AddUlpMagnitude(T x, unsigned ulps)
     {
         using U = typename SizedIntegerType<sizeof(T) * CHAR_BIT>::Unsigned;
-        return std::isfinite(x) ? as<T>(as<U>(x) + ulps) : x;
+        return std::isfinite(x) ? T(U(x) + ulps) : x;
     }
 
     std::pair<std::unique_ptr<AABB[]>, std::unique_ptr<StaticArray<float, 3>[]>> ComputeBoundingBoxesAndCenters(const std::vector<std::shared_ptr<Primitive>> &primitives, size_t primitiveCount)
