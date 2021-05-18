@@ -110,6 +110,8 @@ namespace filianore
     class SamplerIntegrator;
     class PathIntegrator;
 
+    class RayTraverser;
+
     // Global Inline Functions
     inline uint32_t
     FloatToBits(float f)

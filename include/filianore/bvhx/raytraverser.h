@@ -4,7 +4,7 @@
 #include <cassert>
 #include "bvhx.h"
 #include "nodeintersectors.h"
-#include "primitiveintersectors.h"
+#include "utils.h"
 
 namespace filianore
 {
@@ -42,10 +42,11 @@ namespace filianore
             }
         };
 
-        FILIANORE_INLINE std::optional<PrimitiveIntersectionResult> &IntersectLeaf(
+        template <typename PrimitiveIntersector>
+        FILIANORE_INLINE std::optional<typename PrimitiveIntersector::PrimitiveIntersectionResult> &IntersectLeaf(
             const Bvh::BvhNode &node,
             const Ray &ray,
-            std::optional<PrimitiveIntersectionResult> &bestHit,
+            std::optional<typename PrimitiveIntersector::Result> &bestHit,
             PrimitiveIntersector &primitiveIntersector) const
         {
             assert(node.IsLeaf());
@@ -54,7 +55,7 @@ namespace filianore
 
             for (size_t i = begin; i < end; ++i)
             {
-                std::optional<PrimitiveIntersectionResult> hit = primitiveIntersector.Intersect(i, ray);
+                std::optional<typename PrimitiveIntersector::Result> hit = primitiveIntersector.Intersect(i, ray);
                 if (hit)
                 {
                     bestHit = hit;
@@ -68,11 +69,12 @@ namespace filianore
             return bestHit;
         }
 
-        FILIANORE_INLINE std::optional<PrimitiveIntersectionResult> Intersect(
+        template <typename PrimitiveIntersector>
+        FILIANORE_INLINE std::optional<typename PrimitiveIntersector::Result> Intersect(
             const Ray &ray,
             PrimitiveIntersector &primitiveIntersector) const
         {
-            auto bestHit = std::optional<PrimitiveIntersectionResult>(std::nullopt);
+            auto bestHit = std::optional<typename PrimitiveIntersector::Result>(std::nullopt);
 
             if (Likely(bvh.nodes[0].IsLeaf()))
             {
@@ -159,7 +161,8 @@ namespace filianore
         {
         }
 
-        FILIANORE_INLINE std::optional<PrimitiveIntersectionResult> Traverse(
+        template <typename PrimitiveIntersector>
+        FILIANORE_INLINE std::optional<typename PrimitiveIntersector::Result> Traverse(
             const Ray &ray, PrimitiveIntersector &intersector) const
         {
             return Intersect(ray, intersector);

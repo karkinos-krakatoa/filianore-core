@@ -3,23 +3,21 @@
 
 #include <optional>
 #include "../core/ray.h"
-#include "bvhx.h"
-#include "../core/primitive.h"
-#include "../core/interaction.h"
 
 namespace filianore
 {
 
-    struct PrimitiveIntersectionResult
-    {
-        size_t primitiveIndex;
-        SurfaceInteraction isect;
-
-        float Distance() const { return isect.t; }
-    };
-
+    template <typename Primitive, typename SurfaceInteraction>
     struct PrimitiveIntersector
     {
+        struct PrimitiveIntersectionResult
+        {
+            size_t primitiveIndex;
+            SurfaceInteraction isect;
+
+            float Distance() const { return isect.t; }
+        };
+
         PrimitiveIntersector(const Bvh &_bvh, const std::vector<std::shared_ptr<Primitive>> &_primitives, bool _anyHit)
             : bvh(_bvh), primitives(_primitives), anyHit(_anyHit)
         {
