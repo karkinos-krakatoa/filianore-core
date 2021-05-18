@@ -155,6 +155,8 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuildtask.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuilder.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/primitiveintersectors.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/nodeintersectors.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/raytraverser.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvhx)
 
 install(FILES 

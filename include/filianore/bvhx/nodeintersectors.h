@@ -51,7 +51,6 @@ namespace filianore
                 RobustMin(RobustMin(exit.params[0], exit.params[1]), RobustMin(exit.params[2], ray.tMax)));
         }
 
-    protected:
         ~RobustNodeIntersector() {}
     };
 }

@@ -12,6 +12,26 @@
 #include <alloca.h>
 #endif
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
+#if defined(_MSC_VER)
+#define FILIANORE_NOINLINE __declspec(noinline)
+#define FILIANORE_INLINE __forceinline
+#else
+#define FILIANORE_NOINLINE __attribute__((noinline))
+#define FILIANORE_INLINE __attribute__((always_inline))
+#endif
+
+#if defined(__GNUC__) || defined(__clang__)
+#define Likely(x) __builtin_expect(x, true)
+#define Unlikely(x) __builtin_expect(x, false)
+#else
+#define Likely(x) x
+#define Unlikely(x) x
+#endif
+
 #if defined(_WIN32) || defined(_WIN64)
 #define FILIANORE_IS_WINDOWS
 #endif
@@ -24,14 +44,6 @@
 
 namespace filianore
 {
-
-#if defined(_MSC_VER)
-#define FILIANORE_NOINLINE __declspec(noinline)
-#define FILIANORE_INLINE __forceinline
-#else
-#define FILIANORE_NOINLINE __attribute__((noinline))
-#define FILIANORE_INLINE __attribute__((always_inline))
-#endif
 
     enum class TransportMode
     {
