@@ -80,6 +80,9 @@ ENDIF ()
 add_library(filianore STATIC
     src/accel/bvh.cpp
 
+    src/bvhx/primitiveintersectors.cpp
+    src/bvhx/raytraverser.cpp
+
     src/cameras/physical.cpp
   
     src/color/spectruminits.cpp
@@ -154,6 +157,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/topdownbuilder.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuildtask.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuilder.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/primitiveintersectionresult.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/primitiveintersectors.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/nodeintersectors.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/raytraverser.h 

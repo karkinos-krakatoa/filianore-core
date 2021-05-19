@@ -110,7 +110,9 @@ namespace filianore
     class SamplerIntegrator;
     class PathIntegrator;
 
+    class Bvh;
     class RayTraverser;
+    struct PrimitiveIntersector;
 
     // Global Inline Functions
     inline uint32_t
