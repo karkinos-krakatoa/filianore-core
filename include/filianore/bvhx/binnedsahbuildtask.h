@@ -175,7 +175,7 @@ namespace filianore
             {
                 size_t firstChild;
 
-#pragma omp atomic capture
+                //#pragma omp atomic capture
                 {
                     firstChild = bvh.nodeCount;
                     bvh.nodeCount += 2;

@@ -46,19 +46,19 @@ namespace filianore
         using Unsigned = uint16_t;
     };
 
-    template <typename T, std::enable_if_t<std::is_floating_point<T>::value, int> = 0>
-    T AddUlpMagnitude(T x, unsigned ulps)
+    template <std::enable_if_t<std::is_floating_point<float>::value, int> = 0>
+    float AddUlpMagnitude(float x, unsigned ulps)
     {
-        using U = typename SizedIntegerType<sizeof(T) * CHAR_BIT>::Unsigned;
-        return std::isfinite(x) ? T(U(x) + ulps) : x;
+        using U = typename SizedIntegerType<sizeof(float) * CHAR_BIT>::Unsigned;
+        return std::isfinite(x) ? float(U(x) + ulps) : x;
     }
 
-    std::pair<std::unique_ptr<AABB[]>, std::unique_ptr<StaticArray<float, 3>[]>> ComputeBoundingBoxesAndCenters(const std::vector<std::shared_ptr<Primitive>> &primitives, size_t primitiveCount)
+    inline std::pair<std::unique_ptr<AABB[]>, std::unique_ptr<StaticArray<float, 3>[]>> ComputeBoundingBoxesAndCenters(const std::vector<std::shared_ptr<Primitive>> &primitives, size_t primitiveCount)
     {
         std::unique_ptr<AABB[]> bbounds = std::make_unique<AABB[]>(primitiveCount);
         std::unique_ptr<StaticArray<float, 3>[]> centroids = std::make_unique<StaticArray<float, 3>[]>(primitiveCount);
 
-#pragma omp parallel for
+        //#pragma omp parallel for
         for (size_t i = 0; i < primitiveCount; ++i)
         {
             bbounds[i] = primitives[i]->WorldBound();
@@ -68,10 +68,10 @@ namespace filianore
         return std::make_pair(std::move(bbounds), std::move(centroids));
     }
 
-    AABB ComputeGlobalBounds(const AABB *bbounds, size_t count)
+    inline AABB ComputeGlobalBounds(const AABB *bbounds, size_t count)
     {
-        AABB bbox = AABB::Empty();
-        for (size_t i = 0; i < count; ++i)
+        AABB bbox = bbounds[0];
+        for (size_t i = 1; i < count; ++i)
         {
             bbox.Extend(bbounds[i]);
         }

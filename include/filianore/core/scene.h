@@ -14,22 +14,19 @@ namespace filianore
     public:
         Scene() {}
 
-        Scene(const std::shared_ptr<Primitive> &_scenePrims, const std::vector<std::shared_ptr<Illuminant>> &_illuminants);
-
-        const AABB &WorldBound() const
-        {
-            return worldBound;
-        }
+        Scene(
+            const std::shared_ptr<RayTraverser> &_traverser,
+            const std::shared_ptr<PrimitiveIntersector> &_primIntersector,
+            const std::vector<std::shared_ptr<Illuminant>> &_illuminants);
 
         bool Intersect(const Ray &ray, SurfaceInteraction *isect) const;
-
-        bool IntersectP(const Ray &ray) const;
 
         std::vector<std::shared_ptr<Illuminant>> illuminants;
 
     private:
         const std::shared_ptr<Primitive> scenePrims;
-        AABB worldBound;
+        std::shared_ptr<RayTraverser> traverser;
+        std::shared_ptr<PrimitiveIntersector> primIntersector;
     };
 
 } // namespace filianore

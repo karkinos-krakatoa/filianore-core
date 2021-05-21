@@ -28,25 +28,20 @@ namespace filianore
             size_t WorkSize() const { return end - begin; }
         };
 
-        std::optional<std::pair<WorkItem, WorkItem>> Build(const WorkItem &workItem)
-        {
-            return std::nullopt;
-        }
+        virtual std::optional<std::pair<WorkItem, WorkItem>> Build(const WorkItem &workItem) = 0;
     };
 
     // Base class for Top-Down BVH Builders
     class TopDownBuilder
     {
     public:
+        using WorkItem = TopDownBuildTask::WorkItem;
         ~TopDownBuilder() {}
 
-        template <typename... Args>
-        void RunTask(TopDownBuildTask &task, Args &&...args)
+        void RunTask(TopDownBuildTask &task, WorkItem workItemArgs)
         {
-            using WorkItem = TopDownBuildTask::WorkItem;
-
             std::stack<WorkItem> workToDo;
-            workToDo.emplace(std::forward<Args &&>(args)...);
+            workToDo.push(workItemArgs);
 
             while (!workToDo.empty())
             {
@@ -68,10 +63,10 @@ namespace filianore
                     WorkItem firstItem = moreWork->first;
                     if (firstItem.WorkSize() > taskSpawnThreshold)
                     {
-                        TopDownBuildTask newTask(task);
-#pragma omp task firstprivate(newTask, firstItem)
+                        //TopDownBuildTask newTask = task;
+                        //#pragma omp task firstprivate(newTask, firstItem)
                         {
-                            RunTask(newTask, firstItem);
+                            RunTask(task, firstItem);
                         }
                     }
                     else

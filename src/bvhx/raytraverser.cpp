@@ -36,7 +36,7 @@ namespace filianore
     {
         auto bestHit = std::optional<PrimitiveIntersectionResult>(std::nullopt);
 
-        if (Likely(bvh.nodes[0].IsLeaf()))
+        if (Unlikely(bvh.nodes[0].IsLeaf()))
         {
             return IntersectLeaf(bvh.nodes[0], ray, bestHit, primitiveIntersector);
         }
@@ -54,7 +54,7 @@ namespace filianore
 
             if (distanceLeft.first <= distanceLeft.second)
             {
-                if (Likely(leftChild->IsLeaf()))
+                if (Unlikely(leftChild->IsLeaf()))
                 {
                     auto iresult = IntersectLeaf(*leftChild, ray, bestHit, primitiveIntersector) && primitiveIntersector.anyHit;
                     if (iresult)
@@ -71,7 +71,7 @@ namespace filianore
 
             if (distanceRight.first <= distanceRight.second)
             {
-                if (Likely(rightChild->IsLeaf()))
+                if (Unlikely(rightChild->IsLeaf()))
                 {
                     auto iresult = IntersectLeaf(*rightChild, ray, bestHit, primitiveIntersector) && primitiveIntersector.anyHit;
                     if (iresult)

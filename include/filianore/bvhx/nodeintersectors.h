@@ -47,8 +47,8 @@ namespace filianore
             exit.params[2] = IntersectAxis(2, node.bounds[2 * 2 + 1 - octant[2]], ray, false);
 
             return std::make_pair(
-                RobustMax(RobustMax(entry.params[0], entry.params[1]), RobustMax(entry.params[2], ray.tMin)),
-                RobustMin(RobustMin(exit.params[0], exit.params[1]), RobustMin(exit.params[2], ray.tMax)));
+                RobustMax(entry.params[0], RobustMax(entry.params[1], RobustMax(entry.params[2], ray.tMin))),
+                RobustMin(exit.params[0], RobustMin(exit.params[1], RobustMin(exit.params[2], ray.tMax))));
         }
 
         ~RobustNodeIntersector() {}
