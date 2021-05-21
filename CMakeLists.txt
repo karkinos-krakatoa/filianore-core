@@ -82,6 +82,7 @@ add_library(filianore STATIC
 
     src/bvhx/primitiveintersectors.cpp
     src/bvhx/raytraverser.cpp
+    src/bvhx/utils.cpp
 
     src/cameras/physical.cpp
   
