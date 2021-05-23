@@ -30,15 +30,12 @@ namespace filianore
             bvh.nodeCount = 1;
             bvh.nodes[0].AABB_Proxy() = globalBounds;
 
-            //#pragma omp parallel
             {
-                //#pragma omp for
                 for (size_t i = 0; i < primitiveCount; ++i)
                 {
                     bvh.primitiveIndices[i] = i;
                 }
 
-                //#pragma omp single
                 {
                     BinnedSahBuildTask firstTask(bvh, bbounds, centroids);
                     WorkItem workItem(0, 0, primitiveCount, 0);

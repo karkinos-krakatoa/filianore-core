@@ -80,6 +80,7 @@ ENDIF ()
 add_library(filianore STATIC
     src/accel/bvh.cpp
 
+    src/bvhx/nodeintersectors.cpp
     src/bvhx/primitiveintersectors.cpp
     src/bvhx/raytraverser.cpp
     src/bvhx/utils.cpp

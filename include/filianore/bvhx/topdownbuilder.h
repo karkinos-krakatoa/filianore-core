@@ -47,7 +47,7 @@ namespace filianore
             {
                 WorkItem workItem = workToDo.top();
 
-                assert(workItem.depth <= maxDepth);
+                assert(workItem.depth <= 64);
                 workToDo.pop();
 
                 std::optional<std::pair<WorkItem, WorkItem>> moreWork = task.Build(workItem);
@@ -61,10 +61,8 @@ namespace filianore
                     workToDo.push(moreWork->second);
 
                     WorkItem firstItem = moreWork->first;
-                    if (firstItem.WorkSize() > taskSpawnThreshold)
+                    if (firstItem.WorkSize() > 1024)
                     {
-                        //TopDownBuildTask newTask = task;
-                        //#pragma omp task firstprivate(newTask, firstItem)
                         {
                             RunTask(task, firstItem);
                         }

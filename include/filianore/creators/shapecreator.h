@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _SHAPE_CREATOR_H
+#define _SHAPE_CREATOR_H
 
 #include "../core/elemental.h"
 #include <vector>
@@ -15,3 +16,5 @@ namespace filianore
     };
 
 } // namespace filianore
+
+#endif

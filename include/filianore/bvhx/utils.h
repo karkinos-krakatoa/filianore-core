@@ -58,7 +58,6 @@ namespace filianore
         std::unique_ptr<AABB[]> bbounds = std::make_unique<AABB[]>(primitiveCount);
         std::unique_ptr<StaticArray<float, 3>[]> centroids = std::make_unique<StaticArray<float, 3>[]>(primitiveCount);
 
-        //#pragma omp parallel for
         for (size_t i = 0; i < primitiveCount; ++i)
         {
             bbounds[i] = primitives[i]->WorldBound();
@@ -70,8 +69,8 @@ namespace filianore
 
     inline AABB ComputeGlobalBounds(const AABB *bbounds, size_t count)
     {
-        AABB bbox = bbounds[0];
-        for (size_t i = 1; i < count; ++i)
+        AABB bbox = AABB::Empty();
+        for (size_t i = 0; i < count; ++i)
         {
             bbox.Extend(bbounds[i]);
         }

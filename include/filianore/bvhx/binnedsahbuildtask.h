@@ -1,6 +1,7 @@
 #ifndef _BINNED_SAH_BUILD_TASK_H
 #define _BINNED_SAH_BUILD_TASK_H
 
+#include <array>
 #include "bvhx.h"
 #include "../core/aabb.h"
 #include "topdownbuilder.h"
@@ -68,7 +69,7 @@ namespace filianore
 
         std::optional<std::pair<WorkItem, WorkItem>> Build(const WorkItem &workItem)
         {
-            BvhNode node = bvh.nodes[workItem.nodeIndex];
+            BvhNode &node = bvh.nodes[workItem.nodeIndex];
 
             auto MakeLeaf = [](BvhNode &node, size_t begin, size_t end)
             {
@@ -175,14 +176,13 @@ namespace filianore
             {
                 size_t firstChild;
 
-                //#pragma omp atomic capture
                 {
                     firstChild = bvh.nodeCount;
                     bvh.nodeCount += 2;
                 }
 
                 BvhNode &left = bvh.nodes[firstChild + 0];
-                BvhNode &right = bvh.nodes[firstChild + 2];
+                BvhNode &right = bvh.nodes[firstChild + 1];
 
                 node.firstChildOrPrimitive = firstChild;
                 node.primitiveCount = 0;
@@ -206,9 +206,9 @@ namespace filianore
 
                 // New Work Items
                 WorkItem firstWorkItem(firstChild + 0, workItem.begin, beginRight, workItem.depth + 1);
-                WorkItem secondWorkItem(firstChild + 2, beginRight, workItem.end, workItem.depth + 1);
+                WorkItem secondWorkItem(firstChild + 1, beginRight, workItem.end, workItem.depth + 1);
 
-                return std::make_pair(firstWorkItem, secondWorkItem);
+                return std::make_optional(std::make_pair(firstWorkItem, secondWorkItem));
             }
 
             MakeLeaf(node, workItem.begin, workItem.end);
