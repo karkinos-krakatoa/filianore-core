@@ -113,7 +113,6 @@ add_library(filianore STATIC
 
     src/materials/matte.cpp
     src/materials/lambert.cpp
-    src/materials/mirror.cpp
 
     src/samplers/whitenoise.cpp
 
@@ -177,7 +176,6 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/basespectrum.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/cie.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/principalspectrum.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/rgb.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectruminits.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectrumoperations.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/color)
@@ -225,7 +223,6 @@ install(FILES
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/matte.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/mirror.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/materials)
 
 install(FILES 

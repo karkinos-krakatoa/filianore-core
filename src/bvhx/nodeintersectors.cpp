@@ -5,7 +5,7 @@ namespace filianore
 
     float RobustNodeIntersector::IntersectAxis(int axis, float p, const Ray &ray, bool isMin) const
     {
-        return (p - ray.origin.params[axis]) * (isMin ? inverseDirection.params[axis] : inverseDirection.params[axis]);
+        return (p - ray.origin.params[axis]) * inverseDirection.params[axis];
     }
 
     std::pair<float, float> RobustNodeIntersector::Intersect(const Bvh::BvhNode &node, const Ray &ray) const
