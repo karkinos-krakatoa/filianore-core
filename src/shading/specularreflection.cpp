@@ -1,5 +1,6 @@
 #include "filianore/shading/specularreflection.h"
 #include "filianore/core/shadingcore.h"
+#include "filianore/core/fresnel.h"
 
 namespace filianore
 {
@@ -15,7 +16,7 @@ namespace filianore
         *pdf = 1.f;
         *sampledType = this->bxDFType;
 
-        return R;
+        return fresnel->Evaluate(CosTheta(*wi)) * R;
     }
 
     float SpecularReflection::Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const

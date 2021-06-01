@@ -96,14 +96,16 @@ namespace filianore
         {
             int c = 0;
             StaticArray<T, N> result(params);
-            std::for_each(result.params.begin(), result.params.end(), [&c, &v](T &elem) { elem += v.params[c++]; });
+            std::for_each(result.params.begin(), result.params.end(), [&c, &v](T &elem)
+                          { elem += v.params[c++]; });
             return result;
         }
 
         FILIANORE_INLINE StaticArray<T, N> operator+=(const StaticArray<T, N> &v)
         {
             int c = 0;
-            std::for_each(params.begin(), params.end(), [&c, &v](T &elem) { elem += v.params[c++]; });
+            std::for_each(params.begin(), params.end(), [&c, &v](T &elem)
+                          { elem += v.params[c++]; });
             return *this;
         }
 
@@ -111,14 +113,16 @@ namespace filianore
         {
             int c = 0;
             StaticArray<T, N> result(params);
-            std::for_each(result.params.begin(), result.params.end(), [&c, &v](T &elem) { elem -= v.params[c++]; });
+            std::for_each(result.params.begin(), result.params.end(), [&c, &v](T &elem)
+                          { elem -= v.params[c++]; });
             return result;
         }
 
         FILIANORE_INLINE StaticArray<T, N> operator-=(const StaticArray<T, N> &v)
         {
             int c = 0;
-            std::for_each(params.begin(), params.end(), [&c, &v](T &elem) { elem -= v.params[c++]; });
+            std::for_each(params.begin(), params.end(), [&c, &v](T &elem)
+                          { elem -= v.params[c++]; });
             return *this;
         }
 
@@ -126,28 +130,32 @@ namespace filianore
         {
             int c = 0;
             StaticArray<T, N> result(params);
-            std::for_each(result.params.begin(), result.params.end(), [&c, &v](T &elem) { elem *= v.params[c++]; });
+            std::for_each(result.params.begin(), result.params.end(), [&c, &v](T &elem)
+                          { elem *= v.params[c++]; });
             return result;
         }
 
         FILIANORE_INLINE StaticArray<T, N> operator*=(const StaticArray<T, N> &v)
         {
             int c = 0;
-            std::for_each(params.begin(), params.end(), [&c, &v](T &elem) { elem *= v.params[c++]; });
+            std::for_each(params.begin(), params.end(), [&c, &v](T &elem)
+                          { elem *= v.params[c++]; });
             return *this;
         }
 
         FILIANORE_INLINE StaticArray<T, N> operator*(float s) const
         {
             StaticArray<T, N> result(params);
-            std::for_each(result.params.begin(), result.params.end(), [&s](T &elem) { elem *= s; });
+            std::for_each(result.params.begin(), result.params.end(), [&s](T &elem)
+                          { elem *= s; });
             return result;
         }
 
         FILIANORE_INLINE StaticArray<T, N> operator*=(float s)
         {
             std::for_each(params.begin(), params.end(),
-                          [&s](T &elem) { elem *= s; });
+                          [&s](T &elem)
+                          { elem *= s; });
             return *this;
         }
 
@@ -155,14 +163,16 @@ namespace filianore
         {
             int c = 0;
             StaticArray<T, N> result(params);
-            std::for_each(result.params.begin(), result.params.end(), [&c, &v](T &elem) { elem /= v.params[c++]; });
+            std::for_each(result.params.begin(), result.params.end(), [&c, &v](T &elem)
+                          { elem /= v.params[c++]; });
             return result;
         }
 
         FILIANORE_INLINE StaticArray<T, N> operator/=(const StaticArray<T, N> &v)
         {
             int c = 0;
-            std::for_each(params.begin(), params.end(), [&c, &v](T &elem) { elem /= v.params[c++]; });
+            std::for_each(params.begin(), params.end(), [&c, &v](T &elem)
+                          { elem /= v.params[c++]; });
             return *this;
         }
 
@@ -170,28 +180,32 @@ namespace filianore
         {
             assert(s != 0);
             StaticArray<T, N> result(params);
-            std::for_each(result.params.begin(), result.params.end(), [&s](T &elem) { elem /= s; });
+            std::for_each(result.params.begin(), result.params.end(), [&s](T &elem)
+                          { elem /= s; });
             return result;
         }
 
         FILIANORE_INLINE StaticArray<T, N> operator/=(float s)
         {
             assert(s != 0);
-            std::for_each(params.begin(), params.end(), [&s](T &elem) { elem /= s; });
+            std::for_each(params.begin(), params.end(), [&s](T &elem)
+                          { elem /= s; });
             return *this;
         }
 
         FILIANORE_INLINE StaticArray<T, N> Neg()
         {
             StaticArray<T, N> result(params);
-            std::for_each(result.params.begin(), result.params.end(), [](T &elem) { elem = -elem; });
+            std::for_each(result.params.begin(), result.params.end(), [](T &elem)
+                          { elem = -elem; });
             return result;
         }
 
         FILIANORE_INLINE T LengthSquared() const
         {
             std::array<T, N> data = params;
-            std::for_each(data.begin(), data.end(), [](T &elem) { elem = elem * elem; });
+            std::for_each(data.begin(), data.end(), [](T &elem)
+                          { elem = elem * elem; });
             return (T)std::accumulate(data.begin(), data.end(), (T)0);
         }
 
@@ -203,28 +217,32 @@ namespace filianore
         FILIANORE_INLINE StaticArray<T, N> Normalize()
         {
             T invLength = T(1) / Length();
-            std::for_each(params.begin(), params.end(), [&invLength](T &elem) { elem *= invLength; });
+            std::for_each(params.begin(), params.end(), [&invLength](T &elem)
+                          { elem *= invLength; });
             return *this;
         }
 
         FILIANORE_INLINE T MinComponent()
         {
             T min = params[0];
-            std::for_each(params.begin(), params.end(), [&min](T &elem) { min = std::min(min, elem); });
+            std::for_each(params.begin(), params.end(), [&min](T &elem)
+                          { min = std::min(min, elem); });
             return min;
         }
 
         FILIANORE_INLINE T MaxComponent()
         {
             T max = params[0];
-            std::for_each(params.begin(), params.end(), [&max](T &elem) { max = std::max(max, elem); });
+            std::for_each(params.begin(), params.end(), [&max](T &elem)
+                          { max = std::max(max, elem); });
             return max;
         }
 
         FILIANORE_INLINE StaticArray<T, N> Inverse()
         {
             StaticArray<T, N> result(params);
-            std::for_each(result.params.begin(), result.params.end(), [](T &elem) { elem = (T)1 / elem; });
+            std::for_each(result.params.begin(), result.params.end(), [](T &elem)
+                          { elem = (T)1 / elem; });
             return result;
         }
 
@@ -258,7 +276,8 @@ namespace filianore
     {
         int c = 0;
         StaticArray<T, N> result(a.params);
-        std::for_each(result.params.begin(), result.params.end(), [&result, &b, &c](T &elem) { elem = std::min(elem, b.params[c++]); });
+        std::for_each(result.params.begin(), result.params.end(), [&result, &b, &c](T &elem)
+                      { elem = std::min(elem, b.params[c++]); });
         return result;
     }
 
@@ -267,7 +286,8 @@ namespace filianore
     {
         int c = 0;
         StaticArray<T, N> result(a.params);
-        std::for_each(result.params.begin(), result.params.end(), [&result, &b, &c](T &elem) { elem = std::max(elem, b.params[c++]); });
+        std::for_each(result.params.begin(), result.params.end(), [&result, &b, &c](T &elem)
+                      { elem = std::max(elem, b.params[c++]); });
         return result;
     }
 
@@ -313,7 +333,8 @@ namespace filianore
     {
         int c = 0;
         StaticArray<T, N> result = p;
-        std::for_each(result.params.begin(), result.params.end(), [&c, &result, &dimens](T &elem) { elem = result.params[dimens[c++]]; });
+        std::for_each(result.params.begin(), result.params.end(), [&c, &result, &dimens](T &elem)
+                      { elem = result.params[dimens[c++]]; });
         return result;
     }
 

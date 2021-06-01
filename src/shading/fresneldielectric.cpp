@@ -8,7 +8,7 @@ namespace filianore
 
     PrincipalSpectrum FresnelDielectric::Evaluate(float cosI) const
     {
-        float cosThetaI = Clamp<float>(cosThetaI, -1.f, 1.f);
+        float cosThetaI = Clamp<float>(cosI, -1.f, 1.f);
 
         // Swap indices of refraction, if necessary
         bool entering = cosThetaI > 0.f;
@@ -33,7 +33,8 @@ namespace filianore
                       ((etaT * cosThetaI) + (etaI * cosThetaT));
         float Rperp = ((etaI * cosThetaI) - (etaT * cosThetaT)) /
                       ((etaI * cosThetaI) + (etaT * cosThetaT));
-        return (Rparl * Rparl + Rperp * Rperp) / 2;
+
+        return (Rparl * Rparl + Rperp * Rperp) * 0.5f;
     }
 
 } // namespace filianore

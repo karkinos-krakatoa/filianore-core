@@ -1,17 +1,19 @@
-#ifndef _SPECULAR_REFLECTION_H
-#define _SPECULAR_REFLECTION_H
+#ifndef _MICROFACET_REFLECTION_H
+#define _MICROFACET_REFLECTION_H
 
 #include "../core/bxdf.h"
 
 namespace filianore
 {
 
-    class SpecularReflection : public BxDF
+    class MicrofacetReflection : public BxDF
     {
     public:
-        SpecularReflection(const PrincipalSpectrum &_R,
-                           const std::shared_ptr<Fresnel> _fresnel)
-            : R(_R), fresnel(_fresnel), BxDF(BxDFType(BSDF_REFLECTION | BSDF_SPECULAR))
+        MicrofacetReflection(const PrincipalSpectrum &_R,
+                             const std::shared_ptr<MicrofacetDistribution> &_distribution,
+                             const std::shared_ptr<Fresnel> &_fresnel)
+            : BxDF(BxDFType(BSDF_REFLECTION | BSDF_GLOSSY)), R(_R),
+              distribution(_distribution), fresnel(_fresnel)
         {
         }
 
@@ -23,9 +25,9 @@ namespace filianore
 
     private:
         const PrincipalSpectrum R;
+        const std::shared_ptr<MicrofacetDistribution> distribution;
         const std::shared_ptr<Fresnel> fresnel;
     };
-
-} // namespace filianore
+}
 
 #endif

@@ -63,7 +63,7 @@ namespace filianore
                 break;
             }
 
-            if (((renderParams.diffuseRayDepth == bounces) && (flags & BSDF_DIFFUSE)) || ((renderParams.specularRayDepth == bounces) && (flags & BSDF_SPECULAR)))
+            if (((renderParams.diffuseRayDepth == bounces) && (flags & BSDF_DIFFUSE)) || ((renderParams.specularRayDepth == bounces) && (flags & BSDF_SPECULAR)) || ((renderParams.glossyRayDepth == bounces) && (flags & BSDF_GLOSSY)))
             {
                 break;
             }

@@ -78,6 +78,7 @@ namespace filianore
     class BTDF;
     class BSDF;
     class Material;
+    class MicrofacetDistribution;
     template <typename T>
     class Texture;
 

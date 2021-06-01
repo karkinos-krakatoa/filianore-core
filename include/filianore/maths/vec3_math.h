@@ -76,6 +76,20 @@ namespace filianore
 		return StaticArray<T, 2>(theta, phi);
 	}
 
+	template <typename T>
+	FILIANORE_INLINE StaticArray<T, 3> SphericalDirection(float sinTheta, float cosTheta, float phi)
+	{
+		return StaticArray<T, 3>(sinTheta * std::cos(phi), sinTheta * std::sin(phi), cosTheta);
+	}
+
+	template <typename T>
+	FILIANORE_INLINE StaticArray<T, 3> SphericalDirectionII(float sinTheta, float cosTheta, float phi,
+															const StaticArray<T, 3> &x, const StaticArray<T, 3> &y,
+															const StaticArray<T, 3> &z)
+	{
+		return x * sinTheta * std::cos(phi) + y * sinTheta * std::sin(phi) + z * cosTheta;
+	}
+
 } // namespace filianore
 
 #endif
