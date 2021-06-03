@@ -82,6 +82,8 @@ namespace filianore
     template <typename T>
     class Texture;
 
+    class PhaseFunction;
+
     enum class SpectrumType
     {
         REFLECTANCE,

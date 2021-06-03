@@ -26,12 +26,12 @@ namespace filianore
         std::unique_ptr<BxDF> orenBrdf = std::make_unique<OrenNayarBRDF>(kdSpectrum, sigma);
         isect->bsdf->Add(orenBrdf);
 
-        std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelDielectric>(1.5f, 1.f);
+        std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelDielectric>(1.52f, 1.f);
         float specRough = specRoughness->Evaluate(*isect);
 
-        float rough = TrowbridgeReitzDistribution::RoughnessToAlpha(0.f);
+        float rough = BeckmannDistribution::RoughnessToAlpha(0.f);
 
-        std::shared_ptr<MicrofacetDistribution> distrib = std::make_unique<TrowbridgeReitzDistribution>(rough, rough);
+        std::shared_ptr<MicrofacetDistribution> distrib = std::make_unique<BeckmannDistribution>(rough, rough);
 
         std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetReflection>(ksSpectrum, distrib, fresnel);
         isect->bsdf->Add(microfacetRefl);
