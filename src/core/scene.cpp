@@ -6,12 +6,11 @@
 
 namespace filianore
 {
-    Scene::Scene(
-        const std::shared_ptr<RayTraverser> &_traverser,
-        const std::shared_ptr<PrimitiveIntersector> &_primIntersector,
-        const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
-        : traverser(_traverser), primIntersector(_primIntersector), illuminants(_illuminants)
+    Scene::Scene(const std::shared_ptr<Primitive> &_scenePrims, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
+        : scenePrims(_scenePrims), illuminants(_illuminants)
     {
+        worldBound = scenePrims->WorldBound();
+
         for (const auto &illuminant : illuminants)
         {
             illuminant->PrepareIlluminant(*this);
@@ -20,13 +19,11 @@ namespace filianore
 
     bool Scene::Intersect(const Ray &ray, SurfaceInteraction *isect) const
     {
-        auto result = traverser->Traverse(ray, *primIntersector);
-        if (result)
-        {
-            *isect = result->isect;
-            return true;
-        }
+        return scenePrims->Intersect(ray, isect);
+    }
 
-        return false;
+    bool Scene::IntersectP(const Ray &ray) const
+    {
+        return scenePrims->IntersectP(ray);
     }
 }
