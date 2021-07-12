@@ -1,15 +1,16 @@
-#ifndef _MICROFACET_DIELECTRIC_REFLECTION_H
-#define _MICROFACET_DIELECTRIC_REFLECTION_H
+#ifndef _MICROFACET_REFLECTION_H
+#define _MICROFACET_REFLECTION_H
 
 #include "../../core/bxdf.h"
 
 namespace filianore
 {
 
-    class MicrofacetDielectricReflectionBRDF : public BxDF
+    class MicrofacetReflectionBRDF : public BxDF
     {
     public:
-        MicrofacetDielectricReflectionBRDF(const PrincipalSpectrum &_R, const float alphax, const float alphay);
+        MicrofacetReflectionBRDF(const std::shared_ptr<MicrofacetDistribution> &_distribution,
+                                 const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R, const float alphax, const float alphay);
 
         PrincipalSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 

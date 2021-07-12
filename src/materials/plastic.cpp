@@ -2,7 +2,8 @@
 #include "filianore/shading/bxdfs/orennayar.h"
 #include "filianore/shading/microfacets/ggx.h"
 #include "filianore/shading/microfacets/beckmann.h"
-#include "filianore/shading/bxdfs/microfacetdielectricreflection.h"
+#include "filianore/shading/bxdfs/microfacetreflection.h"
+#include "filianore/shading/fresnel/fresneldielectric.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/bsdf.h"
 #include "filianore/core/texture.h"
@@ -30,7 +31,10 @@ namespace filianore
         float alphax = std::max(.001f, (roughness / aspect));
         float alphay = std::max(.001f, (roughness * aspect));
 
-        std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetDielectricReflectionBRDF>(ksSpectrum, alphax, alphay);
+        std::shared_ptr<FresnelDielectric> fresnel = std::make_shared<FresnelDielectric>(1.52f, 1.f);
+        std::shared_ptr<BeckmannDistribution> distribution = std::make_shared<BeckmannDistribution>(alphax, alphay);
+
+        std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetReflectionBRDF>(distribution, fresnel, ksSpectrum, alphax, alphay);
         isect->bsdf->Add(microfacetRefl);
     }
 

@@ -1,4 +1,4 @@
-#include "filianore/shading/bxdfs/microfacetdielectricreflection.h"
+#include "filianore/shading/bxdfs/microfacetreflection.h"
 #include "filianore/shading/microfacets/ggx.h"
 #include "filianore/shading/microfacets/beckmann.h"
 #include "filianore/shading/fresnel/fresneldielectric.h"
@@ -7,14 +7,14 @@
 namespace filianore
 {
 
-    MicrofacetDielectricReflectionBRDF::MicrofacetDielectricReflectionBRDF(const PrincipalSpectrum &_R, const float alphax, const float alphay)
-        : BxDF(BxDFType(BSDF_REFLECTION | BSDF_GLOSSY)), R(_R)
+    MicrofacetReflectionBRDF::MicrofacetReflectionBRDF(const std::shared_ptr<MicrofacetDistribution> &_distribution,
+                                                       const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R,
+                                                       const float alphax, const float alphay)
+        : BxDF(BxDFType(BSDF_REFLECTION | BSDF_GLOSSY)), R(_R), distribution(_distribution), fresnel(_fresnel)
     {
-        fresnel = std::make_shared<FresnelDielectric>(1.52f, 1.f);
-        distribution = std::make_shared<BeckmannDistribution>(alphax, alphay);
     }
 
-    PrincipalSpectrum MicrofacetDielectricReflectionBRDF::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
+    PrincipalSpectrum MicrofacetReflectionBRDF::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
         float cosThetaO = AbsCosTheta(wo);
         float cosThetaI = AbsCosTheta(wi);
@@ -38,7 +38,7 @@ namespace filianore
         return R * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, wi) * F / (4.f * cosThetaO * cosThetaI);
     }
 
-    PrincipalSpectrum MicrofacetDielectricReflectionBRDF::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
+    PrincipalSpectrum MicrofacetReflectionBRDF::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
     {
         if (wo.z() == 0)
         {
@@ -62,7 +62,7 @@ namespace filianore
         return Evaluate(wo, *wi);
     }
 
-    float MicrofacetDielectricReflectionBRDF::Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
+    float MicrofacetReflectionBRDF::Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
         if (!SameHemisphere(wo, wi))
         {

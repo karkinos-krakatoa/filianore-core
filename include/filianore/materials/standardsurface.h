@@ -10,17 +10,32 @@ namespace filianore
     class StandardSurfaceMaterial : public Material
     {
     public:
-        StandardSurfaceMaterial(const std::shared_ptr<Texture<PrincipalSpectrum>> _kd,
-                                const std::shared_ptr<Texture<float>> _roughness,
-                                float _weight)
-            : kd(_kd), roughness(_roughness), weight(_weight) {}
+        StandardSurfaceMaterial(const float _kdweight,
+                                const std::shared_ptr<Texture<PrincipalSpectrum>> _kd,
+                                const std::shared_ptr<Texture<float>> _kdroughness,
+
+                                const float _ksweight,
+                                const std::shared_ptr<Texture<PrincipalSpectrum>> _ks,
+                                const std::shared_ptr<Texture<float>> _ksroughness,
+                                const float _ksanisotropic)
+            : kd(_kd), kdroughness(_kdroughness), kdweight(_kdweight),
+              ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic)
+        {
+        }
 
         void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
 
     private:
+        // Diffuse Foundation
         std::shared_ptr<Texture<PrincipalSpectrum>> kd;
-        std::shared_ptr<Texture<float>> roughness;
-        float weight;
+        std::shared_ptr<Texture<float>> kdroughness;
+        float kdweight;
+
+        // Specular
+        std::shared_ptr<Texture<PrincipalSpectrum>> ks;
+        std::shared_ptr<Texture<float>> ksroughness;
+        float ksweight;
+        float ksanisotropic;
     };
 
 } // namespace filianore

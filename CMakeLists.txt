@@ -119,7 +119,7 @@ add_library(filianore STATIC
 
     src/samplers/whitenoise.cpp
 
-    src/shading/bxdfs/microfacetdielectricreflection.cpp
+    src/shading/bxdfs/microfacetreflection.cpp
     src/shading/bxdfs/lambert.cpp
     src/shading/bxdfs/orennayar.cpp
 
@@ -250,7 +250,7 @@ install(FILES
 install(FILES  
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/orennayar.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/lambert.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/microfacetdielectricreflection.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/microfacetreflection.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/bxdfs)
 
 install(FILES  

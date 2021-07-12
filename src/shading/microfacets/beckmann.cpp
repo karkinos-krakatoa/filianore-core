@@ -43,6 +43,18 @@ namespace filianore
             tan2Theta = -alphax * alphax * logSample;
             phi = u.y() * 2.f * Pi<float>;
         }
+        else
+        {
+            float logSample = std::log(1 - u.x());
+            phi = std::atan(alphay / alphax * std::tan(2 * Pi<float> * u.y() + 0.5f * Pi<float>));
+            if (u.y() > 0.5f)
+                phi += Pi<float>;
+            float sinPhi = std::sin(phi), cosPhi = std::cos(phi);
+            float alphax2 = alphax * alphax, alphay2 = alphay * alphay;
+            tan2Theta = -logSample /
+                        (cosPhi * cosPhi / alphax2 + sinPhi * sinPhi / alphay2);
+        }
+
         float cosTheta = 1 / std::sqrt(1 + tan2Theta);
         float sinTheta = std::sqrt(std::max(0.f, 1 - cosTheta * cosTheta));
         StaticArray<float, 3> wh = SphericalDirection<float>(sinTheta, cosTheta, phi);
