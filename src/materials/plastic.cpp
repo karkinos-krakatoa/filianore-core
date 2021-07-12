@@ -1,10 +1,8 @@
 #include "filianore/materials/plastic.h"
-#include "filianore/shading/orennayarbrdf.h"
-#include "filianore/shading/fresneldielectric.h"
-#include "filianore/shading/trowbridgereitzdistribution.h"
-#include "filianore/shading/beckmann.h"
-#include "filianore/shading/microfacetreflection.h"
-#include "filianore/shading/specularreflection.h"
+#include "filianore/shading/bxdfs/orennayar.h"
+#include "filianore/shading/microfacets/ggx.h"
+#include "filianore/shading/microfacets/beckmann.h"
+#include "filianore/shading/bxdfs/microfacetdielectricreflection.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/bsdf.h"
 #include "filianore/core/texture.h"
@@ -26,14 +24,13 @@ namespace filianore
         std::unique_ptr<BxDF> orenBrdf = std::make_unique<OrenNayarBRDF>(kdSpectrum, sigma);
         isect->bsdf->Add(orenBrdf);
 
-        std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelDielectric>(1.52f, 1.f);
-        float specRough = specRoughness->Evaluate(*isect);
+        float anisotripic = 0.f;
+        float roughness = BeckmannDistribution::RoughnessToAlpha(0.f);
+        float aspect = std::sqrt(1 - anisotripic * .9);
+        float alphax = std::max(.001f, (roughness / aspect));
+        float alphay = std::max(.001f, (roughness * aspect));
 
-        float rough = BeckmannDistribution::RoughnessToAlpha(0.f);
-
-        std::shared_ptr<MicrofacetDistribution> distrib = std::make_unique<BeckmannDistribution>(rough, rough);
-
-        std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetReflection>(ksSpectrum, distrib, fresnel);
+        std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetDielectricReflectionBRDF>(ksSpectrum, alphax, alphay);
         isect->bsdf->Add(microfacetRefl);
     }
 

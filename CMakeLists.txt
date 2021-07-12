@@ -115,17 +115,19 @@ add_library(filianore STATIC
     src/materials/matte.cpp
     src/materials/lambert.cpp
     src/materials/plastic.cpp
+    src/materials/standardsurface.cpp
 
     src/samplers/whitenoise.cpp
 
-    src/shading/beckmann.cpp
-    src/shading/fresneldielectric.cpp
-    src/shading/lambertbrdf.cpp
-    src/shading/microfacetreflection.cpp
-    src/shading/orennayarbrdf.cpp 
-    src/shading/specularreflection.cpp 
-    src/shading/speculartransmission.cpp
-    src/shading/trowbridgereitzdistribution.cpp
+    src/shading/bxdfs/microfacetdielectricreflection.cpp
+    src/shading/bxdfs/lambert.cpp
+    src/shading/bxdfs/orennayar.cpp
+
+    src/shading/fresnel/fresneldielectric.cpp
+    src/shading/fresnel/fresnelnull.cpp
+
+    src/shading/microfacets/beckmann.cpp
+    src/shading/microfacets/ggx.cpp
     
     src/shapes/triangle.cpp
 
@@ -230,6 +232,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/matte.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/plastic.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/standardsurface.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/materials)
 
 install(FILES 
@@ -244,16 +247,21 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/whitenoise.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/beckmann.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresneldielectric.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/lambertbrdf.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacetreflection.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/orennayarbrdf.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/specularreflection.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/speculartransmission.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/trowbridgereitzdistribution.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
+install(FILES  
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/orennayar.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/lambert.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/microfacetdielectricreflection.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/bxdfs)
+
+install(FILES  
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresneldielectric.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelnull.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/fresnel)
+
+install(FILES  
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets/beckmann.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets/ggx.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/microfacets)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shapes/triangle.h 

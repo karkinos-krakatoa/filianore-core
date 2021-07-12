@@ -1,18 +1,15 @@
-#ifndef _LAMBERT_BRDF_H
-#define _LAMBERT_BRDF_H
+#ifndef _MICROFACET_DIELECTRIC_REFLECTION_H
+#define _MICROFACET_DIELECTRIC_REFLECTION_H
 
-#include "../core/bxdf.h"
+#include "../../core/bxdf.h"
 
 namespace filianore
 {
 
-    class LambertBRDF : public BxDF
+    class MicrofacetDielectricReflectionBRDF : public BxDF
     {
     public:
-        LambertBRDF(const PrincipalSpectrum &_R)
-            : R(_R), BxDF(BxDFType(BSDF_REFLECTION | BSDF_DIFFUSE))
-        {
-        }
+        MicrofacetDielectricReflectionBRDF(const PrincipalSpectrum &_R, const float alphax, const float alphay);
 
         PrincipalSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 
@@ -22,8 +19,9 @@ namespace filianore
 
     private:
         const PrincipalSpectrum R;
+        std::shared_ptr<MicrofacetDistribution> distribution;
+        std::shared_ptr<Fresnel> fresnel;
     };
-
-} // namespace filianore
+}
 
 #endif

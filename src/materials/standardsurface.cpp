@@ -1,4 +1,4 @@
-#include "filianore/materials/matte.h"
+#include "filianore/materials/standardsurface.h"
 #include "filianore/shading/bxdfs/orennayar.h"
 #include "filianore/shading/bxdfs/lambert.h"
 #include "filianore/core/interaction.h"
@@ -8,7 +8,7 @@
 namespace filianore
 {
 
-    void MatteMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
+    void StandardSurfaceMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
     {
         isect->bsdf = std::make_shared<BSDF>(*isect);
 

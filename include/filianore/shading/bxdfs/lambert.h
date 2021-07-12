@@ -1,15 +1,18 @@
-#ifndef _OREN_NAYAR_BRDF_H
-#define _OREN_NAYAR_BRDF_H
+#ifndef _LAMBERT_BRDF_H
+#define _LAMBERT_BRDF_H
 
-#include "../core/bxdf.h"
+#include "../../core/bxdf.h"
 
 namespace filianore
 {
 
-    class OrenNayarBRDF : public BxDF
+    class LambertBRDF : public BxDF
     {
     public:
-        OrenNayarBRDF(const PrincipalSpectrum &_R, float sigma);
+        LambertBRDF(const PrincipalSpectrum &_R)
+            : R(_R), BxDF(BxDFType(BSDF_REFLECTION | BSDF_DIFFUSE))
+        {
+        }
 
         PrincipalSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 
@@ -19,7 +22,6 @@ namespace filianore
 
     private:
         const PrincipalSpectrum R;
-        float A, B;
     };
 
 } // namespace filianore

@@ -55,14 +55,15 @@ namespace filianore
 
     Interaction Triangle::Sample(const StaticArray<float, 2> &u, float *pdf) const
     {
-        const StaticArray<float, 3> &p1 = v1.vertex;
-        const StaticArray<float, 3> &p2 = v2.vertex;
-        const StaticArray<float, 3> &p3 = v3.vertex;
+        float uu = std::sqrt(u.x());
+        float u1 = 1.f - uu;
+        float u2 = u.y() * uu;
 
         Interaction it;
 
-        it.p = v1.vertex + (v2.vertex - v1.vertex) * u.x() + (v3.vertex - v1.vertex) * u.y();
+        it.p = v1.vertex * u1 + v2.vertex * u2 + v3.vertex * (1.f - u1 - u2);
         it.n = Cross(v2.vertex - v1.vertex, v3.vertex - v1.vertex).Normalize();
+
         *pdf = 1.f / Area();
 
         return it;

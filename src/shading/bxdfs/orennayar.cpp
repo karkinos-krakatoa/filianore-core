@@ -1,4 +1,4 @@
-#include "filianore/shading/orennayarbrdf.h"
+#include "filianore/shading/bxdfs/orennayar.h"
 #include "filianore/core/shadingcore.h"
 
 namespace filianore
@@ -13,6 +13,7 @@ namespace filianore
         A = 1.f - (sigma2 / (2.f * (sigma2 + 0.33f)));
         B = 0.45f * sigma2 / (sigma2 + 0.09f);
     }
+
     PrincipalSpectrum OrenNayarBRDF::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
         float sinThetaI = SinTheta(wi);

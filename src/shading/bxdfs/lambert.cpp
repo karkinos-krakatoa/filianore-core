@@ -1,4 +1,4 @@
-#include "filianore/shading/lambertbrdf.h"
+#include "filianore/shading/bxdfs/lambert.h"
 #include "filianore/core/shadingcore.h"
 
 namespace filianore
