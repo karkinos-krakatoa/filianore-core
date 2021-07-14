@@ -124,6 +124,7 @@ add_library(filianore STATIC
     src/shading/bxdfs/orennayar.cpp
 
     src/shading/fresnel/fresneldielectric.cpp
+    src/shading/fresnel/fresnelconductor.cpp
     src/shading/fresnel/fresnelnull.cpp
 
     src/shading/microfacets/beckmann.cpp
@@ -215,6 +216,7 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/creators/shapecreator.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/creators/spdloader.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/creators)
 
 install(FILES 
@@ -255,6 +257,7 @@ install(FILES
 
 install(FILES  
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresneldielectric.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelconductor.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelnull.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/fresnel)
 

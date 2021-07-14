@@ -53,7 +53,7 @@ namespace filianore
             float alphax = std::max(.001f, (alpha / aspect));
             float alphay = std::max(.001f, (alpha * aspect));
 
-            std::shared_ptr<FresnelDielectric> fresnel = std::make_shared<FresnelDielectric>(1.52f, 1.f);
+            std::shared_ptr<FresnelDielectric> fresnel = std::make_shared<FresnelDielectric>(ksIOR, 1.f);
             std::shared_ptr<BeckmannDistribution> distribution = std::make_shared<BeckmannDistribution>(alphax, alphay);
 
             std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetReflectionBRDF>(distribution, fresnel, ksSpectrum, alphax, alphay);
