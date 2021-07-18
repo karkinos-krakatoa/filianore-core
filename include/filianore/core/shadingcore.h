@@ -76,9 +76,33 @@ namespace filianore
         return StaticArray<float, 2>(r * std::cos(theta), r * std::sin(theta));
     }
 
+    inline StaticArray<float, 2> ConcentricSampleDisk(const StaticArray<float, 2> &u)
+    {
+        // Map uniform random numbers to $[-1,1]^2$
+        StaticArray<float, 2> uOffset = u * 2.f - StaticArray<float, 2>(1.f, 1.f);
+
+        // Handle degeneracy at the origin
+        if (uOffset.x() == 0 && uOffset.y() == 0)
+            return StaticArray<float, 2>(0.f, 0.f);
+
+        // Apply concentric mapping to point
+        float theta, r;
+        if (std::abs(uOffset.x()) > std::abs(uOffset.y()))
+        {
+            r = uOffset.x();
+            theta = PiOver4<float> * (uOffset.y() / uOffset.x());
+        }
+        else
+        {
+            r = uOffset.y();
+            theta = PiOver2<float> - PiOver4<float> * (uOffset.x() / uOffset.y());
+        }
+        return StaticArray<float, 2>(std::cos(theta), std::sin(theta)) * r;
+    }
+
     inline StaticArray<float, 3> CosineHemisphereSample(const StaticArray<float, 2> &u)
     {
-        StaticArray<float, 2> d = UniformSampleDisk(u);
+        StaticArray<float, 2> d = ConcentricSampleDisk(u);
         float z = std::sqrt(std::max(0.f, 1.f - d.x() * d.x() - d.y() * d.y()));
         return StaticArray<float, 3>(d.x(), d.y(), z);
     }

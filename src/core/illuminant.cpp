@@ -40,23 +40,23 @@ namespace filianore
             strength = dL * dL;
         }
 
-        return strength * Pi<float>;
+        return strength;
     }
 
     bool VisibilityEvaluator::Unoccluded(const Scene &scene) const
     {
         SurfaceInteraction isect;
-        // bool hit = scene.Intersect(p0.KindleRayTo(p1.p), &isect);
-        // if (hit)
-        // {
-        //     if (isect.primitive->GetAreaIlluminant() != nullptr)
-        //     {
-        //         return true;
-        //     }
-        //     return false;
-        // }
-        // return true;
-        return !scene.IntersectP(p0.KindleRayTo(p1.p));
+        bool hit = scene.Intersect(p0.KindleRayTo(p1.p), &isect);
+        if (hit)
+        {
+            if (isect.primitive->GetAreaIlluminant() != nullptr)
+            {
+                return true;
+            }
+            return false;
+        }
+        return true;
+        //return !scene.IntersectP(p0.KindleRayTo(p1.p));
     }
 
     AreaIlluminant::AreaIlluminant(const Transform &_lightToWorld, short _decayRate, const PrincipalSpectrum &_shadowColor)

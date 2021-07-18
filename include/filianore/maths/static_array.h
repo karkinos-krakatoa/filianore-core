@@ -308,7 +308,7 @@ namespace filianore
     template <typename T, size_t N>
     FILIANORE_INLINE StaticArray<T, N> Reflect(const StaticArray<T, N> &a, const StaticArray<T, N> &b)
     {
-        return a - b * ((Dot(a, b)) * T(2));
+        return b * 2.f * Dot(a, b) - a;
     }
 
     template <typename T, size_t N>

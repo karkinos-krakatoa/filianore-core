@@ -57,13 +57,12 @@ namespace filianore
             BxDFType flags;
 
             PrincipalSpectrum f = isect.bsdf->Sample(wo, &wi, sampler.Get2D(), &pdf, BSDF_ALL, &flags);
-
             if (f.IsBlack() || pdf == 0)
             {
                 break;
             }
 
-            if (((renderParams.diffuseRayDepth == bounces) && (flags & BSDF_DIFFUSE)) || ((renderParams.specularRayDepth == bounces) && (flags & BSDF_SPECULAR)) || ((renderParams.glossyRayDepth == bounces) && (flags & BSDF_GLOSSY)))
+            if (((renderParams.diffuseRayDepth == bounces) && (flags & BSDF_DIFFUSE)) || ((renderParams.specularRayDepth == bounces) && (flags & BSDF_SPECULAR)) || (bounces >= 2 && (flags & BSDF_GLOSSY)))
             {
                 break;
             }
