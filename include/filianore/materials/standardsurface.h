@@ -36,7 +36,7 @@ namespace filianore
         std::shared_ptr<Texture<PrincipalSpectrum>> ks;
         std::shared_ptr<Texture<float>> ksroughness;
         float ksweight;
-        float ksanisotropic;
+        mutable float ksanisotropic;
         float ksIOR;
     };
 

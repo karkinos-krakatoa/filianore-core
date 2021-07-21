@@ -6,6 +6,7 @@
 #include "filianore/shading/fresnel/fresneldielectric.h"
 
 #include "filianore/shading/microfacets/beckmann.h"
+#include "filianore/shading/microfacets/ggx.h"
 #include "filianore/shading/bxdfs/microfacetreflection.h"
 
 #include "filianore/core/interaction.h"
@@ -45,18 +46,17 @@ namespace filianore
         {
             PrincipalSpectrum ksSpectrum = ks->Evaluate(*isect);
             ksSpectrum = ksSpectrum.SpectrumClamp() * ksweight;
+
             float ksevalrough = ksroughness->Evaluate(*isect);
 
-            ksevalrough = ksevalrough * ksevalrough;
-            float alpha = BeckmannDistribution::RoughnessToAlpha(ksevalrough);
-            float aspect = std::sqrt(1 - ksanisotropic * .9);
-            float alphax = std::max(.001f, (alpha / aspect));
-            float alphay = std::max(.001f, (alpha * aspect));
+            float aspect = std::sqrt(1.f - ksanisotropic * 0.9f);
+            float ax = std::max(.001f, (ksevalrough * ksevalrough) / aspect);
+            float ay = std::max(.001f, (ksevalrough * ksevalrough) * aspect);
 
-            std::shared_ptr<FresnelDielectric> fresnel = std::make_shared<FresnelDielectric>(ksIOR, 1.f);
-            std::shared_ptr<BeckmannDistribution> distribution = std::make_shared<BeckmannDistribution>(alphax, alphay);
+            std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelDielectric>(ksIOR, 1.f);
+            std::shared_ptr<MicrofacetDistribution> distribution = std::make_shared<GGXDistribution>(ax, ay);
 
-            std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetReflectionBRDF>(distribution, fresnel, ksSpectrum, alphax, alphay);
+            std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetReflectionBRDF>(distribution, fresnel, PrincipalSpectrum(1.f));
             isect->bsdf->Add(microfacetRefl);
         }
     }

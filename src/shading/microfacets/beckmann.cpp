@@ -6,8 +6,8 @@ namespace filianore
 {
 
     BeckmannDistribution::BeckmannDistribution(float _alphax, float _alphay)
-        : alphax(std::max(0.001f, _alphax)),
-          alphay(std::max(0.001f, _alphay))
+        : alphax(_alphax),
+          alphay(_alphay)
     {
     }
 
@@ -51,8 +51,7 @@ namespace filianore
                 phi += Pi<float>;
             float sinPhi = std::sin(phi), cosPhi = std::cos(phi);
             float alphax2 = alphax * alphax, alphay2 = alphay * alphay;
-            tan2Theta = -logSample /
-                        (cosPhi * cosPhi / alphax2 + sinPhi * sinPhi / alphay2);
+            tan2Theta = -logSample / (cosPhi * cosPhi / alphax2 + sinPhi * sinPhi / alphay2);
         }
 
         float cosTheta = 1 / std::sqrt(1 + tan2Theta);

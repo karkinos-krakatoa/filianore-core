@@ -1,16 +1,16 @@
-#ifndef _MICROFACET_REFLECTION_H
-#define _MICROFACET_REFLECTION_H
+#ifndef _FRESNEL_BLEND_H
+#define _FRESNEL_BLEND_H
 
 #include "../../core/bxdf.h"
 
 namespace filianore
 {
 
-    class MicrofacetReflectionBRDF : public BxDF
+    class FresnelBlend : public BxDF
     {
     public:
-        MicrofacetReflectionBRDF(const std::shared_ptr<MicrofacetDistribution> &_distribution,
-                                 const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R);
+        FresnelBlend(const PrincipalSpectrum &_Rd, const PrincipalSpectrum &_Rs,
+                     const std::shared_ptr<MicrofacetDistribution> &_distribution);
 
         PrincipalSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 
@@ -18,10 +18,16 @@ namespace filianore
 
         float Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 
+        PrincipalSpectrum SchlickFresnel(float cosTheta) const
+        {
+            auto pow5 = [](float v)
+            { return (v * v) * (v * v) * v; };
+            return Rs + pow5(1 - cosTheta) * (PrincipalSpectrum(1.f) - Rs);
+        }
+
     private:
-        const PrincipalSpectrum R;
+        const PrincipalSpectrum Rd, Rs;
         std::shared_ptr<MicrofacetDistribution> distribution;
-        std::shared_ptr<Fresnel> fresnel;
     };
 }
 

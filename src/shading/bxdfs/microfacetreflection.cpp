@@ -8,8 +8,7 @@ namespace filianore
 {
 
     MicrofacetReflectionBRDF::MicrofacetReflectionBRDF(const std::shared_ptr<MicrofacetDistribution> &_distribution,
-                                                       const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R,
-                                                       const float alphax, const float alphay)
+                                                       const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R)
         : BxDF(BxDFType(BSDF_REFLECTION | BSDF_GLOSSY)), R(_R), distribution(_distribution), fresnel(_fresnel)
     {
     }
@@ -52,12 +51,13 @@ namespace filianore
         }
 
         *wi = Reflect(wo, wh);
+
         if (!SameHemisphere(wo, *wi))
         {
             return PrincipalSpectrum(0.f);
         }
 
-        *pdf = distribution->Pdf(wo, wh) / (4 * Dot(wo, wh));
+        *pdf = distribution->Pdf(wo, wh) / (4.f * Dot(wo, wh));
 
         return Evaluate(wo, *wi);
     }

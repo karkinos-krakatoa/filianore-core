@@ -122,10 +122,12 @@ add_library(filianore STATIC
     src/shading/bxdfs/microfacetreflection.cpp
     src/shading/bxdfs/lambert.cpp
     src/shading/bxdfs/orennayar.cpp
+    src/shading/bxdfs/fresnelblend.cpp
 
     src/shading/fresnel/fresneldielectric.cpp
     src/shading/fresnel/fresnelconductor.cpp
     src/shading/fresnel/fresnelnull.cpp
+    src/shading/fresnel/schlickdielectric.cpp
 
     src/shading/microfacets/beckmann.cpp
     src/shading/microfacets/ggx.cpp
@@ -250,6 +252,7 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
 
 install(FILES  
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/fresnelblend.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/orennayar.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/lambert.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/microfacetreflection.h 
@@ -259,6 +262,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresneldielectric.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelconductor.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelnull.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/schlickdielectric.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/fresnel)
 
 install(FILES  

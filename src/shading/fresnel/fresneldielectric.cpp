@@ -6,30 +6,38 @@
 namespace filianore
 {
 
-    PrincipalSpectrum FresnelDielectric::Evaluate(float cosI) const
+    PrincipalSpectrum FresnelDielectric::Evaluate(float cosThetaI) const
     {
-        cosI = Clamp<float>(cosI, -1, 1);
-        // Potentially swap indices of refraction
-        bool entering = cosI > 0.f;
-        if (!entering)
+        cosThetaI = Clamp<float>(cosThetaI, -1, 1);
+
+        // Check and swap the indices of refraction
+        bool enter = cosThetaI > 0.0;
+        if (!enter)
         {
             std::swap(etaI, etaT);
-            cosI = std::abs(cosI);
+            cosThetaI = std::abs(cosThetaI);
         }
 
-        // Compute _cosThetaT_ using Snell's law
-        float sinThetaI = std::sqrt(std::max((float)0, 1 - cosI * cosI));
+        // Compute sin and cos terms using Snell's law
+        float sinThetaI = std::sqrt(std::max(0.f, 1.f - cosThetaI * cosThetaI));
         float sinThetaT = etaI / etaT * sinThetaI;
 
         // Handle total internal reflection
         if (sinThetaT >= 1)
-            return 1;
-        float cosThetaT = std::sqrt(std::max((float)0, 1 - sinThetaT * sinThetaT));
-        float Rparl = ((etaT * cosI) - (etaI * cosThetaT)) /
-                      ((etaT * cosI) + (etaI * cosThetaT));
-        float Rperp = ((etaI * cosI) - (etaT * cosThetaT)) /
-                      ((etaI * cosI) + (etaT * cosThetaT));
-        return PrincipalSpectrum((Rparl * Rparl + Rperp * Rperp) / 2);
+            return PrincipalSpectrum(1.f);
+
+        float cosThetaT = std::sqrt(std::max(0.f, 1 - sinThetaT * sinThetaT));
+
+        // R_parallel
+        float Rparl = (etaT * cosThetaI - etaI * cosThetaT) /
+                      (etaT * cosThetaI + etaI * cosThetaT);
+        // R_perpendicular
+        float Rperp = (etaI * cosThetaI - etaT * cosThetaT) /
+                      (etaI * cosThetaI + etaT * cosThetaT);
+        // Fr
+        float Fr = (Rparl * Rparl + Rperp * Rperp) * 0.5;
+
+        return PrincipalSpectrum(Fr);
     }
 
 } // namespace filianore

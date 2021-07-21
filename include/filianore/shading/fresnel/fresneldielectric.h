@@ -14,7 +14,7 @@ namespace filianore
         {
         }
 
-        PrincipalSpectrum Evaluate(float cosI) const;
+        PrincipalSpectrum Evaluate(float cosThetaI) const;
 
     private:
         mutable float etaI, etaT;

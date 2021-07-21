@@ -21,6 +21,8 @@ namespace filianore
 	constexpr T PiOver4 = static_cast<T>(0.78539816339744830961);
 	template <typename T>
 	constexpr T Epsilon = static_cast<T>(0.0001);
+	template <typename T>
+	constexpr T OneMinusEpsilon = static_cast<T>(0.99999994);
 
 	template <typename T>
 	FILIANORE_INLINE bool IsNaN(const T x)
