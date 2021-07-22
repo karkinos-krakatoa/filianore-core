@@ -10,28 +10,33 @@ namespace filianore
     class PlasticMaterial : public Material
     {
     public:
-        PlasticMaterial(
-            const std::shared_ptr<Texture<PrincipalSpectrum>> _kd,
-            const std::shared_ptr<Texture<float>> _diffRoughness,
-            float _diffWeight,
-            const std::shared_ptr<Texture<PrincipalSpectrum>> _ks,
-            const std::shared_ptr<Texture<float>> _specRoughness,
-            float _specWeight)
-            : kd(_kd), diffRoughness(_diffRoughness), diffWeight(_diffWeight),
-              ks(_ks), specRoughness(_specRoughness), specWeight(_specWeight)
+        PlasticMaterial(const float _kdweight,
+                        const std::shared_ptr<Texture<PrincipalSpectrum>> _kd,
+
+                        const float _ksweight,
+                        const std::shared_ptr<Texture<PrincipalSpectrum>> _ks,
+                        const std::shared_ptr<Texture<float>> _ksroughness,
+                        const float _ksanisotropic,
+                        const float _ksIOR)
+            : kd(_kd), kdweight(_kdweight),
+              ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), ksIOR(_ksIOR)
         {
         }
 
         void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
 
     private:
+        // Diffuse
         std::shared_ptr<Texture<PrincipalSpectrum>> kd;
-        std::shared_ptr<Texture<float>> diffRoughness;
-        const float diffWeight;
+        std::shared_ptr<Texture<float>> kdroughness;
+        float kdweight;
 
+        // Specular
         std::shared_ptr<Texture<PrincipalSpectrum>> ks;
-        std::shared_ptr<Texture<float>> specRoughness;
-        const float specWeight;
+        std::shared_ptr<Texture<float>> ksroughness;
+        float ksweight;
+        mutable float ksanisotropic;
+        float ksIOR;
     };
 
 } // namespace filianore

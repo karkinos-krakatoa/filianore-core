@@ -123,6 +123,7 @@ add_library(filianore STATIC
     src/shading/bxdfs/lambert.cpp
     src/shading/bxdfs/orennayar.cpp
     src/shading/bxdfs/fresnelblend.cpp
+    src/shading/bxdfs/plastic.cpp
 
     src/shading/fresnel/fresneldielectric.cpp
     src/shading/fresnel/fresnelconductor.cpp
@@ -253,6 +254,7 @@ install(FILES
 
 install(FILES  
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/fresnelblend.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/plastic.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/orennayar.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/lambert.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/microfacetreflection.h 

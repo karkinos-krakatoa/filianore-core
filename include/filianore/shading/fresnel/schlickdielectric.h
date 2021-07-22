@@ -9,16 +9,15 @@ namespace filianore
     class SchlickDielectric : public Fresnel
     {
     public:
-        SchlickDielectric(float etaI, float etaT)
+        SchlickDielectric(float _Ro)
+            : Ro(_Ro)
         {
-            float ro = std::abs(etaI - etaT) / (etaI + etaT);
-            Ro = ro * ro;
         }
 
         PrincipalSpectrum Evaluate(float cosThetaI) const;
 
     private:
-        float Ro;
+        const float Ro;
     };
 
 } // namespace filianore
