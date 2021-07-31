@@ -113,6 +113,7 @@ add_library(filianore STATIC
     src/integrators/pathintegrator.cpp
 
     src/materials/matte.cpp
+    src/materials/metal.cpp
     src/materials/lambert.cpp
     src/materials/plastic.cpp
     src/materials/standardsurface.cpp
@@ -186,6 +187,7 @@ install(FILES
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/basespectrum.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/cie.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/metallurgy.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/principalspectrum.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectruminits.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectrumoperations.h 
@@ -235,6 +237,7 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/matte.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/metal.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/plastic.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/standardsurface.h 

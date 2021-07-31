@@ -9,15 +9,15 @@ namespace filianore
     class FresnelConductor : public Fresnel
     {
     public:
-        FresnelConductor(const PrincipalSpectrum &_eta, const PrincipalSpectrum &_k)
-            : eta(_eta), k(_k)
+        FresnelConductor(const PrincipalSpectrum &_etaI, const PrincipalSpectrum &_etaT, const PrincipalSpectrum &_k)
+            : etaI(_etaI), etaT(_etaT), k(_k)
         {
         }
 
         PrincipalSpectrum Evaluate(float cosI) const;
 
     private:
-        PrincipalSpectrum eta, k;
+        PrincipalSpectrum etaI, etaT, k;
     };
 
 } // namespace filianore

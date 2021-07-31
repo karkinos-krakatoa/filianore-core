@@ -1,19 +1,19 @@
-#include "filianore/materials/plastic.h"
-#include "filianore/shading/bxdfs/plastic.h"
+#include "filianore/materials/metal.h"
+#include "filianore/shading/fresnel/fresnelconductor.h"
 #include "filianore/shading/microfacets/ggx.h"
+#include "filianore/shading/bxdfs/microfacetreflection.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/bsdf.h"
 #include "filianore/core/texture.h"
+#include "filianore/color/metallurgy.h"
+#include "filianore/color/spectrumoperations.h"
 
 namespace filianore
 {
 
-    void PlasticMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
+    void MetalMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
     {
         isect->bsdf = std::make_shared<BSDF>(*isect);
-
-        PrincipalSpectrum kdSpectrum = kd->Evaluate(*isect);
-        kdSpectrum = kdSpectrum.SpectrumClamp();
 
         PrincipalSpectrum ksSpectrum = ks->Evaluate(*isect);
         ksSpectrum = ksSpectrum.SpectrumClamp();
@@ -26,11 +26,12 @@ namespace filianore
 
         std::shared_ptr<MicrofacetDistribution> distribution = std::make_shared<GGXDistribution>(ax, ay);
 
-        float ro = (1.f - ksIOR) / (1.f + ksIOR);
-        ro = ro * ro;
+        PrincipalSpectrum eta = FromSPDExact(Gold_IOR);
+        PrincipalSpectrum k = FromSPDExact(Gold_K);
+        std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelConductor>(PrincipalSpectrum(1.f), eta, k);
 
-        std::unique_ptr<BxDF> fresnelBlend = std::make_unique<PlasticBRDF>(kdweight, kdSpectrum, ksweight, ksSpectrum, ro, distribution);
-        isect->bsdf->Add(fresnelBlend);
+        std::unique_ptr<BxDF> metallicBRDF = std::make_unique<MicrofacetReflectionBRDF>(distribution, fresnel, ksSpectrum);
+        isect->bsdf->Add(metallicBRDF);
     }
 
 } // namespace filianore

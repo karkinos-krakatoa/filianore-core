@@ -48,7 +48,8 @@ namespace filianore
         while (wavelengthStart > wavelength[i + 1])
             ++i;
 
-        auto interp = [wavelength, vals](float w, int i) {
+        auto interp = [wavelength, vals](float w, int i)
+        {
             return Lerp<float>((w - wavelength[i]) / (wavelength[i + 1] - wavelength[i]), vals[i], vals[i + 1]);
         };
 
@@ -110,6 +111,16 @@ namespace filianore
             float wavelength0 = Lerp<float>(float(i) / float(nSpectralSamples), sampledWavelengthStart, sampledWavelengthEnd);
             float wavelength1 = Lerp<float>(float(i + 1) / float(nSpectralSamples), sampledWavelengthStart, sampledWavelengthEnd);
             r.c[i] = AverageSpectrumSamples(wavelengths, values, n, wavelength0, wavelength1);
+        }
+        return r;
+    }
+
+    PrincipalSpectrum FromSPDExact(const float *values)
+    {
+        PrincipalSpectrum r;
+        for (int i = 0; i < nSpectralSamples; ++i)
+        {
+            r.c[i] = values[i];
         }
         return r;
     }

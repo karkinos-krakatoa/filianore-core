@@ -7,11 +7,7 @@ namespace filianore
     {
         int samples;
         int diffuseRayDepth;
-        int specularRayDepth;
-        int glossyRayDepth;
-
-        int gammaCorrectType;
-        int tonemapType;
+        int reflectionRayDepth;
     };
 }
 

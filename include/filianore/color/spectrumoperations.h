@@ -37,6 +37,7 @@ namespace filianore
     StaticArray<float, 3> XYZToACES2065_1(const StaticArray<float, 3> &xyz);
 
     PrincipalSpectrum FromSPD(const float *wavelengths, const float *values, int n);
+    PrincipalSpectrum FromSPDExact(const float *values);
     PrincipalSpectrum FromReflectanceRGB(const StaticArray<float, 3> &rgb);
     PrincipalSpectrum FromIlluminanceRGB(const StaticArray<float, 3> &rgb);
 
