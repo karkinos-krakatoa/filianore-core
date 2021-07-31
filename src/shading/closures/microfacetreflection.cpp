@@ -1,7 +1,6 @@
-#include "filianore/shading/bxdfs/microfacetreflection.h"
-#include "filianore/shading/microfacets/ggx.h"
-#include "filianore/shading/microfacets/beckmann.h"
-#include "filianore/shading/fresnel/fresneldielectric.h"
+#include "filianore/shading/closures/microfacetreflection.h"
+#include "filianore/core/microfacet.h"
+#include "filianore/core/fresnel.h"
 #include "filianore/core/shadingcore.h"
 
 namespace filianore

@@ -1,7 +1,7 @@
 #include "filianore/materials/metal.h"
 #include "filianore/shading/fresnel/fresnelconductor.h"
 #include "filianore/shading/microfacets/ggx.h"
-#include "filianore/shading/bxdfs/microfacetreflection.h"
+#include "filianore/shading/closures/microfacetreflection.h"
 #include "filianore/core/interaction.h"
 #include "filianore/core/bsdf.h"
 #include "filianore/core/texture.h"
