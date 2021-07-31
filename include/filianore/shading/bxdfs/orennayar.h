@@ -9,7 +9,7 @@ namespace filianore
     class OrenNayarBRDF : public BxDF
     {
     public:
-        OrenNayarBRDF(const PrincipalSpectrum &_R, float sigma);
+        OrenNayarBRDF(const PrincipalSpectrum &_R, float _weight, float sigma);
 
         PrincipalSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 
@@ -19,6 +19,7 @@ namespace filianore
 
     private:
         const PrincipalSpectrum R;
+        const float weight;
         float A, B;
     };
 

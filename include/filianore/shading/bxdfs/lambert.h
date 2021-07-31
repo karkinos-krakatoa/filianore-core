@@ -9,8 +9,8 @@ namespace filianore
     class LambertBRDF : public BxDF
     {
     public:
-        LambertBRDF(const PrincipalSpectrum &_R)
-            : R(_R), BxDF(BxDFType(BSDF_REFLECTION | BSDF_DIFFUSE))
+        LambertBRDF(const PrincipalSpectrum &_R, float _weight)
+            : R(_R), weight(_weight), BxDF(BxDFType(BSDF_REFLECTION | BSDF_DIFFUSE))
         {
         }
 
@@ -22,6 +22,7 @@ namespace filianore
 
     private:
         const PrincipalSpectrum R;
+        const float weight;
     };
 
 } // namespace filianore

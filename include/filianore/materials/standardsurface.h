@@ -17,7 +17,7 @@ namespace filianore
                                 const float _ksweight,
                                 const std::shared_ptr<Texture<PrincipalSpectrum>> _ks,
                                 const std::shared_ptr<Texture<float>> _ksroughness,
-                                const float _ksanisotropic,
+                                const std::shared_ptr<Texture<float>> _ksanisotropic,
                                 const float _ksIOR)
             : kd(_kd), kdroughness(_kdroughness), kdweight(_kdweight),
               ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), ksIOR(_ksIOR)
@@ -35,8 +35,8 @@ namespace filianore
         // Specular
         std::shared_ptr<Texture<PrincipalSpectrum>> ks;
         std::shared_ptr<Texture<float>> ksroughness;
+        std::shared_ptr<Texture<float>> ksanisotropic;
         float ksweight;
-        mutable float ksanisotropic;
         float ksIOR;
     };
 

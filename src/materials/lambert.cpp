@@ -14,7 +14,7 @@ namespace filianore
         PrincipalSpectrum r = kd->Evaluate(*isect);
         r = r.SpectrumClamp();
 
-        std::unique_ptr<BxDF> lambRefl = std::make_unique<LambertBRDF>(r);
+        std::unique_ptr<BxDF> lambRefl = std::make_unique<LambertBRDF>(r, 1.f);
         isect->bsdf->Add(lambRefl);
     }
 

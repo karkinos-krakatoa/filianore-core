@@ -4,8 +4,8 @@
 namespace filianore
 {
 
-    OrenNayarBRDF::OrenNayarBRDF(const PrincipalSpectrum &_R, float sigma)
-        : R(_R), BxDF(BxDFType(BSDF_REFLECTION | BSDF_DIFFUSE))
+    OrenNayarBRDF::OrenNayarBRDF(const PrincipalSpectrum &_R, float _weight, float sigma)
+        : R(_R), weight(_weight), BxDF(BxDFType(BSDF_REFLECTION | BSDF_DIFFUSE))
     {
         sigma = Radians<float>(sigma);
 
@@ -45,7 +45,7 @@ namespace filianore
             tanBeta = sinThetaO / AbsCosTheta(wo);
         }
 
-        return R * InvPi<float> * (A + B * maxCos * sinAlpha * tanBeta);
+        return R * InvPi<float> * (A + B * maxCos * sinAlpha * tanBeta) * weight;
     }
 
     PrincipalSpectrum OrenNayarBRDF::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const

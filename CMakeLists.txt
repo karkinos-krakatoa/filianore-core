@@ -126,6 +126,8 @@ add_library(filianore STATIC
     src/shading/bxdfs/fresnelblend.cpp
     src/shading/bxdfs/plastic.cpp
 
+    src/shading/closures/fresnelblendeddiffspec.cpp
+
     src/shading/fresnel/fresneldielectric.cpp
     src/shading/fresnel/fresnelconductor.cpp
     src/shading/fresnel/fresnelnull.cpp
@@ -262,6 +264,10 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/lambert.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/microfacetreflection.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/bxdfs)
+
+install(FILES  
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/closures/fresnelblendeddiffspec.h 
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/closures)
 
 install(FILES  
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresneldielectric.h 

@@ -12,20 +12,19 @@ namespace filianore
     {
         isect->bsdf = std::make_shared<BSDF>(*isect);
 
-        PrincipalSpectrum r = kd->Evaluate(*isect);
-        r = r.SpectrumClamp() * weight;
+        PrincipalSpectrum r = kd->Evaluate(*isect).SpectrumClamp();
         float rough = roughness->Evaluate(*isect);
 
         if (rough == 0)
         {
-            std::unique_ptr<BxDF> lambBRDF = std::make_unique<LambertBRDF>(r);
+            std::unique_ptr<BxDF> lambBRDF = std::make_unique<LambertBRDF>(r, weight);
             isect->bsdf->Add(lambBRDF);
         }
         else
         {
             // Remap [0-1] roughness to [0-90] sigma
             float sigma = rough * 90.f;
-            std::unique_ptr<BxDF> orenBrdf = std::make_unique<OrenNayarBRDF>(r, sigma);
+            std::unique_ptr<BxDF> orenBrdf = std::make_unique<OrenNayarBRDF>(r, weight, sigma);
             isect->bsdf->Add(orenBrdf);
         }
     }

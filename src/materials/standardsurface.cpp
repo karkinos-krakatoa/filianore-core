@@ -3,11 +3,12 @@
 #include "filianore/shading/bxdfs/orennayar.h"
 #include "filianore/shading/bxdfs/lambert.h"
 
-#include "filianore/shading/fresnel/fresneldielectric.h"
+#include "filianore/shading/fresnel/schlickdielectric.h"
 
 #include "filianore/shading/microfacets/beckmann.h"
 #include "filianore/shading/microfacets/ggx.h"
-#include "filianore/shading/bxdfs/microfacetreflection.h"
+
+#include "filianore/shading/closures/fresnelblendeddiffspec.h"
 
 #include "filianore/core/interaction.h"
 #include "filianore/core/bsdf.h"
@@ -20,44 +21,49 @@ namespace filianore
     {
         isect->bsdf = std::make_shared<BSDF>(*isect);
 
-        // Diffuse
-        if (kdweight > 0)
-        {
-            PrincipalSpectrum kdSpectrum = kd->Evaluate(*isect);
-            kdSpectrum = kdSpectrum.SpectrumClamp() * kdweight;
-            float kdevalrough = kdroughness->Evaluate(*isect);
+        // Prepare Parameters
+        PrincipalSpectrum kdSpec = kd->Evaluate(*isect).SpectrumClamp();
+        PrincipalSpectrum ksSpec = ks->Evaluate(*isect).SpectrumClamp();
+        float kdevalrough = kdroughness->Evaluate(*isect);
 
-            if (kdevalrough == 0)
+        if (kdweight > 0 || ksweight > 0)
+        {
+            if (ksweight <= 0)
             {
-                std::unique_ptr<BxDF> lambBRDF = std::make_unique<LambertBRDF>(kdSpectrum);
-                isect->bsdf->Add(lambBRDF);
+                // Pure Diffuse
+                if (kdevalrough == 0)
+                {
+                    std::unique_ptr<BxDF> lambBRDF = std::make_unique<LambertBRDF>(kdSpec, kdweight);
+                    isect->bsdf->Add(lambBRDF);
+                }
+                else
+                {
+                    // Use OrenNayar and Remap [0-1] roughness to [0-90] sigma
+                    float sigma = kdevalrough * 90.f;
+                    std::unique_ptr<BxDF> orenBrdf = std::make_unique<OrenNayarBRDF>(kdSpec, kdweight, sigma);
+                    isect->bsdf->Add(orenBrdf);
+                }
             }
             else
             {
-                // Remap [0-1] roughness to [0-90] sigma
-                float sigma = kdevalrough * 90.f;
-                std::unique_ptr<BxDF> orenBrdf = std::make_unique<OrenNayarBRDF>(kdSpectrum, sigma);
-                isect->bsdf->Add(orenBrdf);
+                // Specular : Blend with Diffuse using Fresnel Modulation
+                float ksevalrough = ksroughness->Evaluate(*isect);
+                float ksAnisotropic = ksanisotropic->Evaluate(*isect);
+
+                float aspect = std::sqrt(1.f - ksAnisotropic * 0.9f);
+                float ax = std::max(.001f, (ksevalrough * ksevalrough) / aspect);
+                float ay = std::max(.001f, (ksevalrough * ksevalrough) * aspect);
+
+                float ro = (1.f - ksIOR) / (1.f + ksIOR);
+                ro = ro * ro;
+
+                std::shared_ptr<Fresnel> dielectricFresnel = std::make_shared<SchlickDielectric>(ro);
+                std::shared_ptr<MicrofacetDistribution> distribution = std::make_shared<GGXDistribution>(ax, ay);
+
+                std::unique_ptr<BxDF> fresnelBlend = std::make_unique<FresnelBlendedDiffuseSpecularBRDF>(kdSpec, kdweight, kdevalrough,
+                                                                                                         ksSpec, ksweight, ro, dielectricFresnel, distribution);
+                isect->bsdf->Add(fresnelBlend);
             }
-        }
-
-        // Specular
-        if (ksweight > 0)
-        {
-            PrincipalSpectrum ksSpectrum = ks->Evaluate(*isect);
-            ksSpectrum = ksSpectrum.SpectrumClamp() * ksweight;
-
-            float ksevalrough = ksroughness->Evaluate(*isect);
-
-            float aspect = std::sqrt(1.f - ksanisotropic * 0.9f);
-            float ax = std::max(.001f, (ksevalrough * ksevalrough) / aspect);
-            float ay = std::max(.001f, (ksevalrough * ksevalrough) * aspect);
-
-            std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelDielectric>(ksIOR, 1.f);
-            std::shared_ptr<MicrofacetDistribution> distribution = std::make_shared<GGXDistribution>(ax, ay);
-
-            std::unique_ptr<BxDF> microfacetRefl = std::make_unique<MicrofacetReflectionBRDF>(distribution, fresnel, PrincipalSpectrum(1.f));
-            isect->bsdf->Add(microfacetRefl);
         }
     }
 
