@@ -112,17 +112,13 @@ add_library(filianore STATIC
 
     src/integrators/pathintegrator.cpp
 
-    src/materials/matte.cpp
-    src/materials/metal.cpp
     src/materials/lambert.cpp
-    src/materials/plastic.cpp
     src/materials/standardsurface.cpp
 
     src/samplers/whitenoise.cpp
 
     src/shading/bxdfs/lambert.cpp
     src/shading/bxdfs/orennayar.cpp
-    src/shading/bxdfs/plastic.cpp
 
     src/shading/closures/fresnelblendeddiffspec.cpp
     src/shading/closures/microfacetreflection.cpp
@@ -133,6 +129,7 @@ add_library(filianore STATIC
     src/shading/fresnel/schlickdielectric.cpp
 
     src/shading/microfacets/beckmann.cpp
+    src/shading/microfacets/estevez.cpp
     src/shading/microfacets/ggx.cpp
     
     src/shapes/triangle.cpp
@@ -237,10 +234,7 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/integrators)
 
 install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/matte.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/metal.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/plastic.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/standardsurface.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/materials)
 
@@ -257,7 +251,6 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
 
 install(FILES  
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/plastic.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/orennayar.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/lambert.h  
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/bxdfs)
@@ -276,6 +269,7 @@ install(FILES
 
 install(FILES  
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets/beckmann.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets/estevez.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets/ggx.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/microfacets)
 

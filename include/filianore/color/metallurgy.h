@@ -2,6 +2,9 @@
 #define _METALLURGY_H
 
 #include <vector>
+#include <string>
+#include <map>
+#include <utility>
 
 namespace filianore
 {
@@ -80,6 +83,14 @@ namespace filianore
         3.7322602890875,
         3.81658850824366,
         3.88446292822589};
+
+    std::map<int, std::pair<const float *, const float *>> metalList = {
+        {0, std::make_pair(Gold_IOR, Gold_K)}};
+
+    std::pair<const float *, const float *> GetMetalNameFromValue(int value)
+    {
+        return metalList[value];
+    }
 }
 
 #endif

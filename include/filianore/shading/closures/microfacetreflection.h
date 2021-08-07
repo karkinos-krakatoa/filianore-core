@@ -10,7 +10,7 @@ namespace filianore
     {
     public:
         MicrofacetReflectionBRDF(const std::shared_ptr<MicrofacetDistribution> &_distribution,
-                                 const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R);
+                                 const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R, float _weight);
 
         PrincipalSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 
@@ -20,6 +20,7 @@ namespace filianore
 
     private:
         const PrincipalSpectrum R;
+        const float weight;
         std::shared_ptr<MicrofacetDistribution> distribution;
         std::shared_ptr<Fresnel> fresnel;
     };

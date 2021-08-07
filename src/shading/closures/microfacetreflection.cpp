@@ -7,8 +7,8 @@ namespace filianore
 {
 
     MicrofacetReflectionBRDF::MicrofacetReflectionBRDF(const std::shared_ptr<MicrofacetDistribution> &_distribution,
-                                                       const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R)
-        : BxDF(BxDFType(BSDF_REFLECTION | BSDF_GLOSSY)), R(_R), distribution(_distribution), fresnel(_fresnel)
+                                                       const std::shared_ptr<Fresnel> &_fresnel, const PrincipalSpectrum &_R, float _weight)
+        : BxDF(BxDFType(BSDF_REFLECTION | BSDF_GLOSSY)), R(_R), distribution(_distribution), fresnel(_fresnel), weight(_weight)
     {
     }
 
@@ -33,7 +33,7 @@ namespace filianore
 
         PrincipalSpectrum F = fresnel->Evaluate(Dot(wi, Faceforward(wh, StaticArray<float, 3>(0.f, 0.f, 1.f))));
 
-        return R * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, wi) * F / (4.f * cosThetaO * cosThetaI);
+        return R * weight * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, wi) * F / (4.f * cosThetaO * cosThetaI);
     }
 
     PrincipalSpectrum MicrofacetReflectionBRDF::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
