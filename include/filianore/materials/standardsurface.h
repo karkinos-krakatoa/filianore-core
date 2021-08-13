@@ -24,11 +24,15 @@ namespace filianore
 
                                 const float _sheenweight,
                                 const std::shared_ptr<Texture<PrincipalSpectrum>> _sheenColor,
-                                const std::shared_ptr<Texture<float>> _sheenroughness)
+                                const std::shared_ptr<Texture<float>> _sheenroughness,
+
+                                const float _ktweight,
+                                const std::shared_ptr<Texture<PrincipalSpectrum>> _kt)
             : kd(_kd), kdroughness(_kdroughness), kdweight(_kdweight),
               metallicWeight(_metallicWeight),
               ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), ksIOR(_ksIOR),
-              sheenweight(_sheenweight), sheenColor(_sheenColor), sheenroughness(_sheenroughness)
+              sheenweight(_sheenweight), sheenColor(_sheenColor), sheenroughness(_sheenroughness),
+              kt(_kt), ktweight(_ktweight)
         {
         }
 
@@ -54,6 +58,10 @@ namespace filianore
         std::shared_ptr<Texture<PrincipalSpectrum>> sheenColor;
         std::shared_ptr<Texture<float>> sheenroughness;
         float sheenweight;
+
+        // Transmission
+        std::shared_ptr<Texture<PrincipalSpectrum>> kt;
+        float ktweight;
     };
 
 } // namespace filianore

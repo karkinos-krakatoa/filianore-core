@@ -49,14 +49,13 @@ namespace filianore
         bool hit = scene.Intersect(p0.KindleRayTo(p1.p), &isect);
         if (hit)
         {
-            if (isect.primitive->GetAreaIlluminant() != nullptr)
+            if (isect.primitive->GetAreaIlluminant())
             {
                 return true;
             }
             return false;
         }
         return true;
-        //return !scene.IntersectP(p0.KindleRayTo(p1.p));
     }
 
     AreaIlluminant::AreaIlluminant(const Transform &_lightToWorld, short _decayRate, const PrincipalSpectrum &_shadowColor)

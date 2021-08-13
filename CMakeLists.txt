@@ -121,6 +121,7 @@ add_library(filianore STATIC
     src/shading/bxdfs/orennayar.cpp
 
     src/shading/closures/fresnelblendeddiffspec.cpp
+    src/shading/closures/fresnelspecular.cpp
     src/shading/closures/microfacetreflection.cpp
 
     src/shading/fresnel/fresneldielectric.cpp
@@ -257,6 +258,7 @@ install(FILES
 
 install(FILES  
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/closures/fresnelblendeddiffspec.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/closures/fresnelspecular.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/closures/microfacetreflection.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/closures)
 

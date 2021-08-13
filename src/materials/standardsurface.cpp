@@ -15,6 +15,7 @@
 
 #include "filianore/shading/closures/fresnelblendeddiffspec.h"
 #include "filianore/shading/closures/microfacetreflection.h"
+#include "filianore/shading/closures/fresnelspecular.h"
 
 #include "filianore/core/interaction.h"
 #include "filianore/core/bsdf.h"
@@ -25,7 +26,12 @@ namespace filianore
 
     void StandardSurfaceMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
     {
-        isect->bsdf = std::make_shared<BSDF>(*isect);
+        float eta = 1.f;
+        if (ksweight > 0 && ktweight > 0)
+        {
+            eta = ksIOR;
+        }
+        isect->bsdf = std::make_shared<BSDF>(*isect, eta);
 
         // Prepare Parameters
         PrincipalSpectrum kdSpec = kd->Evaluate(*isect).SpectrumClamp();
@@ -69,14 +75,23 @@ namespace filianore
 
         if (ksweight > 0 && metallicWeight <= 0)
         {
-            // Specular : Blend with Diffuse using Fresnel Modulation
-            float ro = (1.f - ksIOR) / (1.f + ksIOR);
-            ro = ro * ro;
+            if (ktweight > 0)
+            {
+                PrincipalSpectrum ktSpec = kt->Evaluate(*isect).SpectrumClamp();
+                std::unique_ptr<BxDF> transBrdf = std::make_unique<FresnelSpecularBXDF>(ksSpec, ktSpec, 1.f, ksIOR);
+                isect->bsdf->Add(transBrdf);
+            }
+            else
+            {
+                // Specular : Blend with Diffuse using Fresnel Modulation
+                float ro = (1.f - ksIOR) / (1.f + ksIOR);
+                ro = ro * ro;
 
-            std::shared_ptr<Fresnel> dielectricFresnel = std::make_shared<SchlickDielectric>(ro);
-            std::unique_ptr<BxDF> specularBrdf = std::make_unique<FresnelBlendedDiffuseSpecularBRDF>(kdSpec, kdweight, kdevalrough,
-                                                                                                     ksSpec, ksweight, ro, dielectricFresnel, distribution);
-            isect->bsdf->Add(specularBrdf);
+                std::shared_ptr<Fresnel> dielectricFresnel = std::make_shared<SchlickDielectric>(ro);
+                std::unique_ptr<BxDF> specularBrdf = std::make_unique<FresnelBlendedDiffuseSpecularBRDF>(kdSpec, kdweight, kdevalrough,
+                                                                                                         ksSpec, ksweight, ro, dielectricFresnel, distribution);
+                isect->bsdf->Add(specularBrdf);
+            }
         }
 
         if (sheenweight > 0)

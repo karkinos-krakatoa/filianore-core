@@ -8,6 +8,7 @@ namespace filianore
         int samples;
         int diffuseRayDepth;
         int reflectionRayDepth;
+        int transmissionRayDepth;
     };
 }
 

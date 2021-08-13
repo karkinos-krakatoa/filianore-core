@@ -318,7 +318,7 @@ namespace filianore
         T sinI2 = std::max(T(0), T(1) - (cosI * cosI));
         T sinT2 = eta * eta * sinI2;
 
-        if (sinT2 >= T(1)) /* Total Internal Reflection */
+        if (sinT2 >= 1) /* Total Internal Reflection */
         {
             return false;
         }

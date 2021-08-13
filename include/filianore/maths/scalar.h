@@ -124,6 +124,40 @@ namespace filianore
 		return Clamp<int>(first - 1, 0, size - 2);
 	}
 
+	template <typename T>
+	inline T NextFloatUp(float v)
+	{
+		// Handle infinity and negative zero for _NextFloatUp()_
+		if (std::isinf(v) && v > 0.)
+			return v;
+		if (v == -0.f)
+			v = 0.f;
+
+		// Advance _v_ to next higher float
+		uint32_t ui = FloatToBits(v);
+		if (v >= 0)
+			++ui;
+		else
+			--ui;
+		return BitsToFloat(ui);
+	}
+
+	template <typename T>
+	inline T NextFloatDown(float v)
+	{
+		// Handle infinity and positive zero for _NextFloatDown()_
+		if (std::isinf(v) && v < 0.)
+			return v;
+		if (v == 0.f)
+			v = -0.f;
+		uint32_t ui = FloatToBits(v);
+		if (v > 0)
+			--ui;
+		else
+			++ui;
+		return BitsToFloat(ui);
+	}
+
 } // namespace filianore
 
 #endif

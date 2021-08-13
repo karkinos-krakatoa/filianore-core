@@ -36,6 +36,7 @@ namespace filianore
             isect->p = ray.PointAtT(t);
             isect->uv = StaticArray<float, 2>(u, v);
             isect->n = Cross(e1, e2).Normalize();
+            isect->pError = Abs(isect->p) * Gamma<float>(5);
 
             return true;
         }
@@ -55,14 +56,21 @@ namespace filianore
 
     Interaction Triangle::Sample(const StaticArray<float, 2> &u, float *pdf) const
     {
+        const StaticArray<float, 3> p0 = v1.vertex;
+        const StaticArray<float, 3> p1 = v2.vertex;
+        const StaticArray<float, 3> p2 = v3.vertex;
+
         float uu = std::sqrt(u.x());
         float u1 = 1.f - uu;
         float u2 = u.y() * uu;
 
         Interaction it;
 
-        it.p = v1.vertex * u1 + v2.vertex * u2 + v3.vertex * (1.f - u1 - u2);
-        it.n = Cross(v2.vertex - v1.vertex, v3.vertex - v1.vertex).Normalize();
+        it.p = p0 * u1 + p1 * u2 + p2 * (1.f - u1 - u2);
+        it.n = Cross(p1 - p0, p2 - p0).Normalize();
+
+        StaticArray<float, 3> pAbsSum = Abs(p0 * u1) + Abs(p1 * u2) + Abs(p2 * (1 - u1 - u2));
+        it.pError = pAbsSum * Gamma<float>(6);
 
         *pdf = 1.f / Area();
 

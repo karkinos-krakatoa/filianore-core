@@ -9,6 +9,34 @@
 namespace filianore
 {
 
+    inline StaticArray<float, 3> OffsetPointOrigin(const StaticArray<float, 3> &p, const StaticArray<float, 3> &pError,
+                                                   const StaticArray<float, 3> &n, const StaticArray<float, 3> w)
+    {
+        float d = Dot(Abs(n), pError);
+        StaticArray<float, 3> offset = n * d;
+
+        if (Dot(w, n) < 0)
+        {
+            offset = offset.Neg();
+        }
+
+        StaticArray<float, 3> po = p + offset;
+
+        for (int i = 0; i < 3; ++i)
+        {
+            if (offset.params[i] > 0)
+            {
+                po.params[i] = NextFloatUp<float>(po.params[i]);
+            }
+            else if (offset.params[i] < 0)
+            {
+                po.params[i] = NextFloatDown<float>(po.params[i]);
+            }
+        }
+
+        return po;
+    }
+
     struct Interaction
     {
         Interaction() : t(0), time(0) {}
@@ -44,17 +72,21 @@ namespace filianore
 
         Ray KindleRay(const StaticArray<float, 3> &d) const
         {
-            return Ray(p + n * Epsilon<float>, d, Epsilon<float>, Infinity<float>());
+            StaticArray<float, 3> o = OffsetPointOrigin(p, pError, n, d);
+            return Ray(o, d, Epsilon<float>, Infinity<float>());
         }
 
         Ray KindleRayTo(const StaticArray<float, 3> &p2) const
         {
-            return Ray(p + n * Epsilon<float>, p2 - p, Epsilon<float>, 1.f - Epsilon<float>);
+            StaticArray<float, 3> d = p2 - p;
+            StaticArray<float, 3> o = OffsetPointOrigin(p, pError, n, d);
+            return Ray(o, d, Epsilon<float>, 1.f - Epsilon<float>);
         }
 
         float time;
         float t;
         StaticArray<float, 3> p;
+        StaticArray<float, 3> pError;
         StaticArray<float, 3> wo;
         StaticArray<float, 3> n;
     };
