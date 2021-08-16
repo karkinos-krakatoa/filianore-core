@@ -2,6 +2,7 @@
 
 #include "filianore/shading/bxdfs/orennayar.h"
 #include "filianore/shading/bxdfs/lambert.h"
+#include "filianore/shading/bxdfs/microfacetreflection.h"
 
 #include "filianore/color/metallurgy.h"
 #include "filianore/color/spectrumoperations.h"
@@ -14,7 +15,7 @@
 #include "filianore/shading/microfacets/ggx.h"
 
 #include "filianore/shading/closures/fresnelblendeddiffspec.h"
-#include "filianore/shading/closures/microfacetreflection.h"
+#include "filianore/shading/closures/microfacettransmission.h"
 #include "filianore/shading/closures/fresnelspecular.h"
 
 #include "filianore/core/interaction.h"
@@ -62,7 +63,12 @@ namespace filianore
         float ax = std::max(.001f, (ksevalrough * ksevalrough) / aspect);
         float ay = std::max(.001f, (ksevalrough * ksevalrough) * aspect);
 
+        float ro = (1.f - ksIOR) / (1.f + ksIOR);
+        ro = ro * ro;
+        std::shared_ptr<Fresnel> dielectricFresnel = std::make_shared<SchlickDielectric>(ro);
+
         std::shared_ptr<MicrofacetDistribution> distribution = std::make_shared<GGXDistribution>(ax, ay);
+
         if (metallicWeight > 0)
         {
             std::pair<const float *, const float *> metalPair = GetMetalNameFromValue(0);
@@ -75,6 +81,7 @@ namespace filianore
 
         if (ksweight > 0 && metallicWeight <= 0)
         {
+
             if (ktweight > 0)
             {
                 PrincipalSpectrum ktSpec = kt->Evaluate(*isect).SpectrumClamp();
@@ -84,10 +91,7 @@ namespace filianore
             else
             {
                 // Specular : Blend with Diffuse using Fresnel Modulation
-                float ro = (1.f - ksIOR) / (1.f + ksIOR);
-                ro = ro * ro;
 
-                std::shared_ptr<Fresnel> dielectricFresnel = std::make_shared<SchlickDielectric>(ro);
                 std::unique_ptr<BxDF> specularBrdf = std::make_unique<FresnelBlendedDiffuseSpecularBRDF>(kdSpec, kdweight, kdevalrough,
                                                                                                          ksSpec, ksweight, ro, dielectricFresnel, distribution);
                 isect->bsdf->Add(specularBrdf);

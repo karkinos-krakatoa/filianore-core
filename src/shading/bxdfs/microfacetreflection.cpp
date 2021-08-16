@@ -1,4 +1,4 @@
-#include "filianore/shading/closures/microfacetreflection.h"
+#include "filianore/shading/bxdfs/microfacetreflection.h"
 #include "filianore/core/microfacet.h"
 #include "filianore/core/fresnel.h"
 #include "filianore/core/shadingcore.h"
