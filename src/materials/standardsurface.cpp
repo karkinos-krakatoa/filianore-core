@@ -1,5 +1,6 @@
 #include "filianore/materials/standardsurface.h"
 
+#include "filianore/shading/bxdfs/clearcoat.h"
 #include "filianore/shading/bxdfs/orennayar.h"
 #include "filianore/shading/bxdfs/lambert.h"
 #include "filianore/shading/bxdfs/microfacetreflection.h"
@@ -41,7 +42,6 @@ namespace filianore
 
         if (ksweight <= 0 || metallicWeight > 0)
         {
-            // Pure Diffuse
             if (kdevalrough == 0)
             {
                 std::unique_ptr<BxDF> lambBRDF = std::make_unique<LambertBRDF>(kdSpec, kdweight);
@@ -91,7 +91,6 @@ namespace filianore
             else
             {
                 // Specular : Blend with Diffuse using Fresnel Modulation
-
                 std::unique_ptr<BxDF> specularBrdf = std::make_unique<FresnelBlendedDiffuseSpecularBRDF>(kdSpec, kdweight, kdevalrough,
                                                                                                          ksSpec, ksweight, ro, dielectricFresnel, distribution);
                 isect->bsdf->Add(specularBrdf);
@@ -106,6 +105,13 @@ namespace filianore
             std::shared_ptr<MicrofacetDistribution> sheenDistribution = std::make_shared<EstevezSheenDistribution>(sheenevalrough);
             std::unique_ptr<BxDF> sheenBRDF = std::make_unique<MicrofacetReflectionBRDF>(sheenDistribution, sheenFresnel, sheenCol, sheenweight);
             isect->bsdf->Add(sheenBRDF);
+        }
+
+        if (krcoatweight > 0)
+        {
+            PrincipalSpectrum krCoatSpec = krcoat->Evaluate(*isect).SpectrumClamp();
+            std::unique_ptr<BxDF> clearcoatBRDF = std::make_unique<ClearcoatReflectionBRDF>(krCoatSpec, krcoatior, krcoatweight, krcoatgloss);
+            isect->bsdf->Add(clearcoatBRDF);
         }
     }
 
