@@ -15,6 +15,9 @@ namespace filianore
         PrincipalSpectrum(float v = 0.f)
             : BaseSpectrum(v) {}
 
+        PrincipalSpectrum(const std::vector<float> &v)
+            : BaseSpectrum(v) {}
+
         PrincipalSpectrum(const BaseSpectrum<nSpectralSamples> &v)
             : BaseSpectrum<nSpectralSamples>(v) {}
     };

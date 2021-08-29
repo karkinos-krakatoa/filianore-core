@@ -9,8 +9,10 @@ namespace filianore
     class MicrofacetTransmissionBRDF : public BxDF
     {
     public:
-        MicrofacetTransmissionBRDF(const std::shared_ptr<MicrofacetDistribution> &_distribution,
-                                   const float _etaA, const float _etaB, const PrincipalSpectrum &_T, float _weight);
+        MicrofacetTransmissionBRDF(const PrincipalSpectrum &_kr, float _krweight,
+                                   const PrincipalSpectrum &_kt, float _ktweight,
+                                   float _etaA, float _etaB,
+                                   const std::shared_ptr<MicrofacetDistribution> &_distribution);
 
         PrincipalSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 
@@ -19,8 +21,9 @@ namespace filianore
         float Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
 
     private:
-        const PrincipalSpectrum T;
-        const float weight;
+        const PrincipalSpectrum kr;
+        const PrincipalSpectrum kt;
+        const float krweight, ktweight;
         const float etaA, etaB;
         const std::shared_ptr<MicrofacetDistribution> distribution;
         std::shared_ptr<Fresnel> fresnel;

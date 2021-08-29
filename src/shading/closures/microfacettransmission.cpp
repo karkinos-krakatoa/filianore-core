@@ -6,109 +6,240 @@
 namespace filianore
 {
 
-    MicrofacetTransmissionBRDF::MicrofacetTransmissionBRDF(const std::shared_ptr<MicrofacetDistribution> &_distribution,
-                                                           const float _etaA, const float _etaB, const PrincipalSpectrum &_T, float _weight)
-        : BxDF(BxDFType(BSDF_TRANSMISSION | BSDF_GLOSSY)), T(_T), distribution(_distribution), etaA(_etaA), etaB(_etaB), weight(_weight)
+    MicrofacetTransmissionBRDF::MicrofacetTransmissionBRDF(const PrincipalSpectrum &_kr, float _krweight,
+                                                           const PrincipalSpectrum &_kt, float _ktweight,
+                                                           float _etaA, float _etaB,
+                                                           const std::shared_ptr<MicrofacetDistribution> &_distribution)
+        : BxDF(BxDFType(BSDF_TRANSMISSION | BSDF_GLOSSY)),
+          kr(_kr), krweight(_krweight),
+          kt(_kt), ktweight(_ktweight),
+          etaA(_etaA), etaB(_etaB),
+          distribution(_distribution)
     {
         fresnel = std::make_shared<FresnelDielectric>(etaA, etaB);
     }
 
     PrincipalSpectrum MicrofacetTransmissionBRDF::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
-        if (CosTheta(wo) == 0 || CosTheta(wi) == 0)
-            return PrincipalSpectrum(0.0f);
+        // float cosThetaO = CosTheta(wo), cosThetaI = CosTheta(wi);
+        // if (cosThetaO == 0 || cosThetaI == 0)
+        // {
+        //     return PrincipalSpectrum(0.f);
+        // }
+
+        // bool reflect = cosThetaI * cosThetaO > 0;
+
+        // float eta = 1.f, etaI = 1.f, etaT = 1.f;
+        // if (!reflect)
+        // {
+        //     bool entering = CosTheta(wo) > 0;
+        //     etaI = entering ? etaA : etaB;
+        //     etaT = entering ? etaB : etaA;
+        //     eta = etaI / etaT;
+        // }
+
+        // StaticArray<float, 3> wh = wi * eta + wo;
+        // if (wh.LengthSquared() == 0)
+        // {
+        //     return PrincipalSpectrum(0.f);
+        // }
+
+        // wh = Faceforward(wh.Normalize(), StaticArray<float, 3>(0.f, 0.f, 1.f));
+        // if (wh.z() < 0)
+        //     wh = wh.Neg();
+
+        // float F = fresnel->Evaluate(Dot(wo, wh)).c[0];
+
+        // if (SameHemisphere(wo, wi))
+        // {
+        //     return kr * krweight * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, wi) * F / std::abs(4.f * cosThetaO * cosThetaI);
+        // }
+        // else
+        // {
+        //     if (Dot(wi, wh) * Dot(wo, wh) > 0)
+        //     {
+        //         return PrincipalSpectrum(0.f);
+        //     }
+
+        //     float denom = Dot(wi, wh) * eta + Dot(wo, wh);
+        //     denom *= denom;
+
+        //     float factor = (etaI * etaI) / (etaT * etaT);
+
+        //     return kt * ktweight * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, wi) * (1.f - F) * factor * Dot(wi, wh) * Dot(wo, wh) /
+        //            (CosTheta(wi) * CosTheta(wo) * denom);
+        // }
 
         if (SameHemisphere(wo, wi))
-        {
-            auto wh = (wo + wi).Normalize();
-            if (wh.z() < 0)
-                wh = wh.Neg();
-            auto d = distribution->EvaluateD(wh);
-            auto g = distribution->EvaluateG(wo, wi);
-            auto f = fresnel->Evaluate(Dot(wo, wh)).c[0];
-            return PrincipalSpectrum(1.f) * d * g * f / (4 * CosTheta(wo) * CosTheta(wi));
-        }
+            return 0; // transmission only
 
-        float eta = CosTheta(wo) > 0 ? (etaA / etaB) : (etaB / etaA);
-        auto wh = (wo + wi * eta).Normalize();
+        float cosThetaO = CosTheta(wo);
+        float cosThetaI = CosTheta(wi);
+        if (cosThetaI == 0 || cosThetaO == 0)
+            return PrincipalSpectrum(0);
+
+        // Compute $\wh$ from $\wo$ and $\wi$ for microfacet transmission
+        float eta = CosTheta(wo) > 0 ? (etaB / etaA) : (etaA / etaB);
+        StaticArray<float, 3> wh = (wo + wi * eta).Normalize();
         if (wh.z() < 0)
             wh = wh.Neg();
-        auto cosThetaH = Dot(wo, wh);
-        auto f = fresnel->Evaluate(Dot(wo, wh)).c[0];
-        if (f == 1.0f)
-            return PrincipalSpectrum(0.0f);
-        auto cosThetaT = Dot(wi, wh);
-        auto sqrtDenom = cosThetaT + cosThetaH / eta;
-        return T * ((1.0f - f) * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, wi) *
-                    std::abs(cosThetaH * cosThetaT / (CosTheta(wo) * CosTheta(wi) * sqrtDenom * sqrtDenom)));
+
+        // Same side?
+        if (Dot(wo, wh) * Dot(wi, wh) > 0)
+            return PrincipalSpectrum(0);
+
+        PrincipalSpectrum F = fresnel->Evaluate(Dot(wo, wh));
+
+        float sqrtDenom = Dot(wo, wh) + eta * Dot(wi, wh);
+        float factor = (1 / eta);
+
+        return (PrincipalSpectrum(1.f) - F) * kt *
+               std::abs(distribution->EvaluateD(wh) * distribution->EvaluateG(wo, wi) * eta * eta *
+                        AbsDot(wi, wh) * AbsDot(wo, wh) * factor * factor /
+                        (cosThetaI * cosThetaO * sqrtDenom * sqrtDenom));
     }
 
     PrincipalSpectrum MicrofacetTransmissionBRDF::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
     {
+        // StaticArray<float, 3> wh = distribution->SampleWh(wo, sample);
+        // float F = fresnel->Evaluate(Dot(wo, wh)).c[0];
+
+        // if (sample.x() < F)
+        // {
+        //     *wi = Reflect(wo, wh);
+
+        //     if (!SameHemisphere(wo, *wi)) // Reflection Only
+        //     {
+        //         return PrincipalSpectrum(0.f);
+        //     }
+
+        //     *pdf = distribution->Pdf(wo, wh) * F / (4.f * AbsDot(wo, wh));
+        //     if (sampledType)
+        //     {
+        //         *sampledType = BxDFType(BSDF_GLOSSY | BSDF_REFLECTION);
+        //     }
+
+        //     float cosThetaO = CosTheta(wo), cosThetaI = CosTheta(*wi);
+        //     if (cosThetaO == 0 || cosThetaI == 0)
+        //     {
+        //         return PrincipalSpectrum(0.f);
+        //     }
+
+        //     return kr * krweight * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, *wi) * F / (4.f * cosThetaO * cosThetaI);
+        // }
+        // else
+        // {
+        //     bool entering = CosTheta(wo) > 0;
+        //     float etaI = entering ? etaA : etaB;
+        //     float etaT = entering ? etaB : etaA;
+        //     float eta = etaI / etaT;
+        //     if (!Refract(wo, wh, eta, wi))
+        //     {
+        //         return PrincipalSpectrum(0.f);
+        //     }
+
+        //     if (SameHemisphere(wo, *wi)) // Transmission Only
+        //     {
+        //         return PrincipalSpectrum(0.f);
+        //     }
+
+        //     if (wi->params[2] == 0)
+        //     {
+        //         return PrincipalSpectrum(0.f);
+        //     }
+
+        //     float denom = Dot(*wi, wh) * etaI + Dot(wo, wh) * etaT;
+        //     denom *= denom;
+
+        //     float factor = (etaI * etaI) / (etaT * etaT);
+
+        //     float dwh_dwi = AbsDot(*wi, wh) / denom;
+        //     *pdf = distribution->Pdf(wo, wh) * (1.f - F) * dwh_dwi;
+
+        //     if (sampledType)
+        //     {
+        //         *sampledType = BxDFType(BSDF_GLOSSY | BSDF_TRANSMISSION);
+        //     }
+
+        //     return kt * ktweight * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, *wi) * (1.f - F) * factor * Dot(*wi, wh) * Dot(wo, wh) /
+        //            (CosTheta(*wi) * CosTheta(wo) * denom);
+        // }
+
+        if (wo.z() == 0)
+            return 0.;
+
         StaticArray<float, 3> wh = distribution->SampleWh(wo, sample);
-        float F = fresnel->Evaluate(Dot(wo, wh)).c[0];
+        if (Dot(wo, wh) < 0)
+            return 0.; // Should be rare
 
-        if (sample.x() < F)
-        {
-            *wi = Reflect(wo, wh);
-
-            if (!SameHemisphere(wo, *wi))
-            {
-                return PrincipalSpectrum(0.f);
-            }
-
-            *pdf = distribution->Pdf(wo, wh) * F / (4.f * Dot(wo, wh));
-
-            float cosTheta_o = AbsCosTheta(wo), cosTheta_i = AbsCosTheta(*wi);
-
-            return PrincipalSpectrum(1.f) * weight * distribution->EvaluateD(wh) * distribution->EvaluateG(wo, *wi) * F / (4.f * cosTheta_o * cosTheta_i);
-        }
-        else
-        {
-            float eta = CosTheta(wo) > 0 ? (etaA / etaB) : (etaB / etaA);
-            if (!Refract(wo, wh, eta, wi))
-                return PrincipalSpectrum(0.f);
-
-            if (SameHemisphere(wo, *wi))
-            {
-                return PrincipalSpectrum(0.f);
-            }
-
-            float denom1 = Dot(wo, wh) + eta * Dot(*wi, wh);
-            float denom = denom1 * denom1;
-            float factor = (1 / eta) * (1 / eta);
-
-            float dwm_dwi = AbsDot(*wi, wh) / denom;
-            *pdf = distribution->Pdf(wo, wh) * (1.f - F) * dwm_dwi;
-
-            return T * factor *
-                   std::abs(distribution->EvaluateD(wh) * distribution->EvaluateG(wo, *wi) *
-                            Dot(*wi, wh) * Dot(wo, wh) /
-                            (CosTheta(*wi) * CosTheta(wo) * denom));
-        }
+        float eta = CosTheta(wo) > 0 ? (etaA / etaB) : (etaB / etaA);
+        if (!Refract(wo, wh, eta, wi))
+            return 0;
+        *pdf = Pdf(wo, *wi);
+        return Evaluate(wo, *wi);
     }
 
     float MicrofacetTransmissionBRDF::Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
     {
+        // float cosThetaO = CosTheta(wo), cosThetaI = CosTheta(wi);
+        // if (cosThetaO == 0 || cosThetaI == 0)
+        // {
+        //     return 0.f;
+        // }
+
+        // bool reflect = cosThetaI * cosThetaO > 0;
+
+        // float eta = 1.f, etaI = 1.f, etaT = 1.f;
+        // if (!reflect)
+        // {
+        //     bool entering = CosTheta(wo) > 0;
+        //     etaI = entering ? etaA : etaB;
+        //     etaT = entering ? etaB : etaA;
+        //     eta = etaI / etaT;
+        // }
+
+        // StaticArray<float, 3> wh = wi * eta + wo;
+        // if (wh.LengthSquared() == 0)
+        // {
+        //     return 0.f;
+        // }
+
+        // wh = Faceforward(wh.Normalize(), StaticArray<float, 3>(0.f, 0.f, 1.f));
+        // if (wh.z() < 0)
+        //     wh = wh.Neg();
+
+        // float F = fresnel->Evaluate(Dot(wo, wh)).c[0];
+        // if (SameHemisphere(wo, wi))
+        // {
+        //     return distribution->Pdf(wo, wh) * F / (4.f * AbsDot(wo, wh));
+        // }
+        // else
+        // {
+        //     if (Dot(wi, wh) * Dot(wo, wh) > 0)
+        //     {
+        //         return 0.f;
+        //     }
+
+        //     float denom = Dot(wi, wh) * etaI + Dot(wo, wh) * etaT;
+        //     denom *= denom;
+
+        //     float dwh_dwi = AbsDot(wi, wh) / denom;
+        //     return distribution->Pdf(wo, wh) * (1.f - F) * dwh_dwi;
+        // }
+
         if (SameHemisphere(wo, wi))
-        {
-            auto wh = (wo + wi).Normalize();
-            if (wh.z() < 0)
-                wh = wh.Neg();
-            auto cosThetaH = Dot(wo, wh);
-            auto f = fresnel->Evaluate(cosThetaH).c[0];
-            return f * distribution->Pdf(wo, wi) / (4.0f * std::abs(cosThetaH));
-        }
+            return 0;
+        // Compute $\wh$ from $\wo$ and $\wi$ for microfacet transmission
+        float eta = CosTheta(wo) > 0 ? (etaB / etaA) : (etaA / etaB);
+        StaticArray<float, 3> wh = (wo + wi * eta).Normalize();
 
-        float eta = CosTheta(wo) > 0 ? (etaA / etaB) : (etaB / etaA);
-        auto wh = (wo + wi * eta).Normalize();
-        if (wh.z() < 0)
-            wh = wh.Neg();
-        auto cosThetaH = Dot(wo, wh);
-        auto f = fresnel->Evaluate(cosThetaH).c[0];
-        auto cosThetaT = Dot(wi, wh);
-        auto sqrtDenom = cosThetaT + cosThetaH / eta;
-        return (1.0f - f) * distribution->Pdf(wo, wi) * std::abs(cosThetaT) / (sqrtDenom * sqrtDenom);
+        if (Dot(wo, wh) * Dot(wi, wh) > 0)
+            return 0;
+
+        // Compute change of variables _dwh\_dwi_ for microfacet transmission
+        float sqrtDenom = Dot(wo, wh) + eta * Dot(wi, wh);
+        float dwh_dwi =
+            std::abs((eta * eta * Dot(wi, wh)) / (sqrtDenom * sqrtDenom));
+        return distribution->Pdf(wo, wh) * dwh_dwi;
     }
-
 }

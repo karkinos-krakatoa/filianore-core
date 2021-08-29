@@ -1,7 +1,7 @@
 #include "filianore/shading/closures/fresnelblendeddiffspec.h"
 #include "filianore/core/shadingcore.h"
 #include "filianore/core/microfacet.h"
-#include "filianore/core/fresnel.h"
+#include "filianore/shading/fresnel/thinfilm.h"
 
 namespace filianore
 {
@@ -38,7 +38,7 @@ namespace filianore
         }
         wh = wh.Normalize();
 
-        PrincipalSpectrum specular = distribution->EvaluateD(wh) * fresnel->Evaluate(Dot(wi, wh)) / (4.f * AbsDot(wi, wh) * std::max(AbsCosTheta(wi), AbsCosTheta(wo)));
+        PrincipalSpectrum specular = distribution->EvaluateD(wh) * (fresnel->Evaluate(Dot(wi, wh))) / (4.f * AbsDot(wi, wh) * std::max(AbsCosTheta(wi), AbsCosTheta(wo)));
         specular = ks * specular * ksWeight;
 
         return diffuse + specular;

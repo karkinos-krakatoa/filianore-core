@@ -1,6 +1,7 @@
 #ifndef _BASE_SPECTRUM_H
 #define _BASE_SPECTRUM_H
 
+#include <vector>
 #include "../maths/scalar.h"
 
 namespace filianore
@@ -15,6 +16,14 @@ namespace filianore
             for (int i = 0; i < nSpectrumSamples; ++i)
             {
                 c[i] = v;
+            }
+        }
+
+        BaseSpectrum(const std::vector<float> &v)
+        {
+            for (int i = 0; i < nSpectrumSamples; ++i)
+            {
+                c[i] = v[i];
             }
         }
 

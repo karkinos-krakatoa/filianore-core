@@ -11,6 +11,7 @@
 #include "filianore/shading/fresnel/fresnelconductor.h"
 #include "filianore/shading/fresnel/schlickdielectric.h"
 #include "filianore/shading/fresnel/fresnelnull.h"
+#include "filianore/shading/fresnel/thinfilm.h"
 
 #include "filianore/shading/microfacets/estevez.h"
 #include "filianore/shading/microfacets/ggx.h"
@@ -29,7 +30,7 @@ namespace filianore
     void StandardSurfaceMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
     {
         float eta = 1.f;
-        if (ksweight > 0 && ktweight > 0)
+        if (ksweight > 0)
         {
             eta = ksIOR;
         }
@@ -63,9 +64,17 @@ namespace filianore
         float ax = std::max(.001f, (ksevalrough * ksevalrough) / aspect);
         float ay = std::max(.001f, (ksevalrough * ksevalrough) * aspect);
 
-        float ro = (1.f - ksIOR) / (1.f + ksIOR);
-        ro = ro * ro;
-        std::shared_ptr<Fresnel> dielectricFresnel = std::make_shared<SchlickDielectric>(ro);
+        float ro = ((1.f - ksIOR) / (1.f + ksIOR)) * ((1.f - ksIOR) / (1.f + ksIOR));
+
+        std::shared_ptr<Fresnel> dielectricFresnel = std::make_shared<FresnelNull>();
+        if (thinFilmThickness > 0)
+        {
+            dielectricFresnel = std::make_shared<ThinFilmInteference>(thinFilmIOR, thinFilmThickness, ksIOR);
+        }
+        else
+        {
+            dielectricFresnel = std::make_shared<SchlickDielectric>(ro);
+        }
 
         std::shared_ptr<MicrofacetDistribution> distribution = std::make_shared<GGXDistribution>(ax, ay);
 
@@ -86,6 +95,7 @@ namespace filianore
             {
                 PrincipalSpectrum ktSpec = kt->Evaluate(*isect).SpectrumClamp();
                 std::unique_ptr<BxDF> transBrdf = std::make_unique<FresnelSpecularBXDF>(ksSpec, ktSpec, 1.f, ksIOR);
+                //std::unique_ptr<BxDF> transBrdf = std::make_unique<DispersionBXDF>(ksSpec, ktSpec, 1.f);
                 isect->bsdf->Add(transBrdf);
             }
             else
@@ -100,7 +110,7 @@ namespace filianore
         if (sheenweight > 0)
         {
             PrincipalSpectrum sheenCol = sheenColor->Evaluate(*isect).SpectrumClamp();
-            float sheenevalrough = sheenroughness->Evaluate(*isect);
+            float sheenevalrough = std::max(.001f, sheenroughness->Evaluate(*isect));
             std::shared_ptr<Fresnel> sheenFresnel = std::make_shared<FresnelNull>();
             std::shared_ptr<MicrofacetDistribution> sheenDistribution = std::make_shared<EstevezSheenDistribution>(sheenevalrough);
             std::unique_ptr<BxDF> sheenBRDF = std::make_unique<MicrofacetReflectionBRDF>(sheenDistribution, sheenFresnel, sheenCol, sheenweight);

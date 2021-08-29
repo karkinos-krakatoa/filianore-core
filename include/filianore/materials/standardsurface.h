@@ -32,13 +32,17 @@ namespace filianore
                                 const float _krcoatweight,
                                 const std::shared_ptr<Texture<PrincipalSpectrum>> &_krcoat,
                                 const float _krcoatior,
-                                const float _krcoatgloss)
+                                const float _krcoatgloss,
+
+                                const float _thinFilmThickness,
+                                const float _thinFilmIOR)
             : kd(_kd), kdroughness(_kdroughness), kdweight(_kdweight),
               metallicWeight(_metallicWeight),
               ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), ksIOR(_ksIOR),
               sheenweight(_sheenweight), sheenColor(_sheenColor), sheenroughness(_sheenroughness),
               kt(_kt), ktweight(_ktweight),
-              krcoatweight(_krcoatweight), krcoat(_krcoat), krcoatior(_krcoatior), krcoatgloss(_krcoatgloss)
+              krcoatweight(_krcoatweight), krcoat(_krcoat), krcoatior(_krcoatior), krcoatgloss(_krcoatgloss),
+              thinFilmThickness(_thinFilmThickness), thinFilmIOR(_thinFilmIOR)
         {
         }
 
@@ -74,6 +78,10 @@ namespace filianore
         const std::shared_ptr<Texture<PrincipalSpectrum>> krcoat;
         const float krcoatior;
         const float krcoatgloss;
+
+        // Thin Film
+        const float thinFilmThickness;
+        const float thinFilmIOR;
     };
 
 } // namespace filianore
