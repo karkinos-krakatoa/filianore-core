@@ -10,6 +10,7 @@
 
 #include "filianore/shading/fresnel/fresnelconductor.h"
 #include "filianore/shading/fresnel/schlickdielectric.h"
+#include "filianore/shading/fresnel/schlickmetallic.h"
 #include "filianore/shading/fresnel/fresnelnull.h"
 #include "filianore/shading/fresnel/thinfilm.h"
 
@@ -41,7 +42,8 @@ namespace filianore
         PrincipalSpectrum ksSpec = ks->Evaluate(*isect).SpectrumClamp();
         float kdevalrough = kdroughness->Evaluate(*isect);
 
-        if (ksweight <= 0 || metallicWeight > 0)
+        if ((kdweight > 0 && ksweight <= 0) ||
+            (kdweight > 0 && ksweight > 0 && fresnelType == (int)FresnelType::WavelengthDependentMetallic))
         {
             if (kdevalrough == 0)
             {
@@ -66,44 +68,49 @@ namespace filianore
 
         float ro = ((1.f - ksIOR) / (1.f + ksIOR)) * ((1.f - ksIOR) / (1.f + ksIOR));
 
-        std::shared_ptr<Fresnel> dielectricFresnel = std::make_shared<FresnelNull>();
-        if (thinFilmThickness > 0)
-        {
-            dielectricFresnel = std::make_shared<ThinFilmInteference>(thinFilmIOR, thinFilmThickness, ksIOR);
-        }
-        else
-        {
-            dielectricFresnel = std::make_shared<SchlickDielectric>(ro);
-        }
-
+        std::shared_ptr<Fresnel> specularFresnel = std::make_shared<SchlickDielectric>(ro);
         std::shared_ptr<MicrofacetDistribution> distribution = std::make_shared<GGXDistribution>(ax, ay);
 
-        if (metallicWeight > 0)
+        if (ksweight > 0)
         {
-            std::pair<const float *, const float *> metalPair = GetMetalNameFromValue(0);
-            PrincipalSpectrum eta = FromSPDExact(metalPair.first);
-            PrincipalSpectrum k = FromSPDExact(metalPair.second);
-            std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelConductor>(PrincipalSpectrum(1.f), eta, k);
-            std::unique_ptr<BxDF> metallicBRDF = std::make_unique<MicrofacetReflectionBRDF>(distribution, fresnel, PrincipalSpectrum(1.f), metallicWeight);
-            isect->bsdf->Add(metallicBRDF);
-        }
-
-        if (ksweight > 0 && metallicWeight <= 0)
-        {
-
-            if (ktweight > 0)
+            switch (fresnelType)
             {
-                PrincipalSpectrum ktSpec = kt->Evaluate(*isect).SpectrumClamp();
-                std::unique_ptr<BxDF> transBrdf = std::make_unique<FresnelSpecularBXDF>(ksSpec, ktSpec, 1.f, ksIOR);
-                //std::unique_ptr<BxDF> transBrdf = std::make_unique<DispersionBXDF>(ksSpec, ktSpec, 1.f);
-                isect->bsdf->Add(transBrdf);
+            case (int)FresnelType::WavelengthDependentMetallic:
+            {
+                std::pair<const float *, const float *> metalPair = GetMetalNameFromValue(0);
+                PrincipalSpectrum eta = FromSPDExact(metalPair.first);
+                PrincipalSpectrum k = FromSPDExact(metalPair.second);
+                std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelConductor>(PrincipalSpectrum(1.f), eta, k);
+                std::unique_ptr<BxDF> metallicBRDF = std::make_unique<MicrofacetReflectionBRDF>(distribution, fresnel, PrincipalSpectrum(1.f), ksweight);
+                isect->bsdf->Add(metallicBRDF);
             }
-            else
+
+            case (int)FresnelType::Dielectric:
+            case (int)FresnelType::Metallic:
             {
-                // Specular : Blend with Diffuse using Fresnel Modulation
-                std::unique_ptr<BxDF> specularBrdf = std::make_unique<FresnelBlendedDiffuseSpecularBRDF>(kdSpec, kdweight, kdevalrough,
-                                                                                                         ksSpec, ksweight, ro, dielectricFresnel, distribution);
-                isect->bsdf->Add(specularBrdf);
+                if (ktweight > 0)
+                {
+                    PrincipalSpectrum ktSpec = kt->Evaluate(*isect).SpectrumClamp();
+                    std::unique_ptr<BxDF> transBrdf = std::make_unique<FresnelSpecularBXDF>(ksSpec, ktSpec, 1.f, ksIOR);
+                    isect->bsdf->Add(transBrdf);
+                }
+                else
+                {
+                    if (thinFilmThickness > 0)
+                    {
+                        specularFresnel = std::make_shared<ThinFilmInteference>(thinFilmIOR, thinFilmThickness, ksIOR);
+                    }
+                    else
+                    {
+                        if (fresnelType == (int)FresnelType::Metallic)
+                            specularFresnel = std::make_shared<SchlickMetallic>(ksSpec);
+                    }
+
+                    std::unique_ptr<BxDF> specularBrdf = std::make_unique<FresnelBlendedDiffuseSpecularBRDF>(kdSpec, kdweight, kdevalrough,
+                                                                                                             ksSpec, ksweight, ro, specularFresnel, distribution);
+                    isect->bsdf->Add(specularBrdf);
+                }
+            }
             }
         }
 

@@ -7,6 +7,13 @@
 namespace filianore
 {
 
+    enum class FresnelType : int
+    {
+        Dielectric = 0,
+        Metallic = 1,
+        WavelengthDependentMetallic = 2
+    };
+
     class StandardSurfaceMaterial : public Material
     {
     public:
@@ -14,12 +21,11 @@ namespace filianore
                                 const std::shared_ptr<Texture<PrincipalSpectrum>> &_kd,
                                 const std::shared_ptr<Texture<float>> &_kdroughness,
 
-                                const float _metallicWeight,
-
                                 const float _ksweight,
                                 const std::shared_ptr<Texture<PrincipalSpectrum>> &_ks,
                                 const std::shared_ptr<Texture<float>> &_ksroughness,
                                 const std::shared_ptr<Texture<float>> &_ksanisotropic,
+                                const int _fresnelType,
                                 const float _ksIOR,
 
                                 const float _sheenweight,
@@ -37,8 +43,7 @@ namespace filianore
                                 const float _thinFilmThickness,
                                 const float _thinFilmIOR)
             : kd(_kd), kdroughness(_kdroughness), kdweight(_kdweight),
-              metallicWeight(_metallicWeight),
-              ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), ksIOR(_ksIOR),
+              ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), fresnelType(_fresnelType), ksIOR(_ksIOR),
               sheenweight(_sheenweight), sheenColor(_sheenColor), sheenroughness(_sheenroughness),
               kt(_kt), ktweight(_ktweight),
               krcoatweight(_krcoatweight), krcoat(_krcoat), krcoatior(_krcoatior), krcoatgloss(_krcoatgloss),
@@ -49,19 +54,17 @@ namespace filianore
         void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
 
     private:
-        // Diffuse Foundation
+        // Diffuse
         const std::shared_ptr<Texture<PrincipalSpectrum>> kd;
         const std::shared_ptr<Texture<float>> kdroughness;
         const float kdweight;
-
-        // Metallic
-        const float metallicWeight;
 
         // Specular
         const std::shared_ptr<Texture<PrincipalSpectrum>> ks;
         const std::shared_ptr<Texture<float>> ksroughness;
         const std::shared_ptr<Texture<float>> ksanisotropic;
         const float ksweight;
+        const int fresnelType;
         const float ksIOR;
 
         // Sheen

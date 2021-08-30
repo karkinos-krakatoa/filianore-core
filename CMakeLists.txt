@@ -130,6 +130,7 @@ add_library(filianore STATIC
     src/shading/fresnel/fresnelconductor.cpp
     src/shading/fresnel/fresnelnull.cpp
     src/shading/fresnel/schlickdielectric.cpp
+    src/shading/fresnel/schlickmetallic.cpp
     src/shading/fresnel/thinfilm.cpp
 
     src/shading/microfacets/beckmann.cpp
@@ -272,6 +273,7 @@ install(FILES
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelconductor.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelnull.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/schlickdielectric.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/schlickmetallic.h 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/thinfilm.h 
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/fresnel)
 
