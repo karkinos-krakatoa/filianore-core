@@ -87,6 +87,7 @@ add_library(filianore STATIC
 
     src/cameras/physical.cpp
   
+    src/color/metallurgy.cpp
     src/color/spectruminits.cpp
     src/color/spectrumoperations.cpp
 

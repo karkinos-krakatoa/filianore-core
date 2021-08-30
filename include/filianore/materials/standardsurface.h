@@ -27,6 +27,7 @@ namespace filianore
                                 const std::shared_ptr<Texture<float>> &_ksanisotropic,
                                 const int _fresnelType,
                                 const float _ksIOR,
+                                const int _metalType,
 
                                 const float _sheenweight,
                                 const std::shared_ptr<Texture<PrincipalSpectrum>> &_sheenColor,
@@ -43,8 +44,9 @@ namespace filianore
                                 const float _thinFilmThickness,
                                 const float _thinFilmIOR)
             : kd(_kd), kdroughness(_kdroughness), kdweight(_kdweight),
-              ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), fresnelType(_fresnelType), ksIOR(_ksIOR),
-              sheenweight(_sheenweight), sheenColor(_sheenColor), sheenroughness(_sheenroughness),
+              ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), fresnelType(_fresnelType), ksIOR(_ksIOR), metalType(_metalType),
+              sheenweight(_sheenweight),
+              sheenColor(_sheenColor), sheenroughness(_sheenroughness),
               kt(_kt), ktweight(_ktweight),
               krcoatweight(_krcoatweight), krcoat(_krcoat), krcoatior(_krcoatior), krcoatgloss(_krcoatgloss),
               thinFilmThickness(_thinFilmThickness), thinFilmIOR(_thinFilmIOR)
@@ -66,6 +68,7 @@ namespace filianore
         const float ksweight;
         const int fresnelType;
         const float ksIOR;
+        const int metalType;
 
         // Sheen
         const std::shared_ptr<Texture<PrincipalSpectrum>> sheenColor;
