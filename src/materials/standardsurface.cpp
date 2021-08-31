@@ -31,7 +31,7 @@ namespace filianore
     void StandardSurfaceMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
     {
         float eta = 1.f;
-        if (ksweight > 0)
+        if (ksweight > 0 && ktweight > 0)
         {
             eta = ksIOR;
         }
@@ -86,11 +86,11 @@ namespace filianore
                 case (int)FresnelType::WavelengthDependentMetallic:
                 {
                     std::pair<PrincipalSpectrum, PrincipalSpectrum> metalPair = GetMetalCoefficientsFromForge(metalType);
-                    std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelConductor>(PrincipalSpectrum(1.f), GoldEta, GoldK);
+                    std::shared_ptr<Fresnel> fresnel = std::make_shared<FresnelConductor>(PrincipalSpectrum(1.f), metalPair.first, metalPair.second);
                     std::unique_ptr<BxDF> metallicBRDF = std::make_unique<MicrofacetReflectionBRDF>(mainGGXdistribution, fresnel, PrincipalSpectrum(1.f), ksweight);
                     isect->bsdf->Add(metallicBRDF);
                 }
-
+                break;
                 case (int)FresnelType::Dielectric:
                 case (int)FresnelType::Metallic:
                 {
@@ -101,6 +101,7 @@ namespace filianore
                                                                                                              ksSpec, ksweight, ro, specularFresnel, mainGGXdistribution);
                     isect->bsdf->Add(specularBrdf);
                 }
+                break;
                 }
             }
         }
