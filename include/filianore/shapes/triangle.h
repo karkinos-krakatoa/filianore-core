@@ -33,11 +33,6 @@ namespace filianore
 		Triangle(const TriangleEntity &_v1, const TriangleEntity &_v2, const TriangleEntity &_v3, bool _reverseOrientation = false)
 			: Shape(_reverseOrientation), v1(_v1), v2(_v2), v3(_v3)
 		{
-			allNormalsInMesh = false;
-			if (_v1.normalFound && _v2.normalFound && _v3.normalFound)
-			{
-				allNormalsInMesh = true;
-			}
 		}
 
 		AABB WorldBound() const;
