@@ -1,5 +1,8 @@
 #include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "filianore/ext/stb_image.h"
+
 #include "filianore/color/principalspectrum.h"
 #include "filianore/core/interaction.h"
 #include "filianore/textures/imagemap.h"

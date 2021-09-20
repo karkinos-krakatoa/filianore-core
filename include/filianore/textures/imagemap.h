@@ -1,8 +1,6 @@
 #ifndef _TEXTURE_IMAGE_MAP_H
 #define _TEXTURE_IMAGE_MAP_H
 
-#include "../ext/stb_image.h"
-
 #include "../core/elemental.h"
 #include "../core/texture.h"
 

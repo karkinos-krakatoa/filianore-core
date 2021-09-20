@@ -140,7 +140,8 @@ add_library(filianore STATIC
     
     src/shapes/triangle.cpp
 
-    src/textures/constant.cpp)
+    src/textures/constant.cpp
+    src/textures/imagemap.cpp)
 
 target_include_directories(filianore PUBLIC
     $<INSTALL_INTERFACE:include>
@@ -290,6 +291,7 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/textures/constant.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/textures/imagemap.h
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/textures)
 
 install(TARGETS filianore
