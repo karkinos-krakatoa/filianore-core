@@ -44,22 +44,26 @@ namespace filianore
             return PrincipalSpectrum(0.f);
 
         StaticArray<float, 2> uv = isect.uv;
-        float u = Clamp(uv.params[0], 0.f, 1.f);
-        float v = 1.f - Clamp(uv.params[1], 0.f, 1.f);
 
-        int i = static_cast<int>(u * width);
-        int j = static_cast<int>(v * width);
+        int i = int(uv.x() * width);
+        int j = int((1.f - uv.y()) * height - 0.001f);
 
-        if (i >= width)
+        if (i < 0)
+            i = 0;
+
+        if (j < 0)
+            j = 0;
+
+        if (i > width - 1)
             i = width - 1;
-        if (j >= height)
-            j = height - 1;
 
-        const auto colorScale = 1.f / 255.f;
-        auto pixel = data + j * bytes_per_scanline + i * bytes_per_pixel;
+        if (j > height - 1)
+            i = height - 1;
 
-        StaticArray<float, 3> colorAtUV = StaticArray<float, 3>(colorScale * pixel[0], colorScale * pixel[1], colorScale * pixel[2]);
+        float r = int(data[3 * i + 3 * width * j]) / 255.f;
+        float g = int(data[3 * i + 3 * width * j + 1]) / 255.f;
+        float b = int(data[3 * i + 3 * width * j + 2]) / 255.f;
 
-        return FromReflectanceRGB(colorAtUV);
+        return FromReflectanceRGB(StaticArray<float, 3>(r, g, b));
     }
 }

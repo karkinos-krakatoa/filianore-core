@@ -47,6 +47,8 @@ namespace filianore
 		Interaction Sample(const StaticArray<float, 2> &u, float *pdf) const;
 
 	private:
+		StaticArray<float, 2> EvaluateUV(const StaticArray<float, 3> &p) const;
+
 		TriangleEntity v1, v2, v3;
 		bool allNormalsInMesh;
 	};

@@ -34,7 +34,7 @@ namespace filianore
             *isect = SurfaceInteraction(t, StaticArray<float, 3>(), StaticArray<float, 3>(), StaticArray<float, 2>(), revRay.Neg(), this, 0);
 
             isect->p = ray.PointAtT(t);
-            isect->uv = StaticArray<float, 2>(u, v);
+            isect->uv = EvaluateUV(isect->p);
             isect->n = Cross(e1, e2).Normalize();
             isect->pError = Abs(isect->p) * Gamma<float>(5);
 
@@ -52,6 +52,20 @@ namespace filianore
     float Triangle::Area() const
     {
         return 0.5f * Cross((v2.vertex - v1.vertex), (v3.vertex - v1.vertex)).Length();
+    }
+
+    StaticArray<float, 2> Triangle::EvaluateUV(const StaticArray<float, 3> &p) const
+    {
+        const StaticArray<float, 3> f1 = v1.vertex - p;
+        const StaticArray<float, 3> f2 = v2.vertex - p;
+        const StaticArray<float, 3> f3 = v3.vertex - p;
+
+        const float a = Cross((v1.vertex - v2.vertex), (v1.vertex - v3.vertex)).Length();
+        const float a1 = Cross(f2, f3).Length() / a;
+        const float a2 = Cross(f3, f1).Length() / a;
+        const float a3 = Cross(f1, f2).Length() / a;
+
+        return v1.uv * a1 + v2.uv * a2 + v3.uv * a3;
     }
 
     Interaction Triangle::Sample(const StaticArray<float, 2> &u, float *pdf) const
