@@ -3,6 +3,7 @@
 
 #include "../core/elemental.h"
 #include "../core/texture.h"
+#include "../maths/static_array.h"
 
 namespace filianore
 {

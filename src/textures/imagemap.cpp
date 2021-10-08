@@ -1,14 +1,14 @@
 #include <iostream>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "filianore/ext/stb_image.h"
-
 #include "filianore/color/principalspectrum.h"
 #include "filianore/core/interaction.h"
 #include "filianore/textures/imagemap.h"
 
 #include "filianore/color/spectrumoperations.h"
 #include "filianore/color/spectruminits.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "filianore/ext/stb_image.h"
 
 namespace filianore
 {
@@ -66,4 +66,5 @@ namespace filianore
 
         return FromReflectanceRGB(StaticArray<float, 3>(r, g, b));
     }
+
 }

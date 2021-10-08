@@ -2,6 +2,7 @@
 #define _TEXTURE_H
 
 #include "elemental.h"
+#include "../maths/static_array.h"
 
 namespace filianore
 {
