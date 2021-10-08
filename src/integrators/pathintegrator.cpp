@@ -77,7 +77,7 @@ namespace filianore
                 break;
             }
 
-            throughput *= f * AbsDot(wi, isect.n) / pdf;
+            throughput *= f * AbsDot(wi, isect.Shading.n) / pdf;
             specularBounce = (flags & BSDF_SPECULAR) != 0;
 
             if ((flags & BSDF_SPECULAR) && (flags & BSDF_TRANSMISSION))

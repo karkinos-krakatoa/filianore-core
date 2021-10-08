@@ -96,17 +96,28 @@ namespace filianore
     public:
         SurfaceInteraction() {}
 
-        SurfaceInteraction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 3> &_n, const StaticArray<float, 2> &_uv,
-                           const StaticArray<float, 3> &_wo, const Shape *_shape, float _time)
-            : Interaction(_t, _p, _n, _wo, _time), uv(_uv), shape(_shape)
-        {
-        }
+        SurfaceInteraction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 2> &_uv,
+                           const StaticArray<float, 3> &_dpdu, const StaticArray<float, 3> &_dpdv,
+                           const StaticArray<float, 3> &_dndu, const StaticArray<float, 3> &_dndv,
+                           const StaticArray<float, 3> &_wo, const Shape *_shape, float _time);
 
         PrincipalSpectrum Le(const StaticArray<float, 3> &w) const;
 
         void ComputeScatteringFunctions(const Ray &ray);
+        void SetShadingGeometry(const StaticArray<float, 3> &_dpdu, const StaticArray<float, 3> &_dpdv,
+                                const StaticArray<float, 3> &_dndu, const StaticArray<float, 3> &_dndv, bool orientationIsAuthoritative);
 
         StaticArray<float, 2> uv;
+        StaticArray<float, 3> dpdu, dpdv;
+        StaticArray<float, 3> dndu, dndv;
+
+        struct
+        {
+            StaticArray<float, 3> n;
+            StaticArray<float, 3> dpdu, dpdv;
+            StaticArray<float, 3> dndu, dndv;
+        } Shading;
+
         const Shape *shape = nullptr;
         const Primitive *primitive = nullptr;
         std::shared_ptr<BSDF> bsdf = nullptr;

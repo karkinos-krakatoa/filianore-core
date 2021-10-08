@@ -45,7 +45,7 @@ namespace filianore
             if (it.IsSurfaceInteraction())
             {
                 const SurfaceInteraction &isect = (const SurfaceInteraction &)it;
-                f = isect.bsdf->Evaluate(isect.wo, wi, bsdfFlags) * AbsDot(wi, isect.n);
+                f = isect.bsdf->Evaluate(isect.wo, wi, bsdfFlags) * AbsDot(wi, isect.Shading.n);
                 scatteringPdf = isect.bsdf->Pdf(isect.wo, wi, bsdfFlags);
             }
 
@@ -84,7 +84,7 @@ namespace filianore
                 BxDFType sampledType;
                 const SurfaceInteraction &isect = (const SurfaceInteraction &)it;
                 f = isect.bsdf->Sample(isect.wo, &wi, uShading, &scatteringPdf, bsdfFlags, &sampledType);
-                f *= AbsDot(wi, isect.n);
+                f *= AbsDot(wi, isect.Shading.n);
                 sampledSpecular = (sampledType & BSDF_SPECULAR) != 0;
             }
             else
