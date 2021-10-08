@@ -1,5 +1,8 @@
 #include "filianore/materials/standardsurface.h"
 
+#include "filianore/textures/imagemap.h"
+
+#include "filianore/shading/bxdfs/diffusetransmission.h"
 #include "filianore/shading/bxdfs/clearcoat.h"
 #include "filianore/shading/bxdfs/orennayar.h"
 #include "filianore/shading/bxdfs/lambert.h"
@@ -28,8 +31,53 @@
 namespace filianore
 {
 
+    StandardSurfaceMaterial::StandardSurfaceMaterial(const float _kdweight,
+                                                     const std::shared_ptr<Texture<PrincipalSpectrum>> &_kd,
+                                                     const std::shared_ptr<Texture<float>> &_kdroughness,
+
+                                                     const float _ksweight,
+                                                     const std::shared_ptr<Texture<PrincipalSpectrum>> &_ks,
+                                                     const std::shared_ptr<Texture<float>> &_ksroughness,
+                                                     const std::shared_ptr<Texture<float>> &_ksanisotropic,
+                                                     const int _fresnelType,
+                                                     const float _ksIOR,
+                                                     const int _metalType,
+
+                                                     const float _sheenweight,
+                                                     const std::shared_ptr<Texture<PrincipalSpectrum>> &_sheenColor,
+                                                     const std::shared_ptr<Texture<float>> &_sheenroughness,
+
+                                                     const float _ktweight,
+                                                     const std::shared_ptr<Texture<PrincipalSpectrum>> &_kt,
+
+                                                     const float _krcoatweight,
+                                                     const std::shared_ptr<Texture<PrincipalSpectrum>> &_krcoat,
+                                                     const float _krcoatior,
+                                                     const float _krcoatgloss,
+
+                                                     const float _thinFilmThickness,
+                                                     const float _thinFilmIOR,
+
+                                                     const bool _thinWalled,
+                                                     const std::shared_ptr<Texture<float>> &_bumpMap)
+        : kd(_kd), kdroughness(_kdroughness), kdweight(_kdweight),
+          ks(_ks), ksroughness(_ksroughness), ksweight(_ksweight), ksanisotropic(_ksanisotropic), fresnelType(_fresnelType), ksIOR(_ksIOR), metalType(_metalType),
+          sheenweight(_sheenweight),
+          sheenColor(_sheenColor), sheenroughness(_sheenroughness),
+          kt(_kt), ktweight(_ktweight),
+          krcoatweight(_krcoatweight), krcoat(_krcoat), krcoatior(_krcoatior), krcoatgloss(_krcoatgloss),
+          thinFilmThickness(_thinFilmThickness), thinFilmIOR(_thinFilmIOR),
+          thinWalled(_thinWalled), bumpMap(_bumpMap)
+    {
+    }
+
     void StandardSurfaceMaterial::ComputeScatteringFunctions(SurfaceInteraction *isect) const
     {
+        if (bumpMap)
+        {
+            BumpEvaluate(bumpMap, isect);
+        }
+
         float eta = 1.f;
         if (ksweight > 0 && ktweight > 0)
         {
@@ -45,18 +93,18 @@ namespace filianore
         if ((kdweight > 0 && ksweight <= 0) ||
             (kdweight > 0 && ksweight > 0 && fresnelType == (int)FresnelType::WavelengthDependentMetallic))
         {
-            if (kdevalrough == 0)
+            // Remap [0-1] roughness to [0-90] sigma
+            float sigma = kdevalrough * 90.f;
+            std::unique_ptr<BxDF> diffuseBxdf = nullptr;
+            if (!thinWalled)
             {
-                std::unique_ptr<BxDF> lambBRDF = std::make_unique<LambertBRDF>(kdSpec, kdweight);
-                isect->bsdf->Add(lambBRDF);
+                diffuseBxdf = std::make_unique<OrenNayarBRDF>(kdSpec, kdweight, sigma);
             }
             else
             {
-                // Remap [0-1] roughness to [0-90] sigma
-                float sigma = kdevalrough * 90.f;
-                std::unique_ptr<BxDF> orenBrdf = std::make_unique<OrenNayarBRDF>(kdSpec, kdweight, sigma);
-                isect->bsdf->Add(orenBrdf);
+                diffuseBxdf = std::make_unique<DiffuseTransmission>(kdSpec, kdweight, sigma);
             }
+            isect->bsdf->Add(diffuseBxdf);
         }
 
         float ksevalrough = ksroughness->Evaluate(*isect);
