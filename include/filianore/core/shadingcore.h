@@ -120,6 +120,14 @@ namespace filianore
         return StaticArray<float, 3>(r * std::cos(phi), r * std::sin(phi), z);
     }
 
+    inline StaticArray<float, 3> UniformSampleSphere(const StaticArray<float, 2> &u)
+    {
+        float z = 1 - 2 * u.params[0];
+        float r = std::sqrt(std::max(0.f, 1.f - z * z));
+        float phi = 2 * Pi<float> * u.params[1];
+        return StaticArray<float, 3>(r * std::cos(phi), r * std::sin(phi), z);
+    }
+
     inline float UniformHemispherePdf()
     {
         return Inv2Pi<float>;
