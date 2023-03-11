@@ -149,21 +149,6 @@ target_include_directories(filianore PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 
-#---------------------------------------------------------------------------
-# Add external Pkgs
-#---------------------------------------------------------------------------
-
-if (NOT MSVC)
-    find_package(OpenMP REQUIRED)
-    if (OpenMP_CXX_FOUND)
-        message(STATUS "OpenMP found")
-        target_link_libraries(filianore INTERFACE OpenMP::OpenMP_CXX)
-    endif ()
-else ()
-    message(STATUS "OpenMP is disabled because MSVC only supports OpenMP 2.0.")
-endif ()
-
-
 #-----------------------------------------------------------------------------------
 # Install and Export
 #-----------------------------------------------------------------------------------

@@ -12,10 +12,6 @@
 #include <alloca.h>
 #endif
 
-#ifdef _OPENMP
-#include <omp.h>
-#endif
-
 #if defined(_MSC_VER)
 #define FILIANORE_NOINLINE __declspec(noinline)
 #define FILIANORE_INLINE __forceinline
