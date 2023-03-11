@@ -80,11 +80,6 @@ ENDIF ()
 add_library(filianore STATIC
     src/accel/bvh.cpp
 
-    src/bvhx/nodeintersectors.cpp
-    src/bvhx/primitiveintersectors.cpp
-    src/bvhx/raytraverser.cpp
-    src/bvhx/utils.cpp
-
     src/cameras/physical.cpp
   
     src/color/metallurgy.cpp
@@ -154,18 +149,6 @@ target_include_directories(filianore PUBLIC
 #-----------------------------------------------------------------------------------
 
 set(FULL_CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/filianore)
-
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/utils.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/bvhx.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/topdownbuilder.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuildtask.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/binnedsahbuilder.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/primitiveintersectionresult.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/primitiveintersectors.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/nodeintersectors.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/bvhx/raytraverser.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/bvhx)
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/accel/bvh.h 

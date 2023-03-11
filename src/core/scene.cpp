@@ -1,8 +1,6 @@
 #include "filianore/core/scene.h"
 #include "filianore/core/illuminant.h"
 #include "filianore/core/primitive.h"
-#include "filianore/bvhx/raytraverser.h"
-#include "filianore/bvhx/primitiveintersectors.h"
 
 namespace filianore
 {
