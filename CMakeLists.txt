@@ -78,8 +78,8 @@ ENDIF ()
 #-----------------------------------------------------------------------------------
 
 add_library(filianore STATIC
-    src/accel/bvh.cpp
-
+    src/accel/bvh.cpp 
+    
     src/cameras/physical.cpp
   
     src/color/metallurgy.cpp
@@ -216,10 +216,9 @@ install(FILES
 
 install(FILES 
     ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/matrix.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/scalar.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/static_array.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/transform.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/vec3_math.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/mathutils.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/vec.h 
+    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/transform.h
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/maths)
 
 install(FILES 
