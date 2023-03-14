@@ -1,54 +1,43 @@
 #include "filianore/core/shape.h"
 #include "filianore/core/interaction.h"
 
-namespace filianore
-{
-    bool Shape::IntersectP(const Ray &ray) const
-    {
-        return Intersect(ray, 0);
+namespace filianore {
+bool Shape::intersect_p(const Ray &ray) const {
+    return intersect(ray, 0);
+}
+
+float Shape::pdf(const Interaction &isect) const {
+    return 1.f / area();
+}
+
+float Shape::pdf(const Interaction &isect, const Vector3f &wi) const {
+    Ray ray = isect.kindle_ray(wi);
+    SurfaceInteraction isc;
+    if (!intersect(ray, &isc)) {
+        return 0.f;
     }
 
-    float Shape::Pdf(const Interaction &isect) const
-    {
-        return 1.f / Area();
+    Vector3f wiNeg = wi;
+    float pdf = (isect.p - isc.p).length_squared() / (abs_dot(isc.n, -wiNeg) * area());
+    if (std::isinf(pdf)) {
+        pdf = 0.f;
     }
+    return pdf;
+}
 
-    float Shape::Pdf(const Interaction &isect, const StaticArray<float, 3> &wi) const
-    {
-        Ray ray = isect.KindleRay(wi);
-        SurfaceInteraction isc;
-        if (!Intersect(ray, &isc))
-        {
-            return 0.f;
-        }
-
-        StaticArray<float, 3> wiNeg = wi;
-        float pdf = (isect.p - isc.p).LengthSquared() / (AbsDot(isc.n, wiNeg.Neg()) * Area());
-        if (std::isinf(pdf))
-        {
-            pdf = 0.f;
-        }
-        return pdf;
-    }
-
-    Interaction Shape::Sample(const Interaction &isect, const StaticArray<float, 2> &u, float *pdf) const
-    {
-        Interaction isc = Sample(u, pdf);
-        StaticArray<float, 3> wi = isc.p - isect.p;
-        if (wi.LengthSquared() == 0)
-        {
+Interaction Shape::sample(const Interaction &isect, const Vector2f &u, float *pdf) const {
+    Interaction isc = sample(u, pdf);
+    Vector3f wi = isc.p - isect.p;
+    if (wi.length_squared() == 0) {
+        *pdf = 0.f;
+    } else {
+        wi = normalize(wi);
+        *pdf *= (isect.p - isc.p).length_squared() / abs_dot(isc.n, -wi);
+        if (std::isinf(*pdf)) {
             *pdf = 0.f;
         }
-        else
-        {
-            wi = wi.Normalize();
-            *pdf *= (isect.p - isc.p).LengthSquared() / AbsDot(isc.n, wi.Neg());
-            if (std::isinf(*pdf))
-            {
-                *pdf = 0.f;
-            }
-        }
-        return isc;
     }
+    return isc;
+}
 
 } // namespace filianore

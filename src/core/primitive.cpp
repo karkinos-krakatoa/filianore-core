@@ -1,54 +1,44 @@
 #include "filianore/core/primitive.h"
-#include "filianore/core/interaction.h"
 #include "filianore/core/aabb.h"
+#include "filianore/core/interaction.h"
 #include "filianore/core/material.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    AABB GeometricPrimitive::WorldBound() const
-    {
-        return shape->WorldBound();
+AABB GeometricPrimitive::world_bound() const {
+    return shape->world_bound();
+}
+
+bool GeometricPrimitive::intersect(const Ray &ray, SurfaceInteraction *isect) const {
+    if (!shape->intersect(ray, isect)) {
+        return false;
     }
+    ray.tMax = isect->t;
+    isect->primitive = this;
 
-    bool GeometricPrimitive::Intersect(const Ray &ray, SurfaceInteraction *isect) const
-    {
-        if (!shape->Intersect(ray, isect))
-        {
-            return false;
-        }
-        ray.tMax = isect->t;
-        isect->primitive = this;
+    return true;
+}
 
-        return true;
+bool GeometricPrimitive::intersect_p(const Ray &ray) const {
+    return shape->intersect_p(ray);
+}
+
+Vector3f GeometricPrimitive::centroid() const {
+    return shape->centroid();
+}
+
+void GeometricPrimitive::compute_scattering_functions(SurfaceInteraction *isect) const {
+    if (material) {
+        material->compute_scattering_functions(isect);
     }
+}
 
-    bool GeometricPrimitive::IntersectP(const Ray &ray) const
-    {
-        return shape->IntersectP(ray);
-    }
+Material *GeometricPrimitive::get_material() const {
+    return material.get();
+}
 
-    StaticArray<float, 3> GeometricPrimitive::Centroid() const
-    {
-        return shape->Centroid();
-    }
-
-    void GeometricPrimitive::ComputeScatteringFunctions(SurfaceInteraction *isect) const
-    {
-        if (material)
-        {
-            material->ComputeScatteringFunctions(isect);
-        }
-    }
-
-    Material *GeometricPrimitive::GetMaterial() const
-    {
-        return material.get();
-    }
-
-    AreaIlluminant *GeometricPrimitive::GetAreaIlluminant() const
-    {
-        return areaIllum.get();
-    }
+AreaIlluminant *GeometricPrimitive::get_area_illuminant() const {
+    return areaIllum.get();
+}
 
 } // namespace filianore

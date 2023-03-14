@@ -4,26 +4,22 @@
 #include "../core/elemental.h"
 #include "../core/texture.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    template <typename T>
-    class ConstantTexture : public Texture<T>
-    {
-    public:
-        ConstantTexture(const T &_value)
-            : value(_value)
-        {
-        }
+template <typename T>
+class ConstantTexture : public Texture<T> {
+public:
+    ConstantTexture(const T &_value)
+        : value(_value) {
+    }
 
-        T Evaluate(const SurfaceInteraction &isect) const
-        {
-            return value;
-        }
+    T evaluate(const SurfaceInteraction &isect) const {
+        return value;
+    }
 
-    private:
-        T value;
-    };
+private:
+    T value;
+};
 
 } // namespace filianore
 

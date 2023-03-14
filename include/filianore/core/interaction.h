@@ -1,127 +1,111 @@
 #ifndef _INTERACTION_H
 #define _INTERACTION_H
 
+#include "../color/principalspectrum.h"
+#include "../maths/transform.h"
 #include "elemental.h"
 #include "ray.h"
-#include "../maths/transform.h"
-#include "../color/principalspectrum.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    inline StaticArray<float, 3> OffsetPointOrigin(const StaticArray<float, 3> &p, const StaticArray<float, 3> &pError,
-                                                   const StaticArray<float, 3> &n, const StaticArray<float, 3> w)
-    {
-        float d = Dot(Abs(n), pError);
-        StaticArray<float, 3> offset = n * d;
+inline Vector3f offset_point_origin(const Vector3f &p, const Vector3f &pError,
+                                    const Vector3f &n, const Vector3f &w) {
+    float d = dot(abs(n), pError);
+    Vector3f offset = n * d;
 
-        if (Dot(w, n) < 0)
-        {
-            offset = offset.Neg();
-        }
-
-        StaticArray<float, 3> po = p + offset;
-
-        for (int i = 0; i < 3; ++i)
-        {
-            if (offset.params[i] > 0)
-            {
-                po.params[i] = NextFloatUp<float>(po.params[i]);
-            }
-            else if (offset.params[i] < 0)
-            {
-                po.params[i] = NextFloatDown<float>(po.params[i]);
-            }
-        }
-
-        return po;
+    if (dot(w, n) < 0) {
+        offset = -offset;
     }
 
-    struct Interaction
+    Vector3f po = p + offset;
+
+    for (int i = 0; i < 3; ++i) {
+        if (offset[i] > 0) {
+            po[i] = next_float_up<float>(po[i]);
+        } else if (offset[i] < 0) {
+            po[i] = next_float_down<float>(po[i]);
+        }
+    }
+
+    return po;
+}
+
+struct Interaction {
+    Interaction() : t(0), time(0) {}
+
+    Interaction(float _t, const Vector3f &_p, const Vector3f &_wo, float _time)
+        : t(_t), p(_p), time(_time) {
+        wo = _wo;
+        wo = normalize(wo);
+    }
+
+    Interaction(float _t, const Vector3f &_p, const Vector3f &_n, const Vector3f &_wo, float _time)
+        : t(_t), p(_p), n(_n), time(_time) {
+        wo = _wo;
+        wo = normalize(wo);
+    }
+
+    Interaction(const Vector3f &_p, float _time)
+        : t(0.f), p(_p), time(_time) {
+    }
+
+    bool is_surface_interaction() const {
+        return (n.x != 0.f || n.y != 0.f || n.z != 0.f);
+    }
+
+    bool is_medium_interaction() const {
+        return !is_surface_interaction();
+    }
+
+    Ray kindle_ray(const Vector3f &d) const {
+        Vector3f o = offset_point_origin(p, pError, n, d);
+        return Ray(o, d, SHADOW_EPSILON, INFINITI);
+    }
+
+    Ray kindle_ray_to(const Vector3f &p2) const {
+        Vector3f d = p2 - p;
+        Vector3f o = offset_point_origin(p, pError, n, d);
+        return Ray(o, d, SHADOW_EPSILON, 1.f - SHADOW_EPSILON);
+    }
+
+    float time;
+    float t;
+    Vector3f p;
+    Vector3f pError;
+    Vector3f wo;
+    Vector3f n;
+};
+
+class SurfaceInteraction : public Interaction {
+public:
+    SurfaceInteraction() {}
+
+    SurfaceInteraction(float _t, const Vector3f &_p, const Vector2f &_uv,
+                       const Vector3f &_dpdu, const Vector3f &_dpdv,
+                       const Vector3f &_dndu, const Vector3f &_dndv,
+                       const Vector3f &_wo, const Shape *_shape, float _time);
+
+    PrincipalSpectrum le(const Vector3f &w) const;
+
+    void compute_scattering_functions(const Ray &ray);
+    void set_shading_geometry(const Vector3f &_dpdu, const Vector3f &_dpdv,
+                              const Vector3f &_dndu, const Vector3f &_dndv, bool orientationIsAuthoritative);
+
+    Vector2f uv;
+    Vector3f dpdu, dpdv;
+    Vector3f dndu, dndv;
+
+    struct
     {
-        Interaction() : t(0), time(0) {}
+        Vector3f n;
+        Vector3f dpdu, dpdv;
+        Vector3f dndu, dndv;
+    } Shading;
 
-        Interaction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 3> &_wo, float _time)
-            : t(_t), p(_p), time(_time)
-        {
-            wo = _wo;
-            wo = wo.Normalize();
-        }
-
-        Interaction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 3> &_n, const StaticArray<float, 3> &_wo, float _time)
-            : t(_t), p(_p), n(_n), time(_time)
-        {
-            wo = _wo;
-            wo = wo.Normalize();
-        }
-
-        Interaction(const StaticArray<float, 3> &_p, float _time)
-            : t(0.f), p(_p), time(_time)
-        {
-        }
-
-        bool IsSurfaceInteraction() const
-        {
-            return (n.x() != 0.f || n.y() != 0.f || n.z() != 0.f);
-        }
-
-        bool IsMediumInteraction() const
-        {
-            return !IsSurfaceInteraction();
-        }
-
-        Ray KindleRay(const StaticArray<float, 3> &d) const
-        {
-            StaticArray<float, 3> o = OffsetPointOrigin(p, pError, n, d);
-            return Ray(o, d, Epsilon<float>, Infinity<float>());
-        }
-
-        Ray KindleRayTo(const StaticArray<float, 3> &p2) const
-        {
-            StaticArray<float, 3> d = p2 - p;
-            StaticArray<float, 3> o = OffsetPointOrigin(p, pError, n, d);
-            return Ray(o, d, Epsilon<float>, 1.f - Epsilon<float>);
-        }
-
-        float time;
-        float t;
-        StaticArray<float, 3> p;
-        StaticArray<float, 3> pError;
-        StaticArray<float, 3> wo;
-        StaticArray<float, 3> n;
-    };
-
-    class SurfaceInteraction : public Interaction
-    {
-    public:
-        SurfaceInteraction() {}
-
-        SurfaceInteraction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 2> &_uv,
-                           const StaticArray<float, 3> &_dpdu, const StaticArray<float, 3> &_dpdv,
-                           const StaticArray<float, 3> &_dndu, const StaticArray<float, 3> &_dndv,
-                           const StaticArray<float, 3> &_wo, const Shape *_shape, float _time);
-
-        PrincipalSpectrum Le(const StaticArray<float, 3> &w) const;
-
-        void ComputeScatteringFunctions(const Ray &ray);
-        void SetShadingGeometry(const StaticArray<float, 3> &_dpdu, const StaticArray<float, 3> &_dpdv,
-                                const StaticArray<float, 3> &_dndu, const StaticArray<float, 3> &_dndv, bool orientationIsAuthoritative);
-
-        StaticArray<float, 2> uv;
-        StaticArray<float, 3> dpdu, dpdv;
-        StaticArray<float, 3> dndu, dndv;
-
-        struct
-        {
-            StaticArray<float, 3> n;
-            StaticArray<float, 3> dpdu, dpdv;
-            StaticArray<float, 3> dndu, dndv;
-        } Shading;
-
-        const Shape *shape = nullptr;
-        const Primitive *primitive = nullptr;
-        std::shared_ptr<BSDF> bsdf = nullptr;
-    };
+    const Shape *shape = nullptr;
+    const Primitive *primitive = nullptr;
+    std::shared_ptr<BSDF> bsdf = nullptr;
+};
 
 } // namespace filianore
 

@@ -1,24 +1,22 @@
 #ifndef _SAMPLER_H
 #define _SAMPLER_H
 
+#include "../maths/vec.h"
 #include <memory>
 #include <vector>
-#include "../maths/static_array.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class Sampler
-    {
-    public:
-        virtual ~Sampler() {}
+class Sampler {
+public:
+    virtual ~Sampler() {}
 
-        virtual float Get1D() = 0;
+    virtual float get_1d() = 0;
 
-        virtual StaticArray<float, 2> Get2D() = 0;
+    virtual Vector2f get_2d() = 0;
 
-        virtual void PrepareNextSample() = 0;
-    };
+    virtual void prepare_next_sample() = 0;
+};
 
 } // namespace filianore
 

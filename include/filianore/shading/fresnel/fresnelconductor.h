@@ -3,22 +3,19 @@
 
 #include "../../core/fresnel.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class FresnelConductor : public Fresnel
-    {
-    public:
-        FresnelConductor(const PrincipalSpectrum &_etaI, const PrincipalSpectrum &_etaT, const PrincipalSpectrum &_k)
-            : etaI(_etaI), etaT(_etaT), k(_k)
-        {
-        }
+class FresnelConductor : public Fresnel {
+public:
+    FresnelConductor(const PrincipalSpectrum &_etaI, const PrincipalSpectrum &_etaT, const PrincipalSpectrum &_k)
+        : etaI(_etaI), etaT(_etaT), k(_k) {
+    }
 
-        PrincipalSpectrum Evaluate(float cosI) const;
+    PrincipalSpectrum evaluate(float cosI) const;
 
-    private:
-        PrincipalSpectrum etaI, etaT, k;
-    };
+private:
+    PrincipalSpectrum etaI, etaT, k;
+};
 
 } // namespace filianore
 

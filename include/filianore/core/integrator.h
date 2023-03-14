@@ -1,31 +1,29 @@
 #ifndef _INTEGRATOR_H
 #define _INTEGRATOR_H
 
-#include "primitive.h"
 #include "material.h"
+#include "primitive.h"
 #include "renderparams.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class Integrator
-    {
-    public:
-        virtual ~Integrator() {}
+class Integrator {
+public:
+    virtual ~Integrator() {}
 
-        Integrator(const RenderParams &_renderParams)
-            : renderParams(_renderParams) {}
+    Integrator(const RenderParams &_renderParams)
+        : renderParams(_renderParams) {}
 
-        virtual void PrepareTheRenderer(const Scene &scene, Sampler &sampler) = 0;
-        virtual PrincipalSpectrum Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const = 0;
+    virtual void prepare_the_renderer(const Scene &scene, Sampler &sampler) = 0;
+    virtual PrincipalSpectrum Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const = 0;
 
-        RenderParams renderParams;
-    };
+    RenderParams renderParams;
+};
 
-    PrincipalSpectrum UniformSampleAllLights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia = false);
+PrincipalSpectrum uniform_sample_all_lights(const Interaction &it, const Scene &scene, Sampler &sampler, bool handleMedia = false);
 
-    PrincipalSpectrum EstimateDirect(const Interaction &it, const StaticArray<float, 2> &uShading, const Illuminant &illuminant, const StaticArray<float, 2> &uLight,
-                                     const Scene &scene, Sampler &sampler, bool handleMedia = false, bool specular = false);
+PrincipalSpectrum estimate_direct(const Interaction &it, const Vector2f &uShading, const Illuminant &illuminant, const Vector2f &uLight,
+                                  const Scene &scene, Sampler &sampler, bool handleMedia = false, bool specular = false);
 
 } // namespace filianore
 

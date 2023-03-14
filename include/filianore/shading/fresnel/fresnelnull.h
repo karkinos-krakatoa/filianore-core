@@ -3,16 +3,14 @@
 
 #include "../../core/fresnel.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class FresnelNull : public Fresnel
-    {
-    public:
-        FresnelNull() {}
+class FresnelNull : public Fresnel {
+public:
+    FresnelNull() {}
 
-        PrincipalSpectrum Evaluate(float cosI) const;
-    };
+    PrincipalSpectrum evaluate(float cosI) const;
+};
 
 } // namespace filianore
 

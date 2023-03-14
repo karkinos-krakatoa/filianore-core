@@ -1,39 +1,33 @@
 #include "filianore/shading/bxdfs/diffusetransmission.h"
-#include "filianore/shading/bxdfs/orennayar.h"
 #include "filianore/core/shadingcore.h"
+#include "filianore/shading/bxdfs/orennayar.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    DiffuseTransmission::DiffuseTransmission(const PrincipalSpectrum &_T, float _weight, float sigma)
-        : BxDF(BxDFType(BSDF_TRANSMISSION | BSDF_DIFFUSE))
-    {
-        diffuseBxdf = std::make_unique<OrenNayarBRDF>(_T, _weight, sigma);
+DiffuseTransmission::DiffuseTransmission(const PrincipalSpectrum &_T, float _weight, float sigma)
+    : BxDF(BxDFType(BSDF_TRANSMISSION | BSDF_DIFFUSE)) {
+    diffuseBxdf = std::make_unique<OrenNayarBRDF>(_T, _weight, sigma);
+}
+
+PrincipalSpectrum DiffuseTransmission::evaluate(const Vector3f &wo, const Vector3f &wi) const {
+    return diffuseBxdf->evaluate(wo, wi);
+}
+
+PrincipalSpectrum DiffuseTransmission::sample(const Vector3f &wo, Vector3f *wi, const Vector2f &sample, float *_pdf, BxDFType *sampledType) const {
+    *wi = cosine_hemisphere_sample(sample);
+
+    if (wo.z > 0) {
+        wi->z *= -1.f;
     }
 
-    PrincipalSpectrum DiffuseTransmission::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
-    {
-        return diffuseBxdf->Evaluate(wo, wi);
-    }
+    *_pdf = pdf(wo, *wi);
+    *sampledType = this->bxDFType;
 
-    PrincipalSpectrum DiffuseTransmission::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
-    {
-        *wi = CosineHemisphereSample(sample);
+    return evaluate(wo, *wi);
+}
 
-        if (wo.z() > 0)
-        {
-            wi->params[2] *= -1.f;
-        }
-
-        *pdf = Pdf(wo, *wi);
-        *sampledType = this->bxDFType;
-
-        return Evaluate(wo, *wi);
-    }
-
-    float DiffuseTransmission::Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
-    {
-        return !SameHemisphere(wo, wi) ? AbsCosTheta(wi) * InvPi<float> : 0.f;
-    }
+float DiffuseTransmission::pdf(const Vector3f &wo, const Vector3f &wi) const {
+    return !same_hemisphere(wo, wi) ? abs_cos_theta(wi) * INV_PI : 0.f;
+}
 
 } // namespace filianore

@@ -3,31 +3,29 @@
 
 #include "../core/illuminant.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class DirectionalIlluminant : public Illuminant
-    {
-    public:
-        DirectionalIlluminant(const Transform &_lightToWorld, const StaticArray<float, 3> &_dirIllum,
-                              const PrincipalSpectrum &_color, float _intensity, const PrincipalSpectrum &_shadowColor);
+class DirectionalIlluminant : public Illuminant {
+public:
+    DirectionalIlluminant(const Transform &_lightToWorld, const Vector3f &_dirIllum,
+                          const PrincipalSpectrum &_color, float _intensity, const PrincipalSpectrum &_shadowColor);
 
-        PrincipalSpectrum SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
-                                   VisibilityEvaluator *visEval) const;
+    PrincipalSpectrum sample_li(const Interaction &isect, const Vector2f &u, Vector3f *wi, float *pdf,
+                                VisibilityEvaluator *visEval) const;
 
-        PrincipalSpectrum Power() const;
+    PrincipalSpectrum power() const;
 
-        void PrepareIlluminant(const Scene &scene);
+    void prepare_illuminant(const Scene &scene);
 
-        float PdfLi(const Interaction &ref, const StaticArray<float, 3> &wi) const;
+    float pdf_li(const Interaction &ref, const Vector3f &wi) const;
 
-    private:
-        StaticArray<float, 3> dirIllum;
-        const float intensity;
-        const PrincipalSpectrum color;
-        StaticArray<float, 3> worldCenter;
-        float worldRadius;
-    };
+private:
+    Vector3f dirIllum;
+    const float intensity;
+    const PrincipalSpectrum color;
+    Vector3f worldCenter;
+    float worldRadius;
+};
 
 } // namespace filianore
 

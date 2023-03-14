@@ -1,19 +1,17 @@
 #ifndef _TEXTURE_H
 #define _TEXTURE_H
 
+#include "../maths/vec.h"
 #include "elemental.h"
-#include "../maths/static_array.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    template <typename T>
-    class Texture
-    {
-    public:
-        virtual ~Texture() {}
-        virtual T Evaluate(const SurfaceInteraction &isect) const = 0;
-    };
+template <typename T>
+class Texture {
+public:
+    virtual ~Texture() {}
+    virtual T evaluate(const SurfaceInteraction &isect) const = 0;
+};
 
 } // namespace filianore
 

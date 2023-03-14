@@ -3,22 +3,19 @@
 
 #include "../../core/fresnel.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class FresnelDielectric : public Fresnel
-    {
-    public:
-        FresnelDielectric(float _etaI, float _etaT)
-            : etaI(_etaI), etaT(_etaT)
-        {
-        }
+class FresnelDielectric : public Fresnel {
+public:
+    FresnelDielectric(float _etaI, float _etaT)
+        : etaI(_etaI), etaT(_etaT) {
+    }
 
-        PrincipalSpectrum Evaluate(float cosThetaI) const;
+    PrincipalSpectrum evaluate(float cosThetaI) const;
 
-    private:
-        mutable float etaI, etaT;
-    };
+private:
+    mutable float etaI, etaT;
+};
 
 } // namespace filianore
 

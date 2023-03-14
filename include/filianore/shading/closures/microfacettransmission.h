@@ -3,31 +3,29 @@
 
 #include "../../core/bxdf.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class MicrofacetTransmissionBRDF : public BxDF
-    {
-    public:
-        MicrofacetTransmissionBRDF(const PrincipalSpectrum &_kr, float _krweight,
-                                   const PrincipalSpectrum &_kt, float _ktweight,
-                                   float _etaA, float _etaB,
-                                   const std::shared_ptr<MicrofacetDistribution> &_distribution);
+class MicrofacetTransmissionBRDF : public BxDF {
+public:
+    MicrofacetTransmissionBRDF(const PrincipalSpectrum &_kr, float _krweight,
+                               const PrincipalSpectrum &_kt, float _ktweight,
+                               float _etaA, float _etaB,
+                               const std::shared_ptr<MicrofacetDistribution> &_distribution);
 
-        PrincipalSpectrum Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
+    PrincipalSpectrum evaluate(const Vector3f &wo, const Vector3f &wi) const;
 
-        PrincipalSpectrum Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const;
+    PrincipalSpectrum sample(const Vector3f &wo, Vector3f *wi, const Vector2f &sample, float *pdf, BxDFType *sampledType) const;
 
-        float Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const;
+    float pdf(const Vector3f &wo, const Vector3f &wi) const;
 
-    private:
-        const PrincipalSpectrum kr;
-        const PrincipalSpectrum kt;
-        const float krweight, ktweight;
-        const float etaA, etaB;
-        const std::shared_ptr<MicrofacetDistribution> distribution;
-        std::shared_ptr<Fresnel> fresnel;
-    };
-}
+private:
+    const PrincipalSpectrum kr;
+    const PrincipalSpectrum kt;
+    const float krweight, ktweight;
+    const float etaA, etaB;
+    const std::shared_ptr<MicrofacetDistribution> distribution;
+    std::shared_ptr<Fresnel> fresnel;
+};
+} // namespace filianore
 
 #endif

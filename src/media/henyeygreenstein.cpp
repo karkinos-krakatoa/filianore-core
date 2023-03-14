@@ -1,10 +1,8 @@
 #include "filianore/media/henyeygreenstein.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    float HenyeyGreenstein::EvaluatePhase(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
-    {
-        return PhaseHenyeyGreenstein(Dot(wo, wi), g);
-    }
+float HenyeyGreenstein::EvaluatePhase(const Vector3f &wo, const Vector3f &wi) const {
+    return PhaseHenyeyGreenstein(dot(wo, wi), g);
 }
+} // namespace filianore

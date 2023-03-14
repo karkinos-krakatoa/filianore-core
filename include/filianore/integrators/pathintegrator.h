@@ -4,24 +4,21 @@
 #include "../core/elemental.h"
 #include "../core/integrator.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class PathIntegrator : public Integrator
-    {
-    public:
-        PathIntegrator(const RenderParams &_renderParams, float _rrThreshold = 1.f)
-            : Integrator(_renderParams), rrThreshold(_rrThreshold)
-        {
-        }
+class PathIntegrator : public Integrator {
+public:
+    PathIntegrator(const RenderParams &_renderParams, float _rrThreshold = 1.f)
+        : Integrator(_renderParams), rrThreshold(_rrThreshold) {
+    }
 
-        void PrepareTheRenderer(const Scene &scene, Sampler &sampler);
+    void prepare_the_renderer(const Scene &scene, Sampler &sampler);
 
-        PrincipalSpectrum Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const;
+    PrincipalSpectrum Li(const Ray &_ray, const Scene &scene, Sampler &sampler, int depth) const;
 
-    private:
-        const float rrThreshold;
-    };
+private:
+    const float rrThreshold;
+};
 
 } // namespace filianore
 

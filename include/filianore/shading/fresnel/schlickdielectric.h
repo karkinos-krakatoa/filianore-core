@@ -3,22 +3,19 @@
 
 #include "../../core/fresnel.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class SchlickDielectric : public Fresnel
-    {
-    public:
-        SchlickDielectric(float _Ro)
-            : Ro(_Ro)
-        {
-        }
+class SchlickDielectric : public Fresnel {
+public:
+    SchlickDielectric(float _Ro)
+        : Ro(_Ro) {
+    }
 
-        PrincipalSpectrum Evaluate(float cosThetaI) const;
+    PrincipalSpectrum evaluate(float cosThetaI) const;
 
-    private:
-        const float Ro;
-    };
+private:
+    const float Ro;
+};
 
 } // namespace filianore
 

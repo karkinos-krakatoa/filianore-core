@@ -3,143 +3,113 @@
 
 #include "ray.h"
 
-namespace filianore
-{
-	struct AABB
-	{
-		StaticArray<float, 3> pMin, pMax;
+namespace filianore {
+struct AABB {
+    Vector3f pMin, pMax;
 
-		AABB() = default;
+    AABB() = default;
 
-		FILIANORE_INLINE AABB(const StaticArray<float, 3> &p) : pMin(p), pMax(p) {}
+    FILIANORE_INLINE AABB(const Vector3f &p)
+        : pMin(p), pMax(p) {
+    }
 
-		FILIANORE_INLINE AABB(const StaticArray<float, 3> &_min, const StaticArray<float, 3> &_max)
-			: pMin(_min), pMax(_max)
-		{
-		}
+    FILIANORE_INLINE AABB(const Vector3f &_min, const Vector3f &_max)
+        : pMin(_min), pMax(_max) {
+    }
 
-		FILIANORE_INLINE static AABB Full()
-		{
-			float maxF = std::numeric_limits<float>::max();
+    FILIANORE_INLINE static AABB full() {
+        float maxF = std::numeric_limits<float>::max();
 
-			return AABB(
-				StaticArray<float, 3>(-maxF, -maxF, -maxF),
-				StaticArray<float, 3>(maxF, maxF, maxF));
-		}
+        return AABB(
+            Vector3f(-maxF, -maxF, -maxF),
+            Vector3f(maxF, maxF, maxF));
+    }
 
-		FILIANORE_INLINE static AABB Empty()
-		{
-			float maxF = std::numeric_limits<float>::max();
+    FILIANORE_INLINE static AABB empty() {
+        float maxF = std::numeric_limits<float>::max();
 
-			return AABB(
-				StaticArray<float, 3>(maxF, maxF, maxF),
-				StaticArray<float, 3>(-maxF, -maxF, -maxF));
-		}
+        return AABB(
+            Vector3f(maxF, maxF, maxF),
+            Vector3f(-maxF, -maxF, -maxF));
+    }
 
-		FILIANORE_INLINE void Shrink(const AABB &box)
-		{
-			pMin.params[0] = std::max(pMin.x(), box.pMin.x());
-			pMin.params[1] = std::max(pMin.y(), box.pMin.y());
-			pMin.params[2] = std::max(pMin.z(), box.pMin.z());
+    FILIANORE_INLINE void shrink(const AABB &box) {
+        pMin = filianore::max(pMin, box.pMin);
+        pMax = filianore::min(pMax, box.pMax);
+    }
 
-			pMax.params[0] = std::min(pMax.x(), box.pMax.x());
-			pMax.params[1] = std::min(pMax.y(), box.pMax.y());
-			pMax.params[2] = std::min(pMax.z(), box.pMax.z());
-		}
+    FILIANORE_INLINE void extend(const Vector3f &p) {
+        pMin = filianore::min(pMin, p);
+        pMax = filianore::max(pMax, p);
+    }
 
-		FILIANORE_INLINE void Extend(const StaticArray<float, 3> &p)
-		{
-			pMin.params[0] = std::min(pMin.x(), p.x());
-			pMin.params[1] = std::min(pMin.y(), p.y());
-			pMin.params[2] = std::min(pMin.z(), p.z());
+    FILIANORE_INLINE void extend(const AABB &box) {
+        pMin = filianore::min(pMin, box.pMin);
+        pMax = filianore::max(pMax, box.pMax);
+    }
 
-			pMax.params[0] = std::max(pMax.x(), p.x());
-			pMax.params[1] = std::max(pMax.y(), p.y());
-			pMax.params[2] = std::max(pMax.z(), p.z());
-		}
+    FILIANORE_INLINE Vector3f diagonal() const {
+        return pMax - pMin;
+    }
 
-		FILIANORE_INLINE void Extend(const AABB &box)
-		{
-			pMin.params[0] = std::min(pMin.x(), box.pMin.x());
-			pMin.params[1] = std::min(pMin.y(), box.pMin.y());
-			pMin.params[2] = std::min(pMin.z(), box.pMin.z());
+    FILIANORE_INLINE Vector3f center() const {
+        return (pMax + pMin) * 0.5f;
+    }
 
-			pMax.params[0] = std::max(pMax.x(), box.pMax.x());
-			pMax.params[1] = std::max(pMax.y(), box.pMax.y());
-			pMax.params[2] = std::max(pMax.z(), box.pMax.z());
-		}
+    FILIANORE_INLINE float surface_area() const {
+        Vector3f d = diagonal();
+        return (d.x * d.y + d.x * d.z + d.y * d.z) * 2.f;
+    }
 
-		FILIANORE_INLINE StaticArray<float, 3> Diagonal() const
-		{
-			return pMax - pMin;
-		}
+    FILIANORE_INLINE float half_area() const {
+        Vector3f d = diagonal();
+        return (d.x + d.y) * d.z + d.x * d.y;
+    }
 
-		FILIANORE_INLINE StaticArray<float, 3> Center() const
-		{
-			return (pMax + pMin) * 0.5f;
-		}
+    FILIANORE_INLINE float volume() const {
+        Vector3f d = diagonal();
+        return d.x * d.y * d.z;
+    }
 
-		FILIANORE_INLINE float SurfaceArea() const
-		{
-			StaticArray<float, 3> d = Diagonal();
-			return (d.x() * d.y() + d.x() * d.z() + d.y() * d.z()) * 2.f;
-		}
+    FILIANORE_INLINE int largest_axis() const {
+        Vector3f d = diagonal();
+        int axis = 0;
+        if (d.x < d.y)
+            axis = 1;
+        if (d.y < d.z)
+            axis = 2;
+        return axis;
+    }
 
-		FILIANORE_INLINE float HalfArea() const
-		{
-			StaticArray<float, 3> d = Diagonal();
-			return (d.x() + d.y()) * d.z() + d.x() * d.y();
-		}
+    FILIANORE_INLINE int largest_extent() const {
+        return diagonal()[largest_axis()];
+    }
 
-		FILIANORE_INLINE float Volume() const
-		{
-			StaticArray<float, 3> d = Diagonal();
-			return d.x() * d.y() * d.z();
-		}
+    FILIANORE_INLINE Vector3f offset(const Vector3f &p) const {
+        Vector3f o = p - pMin;
+        if (pMax.x > pMin.x)
+            o[0] /= pMax.x - pMin.x;
+        if (pMax.y > pMin.y)
+            o[1] /= pMax.y - pMin.y;
+        if (pMax.z > pMin.z)
+            o[2] /= pMax.z - pMin.z;
+        return Vector3f(o.x, o.y, o.z);
+    }
 
-		FILIANORE_INLINE int LargestAxis() const
-		{
-			StaticArray<float, 3> d = Diagonal();
-			int axis = 0;
-			if (d.x() < d.y())
-				axis = 1;
-			if (d.y() < d.z())
-				axis = 2;
-			return axis;
-		}
+    FILIANORE_INLINE bool intersect(const Ray &ray, float *hitt0, float *hitt1) const {
+        Vector3f invRayDir = Vector3f(1.f / ray.dir.x, 1.f / ray.dir.y, 1.f / ray.dir.z);
+        Vector3f tbot = vec_mul(invRayDir, (pMin - ray.origin));
+        Vector3f ttop = vec_mul(invRayDir, (pMax - ray.origin));
 
-		FILIANORE_INLINE int LargestExtent() const
-		{
-			return Diagonal().params[LargestAxis()];
-		}
+        Vector3f tmin = filianore::min(ttop, tbot);
+        Vector3f tmax = filianore::max(ttop, tbot);
 
-		FILIANORE_INLINE StaticArray<float, 3> Offset(const StaticArray<float, 3> &p) const
-		{
-			StaticArray<float, 3> o = p - pMin;
-			if (pMax.x() > pMin.x())
-				o.params[0] /= pMax.x() - pMin.x();
-			if (pMax.y() > pMin.y())
-				o.params[1] /= pMax.y() - pMin.y();
-			if (pMax.z() > pMin.z())
-				o.params[2] /= pMax.z() - pMin.z();
-			return o;
-		}
+        *hitt0 = std::max(std::max(tmin.x, tmin.y), tmin.z);
+        *hitt1 = std::min(std::min(tmax.x, tmax.y), tmax.z);
 
-		FILIANORE_INLINE bool Intersect(const Ray &ray, float *hitt0, float *hitt1) const
-		{
-			StaticArray<float, 3> invRayDir = StaticArray<float, 3>(1.f) / ray.dir;
-			StaticArray<float, 3> tbot = invRayDir * (pMin - ray.origin);
-			StaticArray<float, 3> ttop = invRayDir * (pMax - ray.origin);
-
-			StaticArray<float, 3> tmin = VecMin(ttop, tbot);
-			StaticArray<float, 3> tmax = VecMax(ttop, tbot);
-
-			*hitt0 = std::max(std::max(tmin.x(), tmin.y()), tmin.z());
-			*hitt1 = std::min(std::min(tmax.x(), tmax.y()), tmax.z());
-
-			return !(*hitt0 > *hitt1) && *hitt1 > 0;
-		}
-	};
+        return !(*hitt0 > *hitt1) && *hitt1 > 0;
+    }
+};
 } // namespace filianore
 
 #endif

@@ -3,28 +3,26 @@
 
 #include "../core/elemental.h"
 #include "../core/texture.h"
-#include "../maths/static_array.h"
+#include "../maths/vec.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class ImageMapTexture : public Texture<PrincipalSpectrum>
-    {
-    public:
-        const static int bytes_per_pixel = 3;
+class ImageMapTexture : public Texture<PrincipalSpectrum> {
+public:
+    const static int bytes_per_pixel = 3;
 
-        ~ImageMapTexture();
+    ~ImageMapTexture();
 
-        ImageMapTexture();
-        ImageMapTexture(const char *filename);
+    ImageMapTexture();
+    ImageMapTexture(const char *filename);
 
-        PrincipalSpectrum Evaluate(const SurfaceInteraction &isect) const;
+    PrincipalSpectrum evaluate(const SurfaceInteraction &isect) const;
 
-    private:
-        unsigned char *data;
-        int width, height;
-        int bytes_per_scanline;
-    };
+private:
+    unsigned char *data;
+    int width, height;
+    int bytes_per_scanline;
+};
 
 } // namespace filianore
 

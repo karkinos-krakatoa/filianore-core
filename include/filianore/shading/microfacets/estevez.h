@@ -3,22 +3,20 @@
 
 #include "../../core/microfacet.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class EstevezSheenDistribution : public MicrofacetDistribution
-    {
-    public:
-        EstevezSheenDistribution(float _roughness);
+class EstevezSheenDistribution : public MicrofacetDistribution {
+public:
+    EstevezSheenDistribution(float _roughness);
 
-        float EvaluateD(const StaticArray<float, 3> &wh) const;
-        StaticArray<float, 3> SampleWh(const StaticArray<float, 3> &wo, const StaticArray<float, 2> &u) const;
+    float evaluate_distribution(const Vector3f &wh) const;
+    Vector3f sample_wh(const Vector3f &wo, const Vector2f &u) const;
 
-    private:
-        float Lambda(const StaticArray<float, 3> &w) const;
+private:
+    float lambda(const Vector3f &w) const;
 
-        const float roughness;
-    };
-}
+    const float roughness;
+};
+} // namespace filianore
 
 #endif

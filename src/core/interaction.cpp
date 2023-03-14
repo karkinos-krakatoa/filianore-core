@@ -1,53 +1,46 @@
 #include "filianore/core/interaction.h"
-#include "filianore/core/primitive.h"
 #include "filianore/core/illuminant.h"
-#include "filianore/maths/vec3_math.h"
+#include "filianore/core/primitive.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    SurfaceInteraction::SurfaceInteraction(float _t, const StaticArray<float, 3> &_p, const StaticArray<float, 2> &_uv,
-                                           const StaticArray<float, 3> &_dpdu, const StaticArray<float, 3> &_dpdv,
-                                           const StaticArray<float, 3> &_dndu, const StaticArray<float, 3> &_dndv,
-                                           const StaticArray<float, 3> &_wo, const Shape *_shape, float _time)
-        : Interaction(_t, _p, Cross(_dpdu, _dpdv).Normalize(), _wo, _time), uv(_uv), shape(_shape),
-          dpdu(_dpdu), dpdv(_dpdv), dndu(_dndu), dndv(_dndv)
-    {
-        Shading.n = n;
-        Shading.dpdu = _dpdu;
-        Shading.dpdv = _dpdv;
-        Shading.dndu = _dndu;
-        Shading.dndv = _dndv;
+SurfaceInteraction::SurfaceInteraction(float _t, const Vector3f &_p, const Vector2f &_uv,
+                                       const Vector3f &_dpdu, const Vector3f &_dpdv,
+                                       const Vector3f &_dndu, const Vector3f &_dndv,
+                                       const Vector3f &_wo, const Shape *_shape, float _time)
+    : Interaction(_t, _p, normalize(cross(_dpdu, _dpdv)), _wo, _time), uv(_uv), shape(_shape),
+      dpdu(_dpdu), dpdv(_dpdv), dndu(_dndu), dndv(_dndv) {
+    Shading.n = n;
+    Shading.dpdu = _dpdu;
+    Shading.dpdv = _dpdv;
+    Shading.dndu = _dndu;
+    Shading.dndv = _dndv;
+}
+
+void SurfaceInteraction::set_shading_geometry(const Vector3f &_dpdu, const Vector3f &_dpdv,
+                                              const Vector3f &_dndu, const Vector3f &_dndv, bool orientationIsAuthoritative) {
+    Shading.n = normalize(cross(_dpdu, _dpdv));
+
+    if (orientationIsAuthoritative)
+        n = face_forward(n, Shading.n);
+    else
+        Shading.n = face_forward(Shading.n, n);
+
+    Shading.dpdu = _dpdu;
+    Shading.dpdv = _dpdv;
+    Shading.dndu = _dndu;
+    Shading.dndv = _dndv;
+}
+
+PrincipalSpectrum SurfaceInteraction::le(const Vector3f &w) const {
+    const AreaIlluminant *areaIllum = primitive->get_area_illuminant();
+    return areaIllum ? areaIllum->L(*this, w) : PrincipalSpectrum(0.f);
+}
+
+void SurfaceInteraction::compute_scattering_functions(const Ray &ray) {
+    if (primitive) {
+        primitive->compute_scattering_functions(this);
     }
-
-    void SurfaceInteraction::SetShadingGeometry(const StaticArray<float, 3> &_dpdu, const StaticArray<float, 3> &_dpdv,
-                                                const StaticArray<float, 3> &_dndu, const StaticArray<float, 3> &_dndv, bool orientationIsAuthoritative)
-    {
-        Shading.n = Cross(_dpdu, _dpdv).Normalize();
-
-        if (orientationIsAuthoritative)
-            n = Faceforward(n, Shading.n);
-        else
-            Shading.n = Faceforward(Shading.n, n);
-
-        Shading.dpdu = _dpdu;
-        Shading.dpdv = _dpdv;
-        Shading.dndu = _dndu;
-        Shading.dndv = _dndv;
-    }
-
-    PrincipalSpectrum SurfaceInteraction::Le(const StaticArray<float, 3> &w) const
-    {
-        const AreaIlluminant *areaIllum = primitive->GetAreaIlluminant();
-        return areaIllum ? areaIllum->L(*this, w) : PrincipalSpectrum(0.f);
-    }
-
-    void SurfaceInteraction::ComputeScatteringFunctions(const Ray &ray)
-    {
-        if (primitive)
-        {
-            primitive->ComputeScatteringFunctions(this);
-        }
-    }
+}
 
 } // namespace filianore

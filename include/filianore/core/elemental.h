@@ -1,10 +1,10 @@
 #ifndef _ELEMENTAL_H
 #define _ELEMENTAL_H
 
+#include <cstring>
+#include <memory>
 #include <stdio.h>
 #include <string>
-#include <memory>
-#include <cstring>
 #ifdef FILIANORE_HAVE_MALLOC_H
 #include <malloc.h> // for _alloca, memalign
 #endif
@@ -38,96 +38,98 @@
 
 #define ALLOCA(TYPE, COUNT) (TYPE *)alloca((COUNT) * sizeof(TYPE))
 
-namespace filianore
-{
+namespace filianore {
 
-    enum class TransportMode
-    {
-        Radiance,
-        Importance
-    };
+enum class TransportMode {
+    Radiance,
+    Importance
+};
 
-    // Forward Declrs..
-    class Ray;
-    template <typename T>
-    class Rect;
-    struct AABB;
-    class Transform;
+// Forward Declrs..
+template <typename T>
+class Vector2;
+template <typename T>
+class Vector3;
+template <typename T>
+class Point3;
+template <typename T>
+class Point2;
+class Ray;
+template <typename T>
+class Rect;
+struct AABB;
+class Transform;
 
-    struct Interaction;
-    class SurfaceInteraction;
+struct Interaction;
+class SurfaceInteraction;
 
-    class Shape;
-    class Primitive;
-    class GeometricPrimitive;
+class Shape;
+class Primitive;
+class GeometricPrimitive;
 
-    class Film;
-    class Camera;
-    class PhysicalCamera;
-    class Sampler;
+class Film;
+class Camera;
+class PhysicalCamera;
+class Sampler;
 
-    class Fresnel;
-    class FresnelDielectric;
+class Fresnel;
+class FresnelDielectric;
 
-    class BxDF;
-    class BRDF;
-    class BTDF;
-    class BSDF;
-    class Material;
-    class MicrofacetDistribution;
-    template <typename T>
-    class Texture;
+class BxDF;
+class BRDF;
+class BTDF;
+class BSDF;
+class Material;
+class MicrofacetDistribution;
+template <typename T>
+class Texture;
 
-    class PhaseFunction;
+class PhaseFunction;
 
-    enum class SpectrumType
-    {
-        REFLECTANCE,
-        ILLUMINANT
-    };
+enum class SpectrumType {
+    REFLECTANCE,
+    ILLUMINANT
+};
 
-    template <int nSpectrumSamples>
-    class BaseSpectrum;
-    class PrincipalSpectrum;
-    class RGBSpectrum;
+template <int nSpectrumSamples>
+class BaseSpectrum;
+class PrincipalSpectrum;
+class RGBSpectrum;
 
-    class Medium;
-    class MediumInteraction;
-    struct MediumInterface;
-    class BSSRDF;
+class Medium;
+class MediumInteraction;
+struct MediumInterface;
+class BSSRDF;
 
-    class Illuminant;
-    class VisibilityEvaluator;
-    class AreaIlluminant;
-    struct Distribution1D;
-    class Distribution2D;
+class Illuminant;
+class VisibilityEvaluator;
+class AreaIlluminant;
+struct Distribution1D;
+class Distribution2D;
 
-    class Scene;
+class Scene;
 
-    class MemoryArena;
+class MemoryArena;
 
-    class SamplerIntegrator;
-    class PathIntegrator;
+class SamplerIntegrator;
+class PathIntegrator;
 
-    class Bvh;
-    class RayTraverser;
-    struct PrimitiveIntersector;
+class Bvh;
+class RayTraverser;
+struct PrimitiveIntersector;
 
-    // Global Inline Functions
-    inline uint32_t
-    FloatToBits(float f)
-    {
-        uint32_t ui;
-        memcpy(&ui, &f, sizeof(float));
-        return ui;
-    }
+// Global Inline Functions
+inline uint32_t float_to_bits(float f) {
+    uint32_t ui;
+    memcpy(&ui, &f, sizeof(float));
+    return ui;
+}
 
-    inline float BitsToFloat(uint32_t ui)
-    {
-        float f;
-        memcpy(&f, &ui, sizeof(uint32_t));
-        return f;
-    }
+inline float bits_to_float(uint32_t ui) {
+    float f;
+    memcpy(&f, &ui, sizeof(uint32_t));
+    return f;
+}
 
 } // namespace filianore
 

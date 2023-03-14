@@ -3,23 +3,20 @@
 
 #include "../../core/fresnel.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class ThinFilmInteference : public Fresnel
-    {
-    public:
-        ThinFilmInteference(float _thinFilmIOR, float _thickness, float _mediumIOR)
-            : thinFilmIOR(_thinFilmIOR), thickness(_thickness), mediumIOR(_mediumIOR)
-        {
-        }
+class ThinFilmInteference : public Fresnel {
+public:
+    ThinFilmInteference(float _thinFilmIOR, float _thickness, float _mediumIOR)
+        : thinFilmIOR(_thinFilmIOR), thickness(_thickness), mediumIOR(_mediumIOR) {
+    }
 
-        PrincipalSpectrum Evaluate(float cosThetaI) const;
+    PrincipalSpectrum evaluate(float cosThetaI) const;
 
-    private:
-        const float extIOR = 1.f;
-        const float thinFilmIOR, thickness, mediumIOR;
-    };
+private:
+    const float extIOR = 1.f;
+    const float thinFilmIOR, thickness, mediumIOR;
+};
 
 } // namespace filianore
 

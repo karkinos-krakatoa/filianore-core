@@ -3,28 +3,26 @@
 
 #include "../core/illuminant.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class PointIlluminant : public Illuminant
-    {
-    public:
-        PointIlluminant(const Transform &_lightToWorld, const PrincipalSpectrum &_color, float _intensity, short _decayRate, const PrincipalSpectrum &_shadowColor);
+class PointIlluminant : public Illuminant {
+public:
+    PointIlluminant(const Transform &_lightToWorld, const PrincipalSpectrum &_color, float _intensity, short _decayRate, const PrincipalSpectrum &_shadowColor);
 
-        PrincipalSpectrum SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
-                                   VisibilityEvaluator *visEval) const;
+    PrincipalSpectrum sample_li(const Interaction &isect, const Vector2f &u, Vector3f *wi, float *pdf,
+                                VisibilityEvaluator *visEval) const;
 
-        PrincipalSpectrum Power() const;
+    PrincipalSpectrum power() const;
 
-        void PrepareIlluminant(const Scene &scene);
+    void prepare_illuminant(const Scene &scene);
 
-        float PdfLi(const Interaction &ref, const StaticArray<float, 3> &wi) const;
+    float pdf_li(const Interaction &ref, const Vector3f &wi) const;
 
-    private:
-        StaticArray<float, 3> posIllum;
-        const float intensity;
-        const PrincipalSpectrum color;
-    };
+private:
+    Vector3f posIllum;
+    const float intensity;
+    const PrincipalSpectrum color;
+};
 
 } // namespace filianore
 

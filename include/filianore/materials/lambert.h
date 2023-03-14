@@ -4,20 +4,18 @@
 #include "../core/elemental.h"
 #include "../core/material.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class LambertMaterial : public Material
-    {
-    public:
-        LambertMaterial(const std::shared_ptr<Texture<PrincipalSpectrum>> _kd)
-            : kd(_kd) {}
+class LambertMaterial : public Material {
+public:
+    LambertMaterial(const std::shared_ptr<Texture<PrincipalSpectrum>> _kd)
+        : kd(_kd) {}
 
-        void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
+    void compute_scattering_functions(SurfaceInteraction *isect) const;
 
-    private:
-        std::shared_ptr<Texture<PrincipalSpectrum>> kd;
-    };
+private:
+    std::shared_ptr<Texture<PrincipalSpectrum>> kd;
+};
 
 } // namespace filianore
 

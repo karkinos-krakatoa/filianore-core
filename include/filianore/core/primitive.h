@@ -5,57 +5,53 @@
 #include "shape.h"
 #include <utility>
 
-namespace filianore
-{
-    class Primitive
-    {
-    public:
-        Primitive() {}
+namespace filianore {
+class Primitive {
+public:
+    Primitive() {}
 
-        virtual AABB WorldBound() const = 0;
+    virtual AABB world_bound() const = 0;
 
-        virtual bool Intersect(const Ray &ray, SurfaceInteraction *isect) const = 0;
+    virtual bool intersect(const Ray &ray, SurfaceInteraction *isect) const = 0;
 
-        virtual bool IntersectP(const Ray &ray) const = 0;
+    virtual bool intersect_p(const Ray &ray) const = 0;
 
-        virtual StaticArray<float, 3> Centroid() const = 0;
+    virtual Vector3f centroid() const = 0;
 
-        virtual void ComputeScatteringFunctions(SurfaceInteraction *isect) const = 0;
+    virtual void compute_scattering_functions(SurfaceInteraction *isect) const = 0;
 
-        virtual Material *GetMaterial() const = 0;
+    virtual Material *get_material() const = 0;
 
-        virtual AreaIlluminant *GetAreaIlluminant() const = 0;
-    };
+    virtual AreaIlluminant *get_area_illuminant() const = 0;
+};
 
-    class GeometricPrimitive : public Primitive
-    {
-    public:
-        GeometricPrimitive() {}
+class GeometricPrimitive : public Primitive {
+public:
+    GeometricPrimitive() {}
 
-        GeometricPrimitive(std::shared_ptr<Shape> &_shape, const std::shared_ptr<Material> &_material, const std::shared_ptr<AreaIlluminant> &_areaIllum)
-            : shape(_shape), material(_material), areaIllum(_areaIllum)
-        {
-        }
+    GeometricPrimitive(std::shared_ptr<Shape> &_shape, const std::shared_ptr<Material> &_material, const std::shared_ptr<AreaIlluminant> &_areaIllum)
+        : shape(_shape), material(_material), areaIllum(_areaIllum) {
+    }
 
-        AABB WorldBound() const;
+    AABB world_bound() const;
 
-        bool Intersect(const Ray &ray, SurfaceInteraction *isect) const;
+    bool intersect(const Ray &ray, SurfaceInteraction *isect) const;
 
-        bool IntersectP(const Ray &ray) const;
+    bool intersect_p(const Ray &ray) const;
 
-        StaticArray<float, 3> Centroid() const;
+    Vector3f centroid() const;
 
-        Material *GetMaterial() const;
+    Material *get_material() const;
 
-        AreaIlluminant *GetAreaIlluminant() const;
+    AreaIlluminant *get_area_illuminant() const;
 
-        void ComputeScatteringFunctions(SurfaceInteraction *isect) const;
+    void compute_scattering_functions(SurfaceInteraction *isect) const;
 
-    private:
-        std::shared_ptr<Shape> shape;
-        std::shared_ptr<Material> material;
-        std::shared_ptr<AreaIlluminant> areaIllum;
-    };
+private:
+    std::shared_ptr<Shape> shape;
+    std::shared_ptr<Material> material;
+    std::shared_ptr<AreaIlluminant> areaIllum;
+};
 
 } // namespace filianore
 

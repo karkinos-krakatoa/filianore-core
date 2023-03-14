@@ -1,37 +1,35 @@
 #ifndef _SHAPE_H
 #define _SHAPE_H
 
-#include "elemental.h"
 #include "../maths/transform.h"
+#include "elemental.h"
 
-namespace filianore
-{
+namespace filianore {
 
-	class Shape
-	{
-	public:
-		const bool reverseOrientation;
+class Shape {
+public:
+    const bool reverseOrientation;
 
-		Shape() : reverseOrientation(false) {}
+    Shape() : reverseOrientation(false) {}
 
-		Shape(bool _reverseOrientation) : reverseOrientation(_reverseOrientation) {}
+    Shape(bool _reverseOrientation) : reverseOrientation(_reverseOrientation) {}
 
-		virtual AABB WorldBound() const = 0;
+    virtual AABB world_bound() const = 0;
 
-		virtual bool Intersect(const Ray &ray, SurfaceInteraction *t) const = 0;
+    virtual bool intersect(const Ray &ray, SurfaceInteraction *t) const = 0;
 
-		virtual bool IntersectP(const Ray &ray) const;
+    virtual bool intersect_p(const Ray &ray) const;
 
-		virtual StaticArray<float, 3> Centroid() const = 0;
+    virtual Vector3f centroid() const = 0;
 
-		virtual float Area() const = 0;
+    virtual float area() const = 0;
 
-		virtual float Pdf(const Interaction &isect) const;
-		virtual float Pdf(const Interaction &isect, const StaticArray<float, 3> &wi) const;
+    virtual float pdf(const Interaction &isect) const;
+    virtual float pdf(const Interaction &isect, const Vector3f &wi) const;
 
-		virtual Interaction Sample(const StaticArray<float, 2> &u, float *pdf) const = 0;
-		virtual Interaction Sample(const Interaction &isect, const StaticArray<float, 2> &u, float *pdf) const;
-	};
+    virtual Interaction sample(const Vector2f &u, float *pdf) const = 0;
+    virtual Interaction sample(const Interaction &isect, const Vector2f &u, float *pdf) const;
+};
 
 } // namespace filianore
 

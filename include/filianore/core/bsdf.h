@@ -1,50 +1,46 @@
 #ifndef _BSDF_H
 #define _BSDF_H
 
+#include "bxdf.h"
 #include <memory>
 #include <vector>
-#include "bxdf.h"
-#include "../maths/vec3_math.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class BSDF
-    {
-    public:
-        BSDF(const SurfaceInteraction &isect, float _eta = 1.f);
+class BSDF {
+public:
+    BSDF(const SurfaceInteraction &isect, float _eta = 1.f);
 
-        ~BSDF() {}
+    ~BSDF() {}
 
-        void Add(std::unique_ptr<BxDF> &_bxdf)
-        {
-            bxdfs.emplace_back(std::move(_bxdf));
-            nBxDFs++;
-        }
+    void add(std::unique_ptr<BxDF> &_bxdf) {
+        bxdfs.emplace_back(std::move(_bxdf));
+        nBxDFs++;
+    }
 
-        int NumComponents(BxDFType flags = BSDF_ALL) const;
+    int num_components(BxDFType flags = BSDF_ALL) const;
 
-        StaticArray<float, 3> ToLocal(const StaticArray<float, 3> &v) const;
+    Vector3f to_local(const Vector3f &v) const;
 
-        StaticArray<float, 3> ToWorld(const StaticArray<float, 3> &v) const;
+    Vector3f to_world(const Vector3f &v) const;
 
-        PrincipalSpectrum Evaluate(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags = BSDF_ALL) const;
+    PrincipalSpectrum evaluate(const Vector3f &woW, const Vector3f &wiW, BxDFType flags = BSDF_ALL) const;
 
-        PrincipalSpectrum Sample(const StaticArray<float, 3> &woW, StaticArray<float, 3> *wiW, const StaticArray<float, 2> &u, float *pdf,
-                                 BxDFType flags = BSDF_ALL, BxDFType *sampledType = nullptr) const;
+    PrincipalSpectrum sample(const Vector3f &woW, Vector3f *wiW, const Vector2f &u, float *pdf,
+                             BxDFType flags = BSDF_ALL, BxDFType *sampledType = nullptr) const;
 
-        float Pdf(const StaticArray<float, 3> &woW, const StaticArray<float, 3> &wiW, BxDFType flags = BSDF_ALL) const;
+    float pdf(const Vector3f &woW, const Vector3f &wiW, BxDFType flags = BSDF_ALL) const;
 
-        const float eta;
+    const float eta;
 
-    private:
-        const StaticArray<float, 3> ng, ns;
-        StaticArray<float, 3> s, t;
+private:
+    const Vector3f ng, ns;
+    Vector3f s, t;
 
-        int nBxDFs = 0;
-        static constexpr int MaxBxDFs = 8;
-        std::vector<std::unique_ptr<BxDF>> bxdfs;
-    };
+    int nBxDFs = 0;
+    static constexpr int MaxBxDFs = 8;
+    std::vector<std::unique_ptr<BxDF>> bxdfs;
+};
 
 } // namespace filianore
 

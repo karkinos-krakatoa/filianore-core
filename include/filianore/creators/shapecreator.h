@@ -4,16 +4,14 @@
 #include "../core/elemental.h"
 #include <vector>
 
-namespace filianore
-{
+namespace filianore {
 
-    class ShapeCreator
-    {
-    public:
-        ShapeCreator() {}
+class ShapeCreator {
+public:
+    ShapeCreator() {}
 
-        std::vector<std::shared_ptr<Shape>> CreateQuad(const Transform &_transform);
-    };
+    std::vector<std::shared_ptr<Shape>> create_quad(const Transform &_transform);
+};
 
 } // namespace filianore
 

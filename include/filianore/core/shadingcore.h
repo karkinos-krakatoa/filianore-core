@@ -1,137 +1,114 @@
 #ifndef _SHADING_CORE_H
 #define _SHADING_CORE_H
 
-#include "../maths/vec3_math.h"
-#include "../maths/scalar.h"
+#include "../maths/mathutils.h"
+#include "../maths/vec.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    inline float CosTheta(const StaticArray<float, 3> &w)
-    {
-        return w.z();
+FILIANORE_INLINE float cos_theta(const Vector3f &w) {
+    return w.z;
+}
+
+FILIANORE_INLINE float cos_2_theta(const Vector3f &w) {
+    return w.z * w.z;
+}
+
+FILIANORE_INLINE float abs_cos_theta(const Vector3f &w) {
+    return std::abs(w.z);
+}
+
+FILIANORE_INLINE float sin_2_theta(const Vector3f &w) {
+    return std::max(0.f, 1.f - cos_2_theta(w));
+}
+
+FILIANORE_INLINE float sin_theta(const Vector3f &w) {
+    return std::sqrt(sin_2_theta(w));
+}
+
+FILIANORE_INLINE float tan_theta(const Vector3f &w) {
+    return sin_theta(w) / cos_theta(w);
+}
+
+FILIANORE_INLINE float tan_2_theta(const Vector3f &w) {
+    return sin_2_theta(w) / cos_2_theta(w);
+}
+
+FILIANORE_INLINE float cos_phi(const Vector3f &w) {
+    float sinTheta = sin_theta(w);
+    return (sinTheta == 0.f) ? 1.f : clamp<float>(w.x / sinTheta, -1.f, 1.f);
+}
+
+FILIANORE_INLINE float sin_phi(const Vector3f &w) {
+    float sinTheta = sin_theta(w);
+    return (sinTheta == 0.f) ? 0.f : clamp<float>(w.y / sinTheta, -1.f, 1.f);
+}
+
+FILIANORE_INLINE float cos_2_phi(const Vector3f &w) {
+    return cos_phi(w) * cos_phi(w);
+}
+
+FILIANORE_INLINE float sin_2_phi(const Vector3f &w) {
+    return sin_phi(w) * sin_phi(w);
+}
+
+FILIANORE_INLINE bool same_hemisphere(const Vector3f &w, const Vector3f &wp) {
+    return (w.z * wp.z) > 0;
+}
+
+FILIANORE_INLINE Vector2f uniform_sample_disk(const Vector2f &u) {
+    float r = std::sqrt(u.x);
+    float theta = 2.f * PI * u.y;
+    return Vector2f(r * std::cos(theta), r * std::sin(theta));
+}
+
+FILIANORE_INLINE Vector2f concentric_sample_disk(const Vector2f &u) {
+    // Map uniform random numbers to $[-1,1]^2$
+    Vector2f uOffset = u * 2.f - Vector2f(1.f, 1.f);
+
+    // Handle degeneracy at the origin
+    if (uOffset.x == 0 && uOffset.y == 0)
+        return Vector2f(0.f, 0.f);
+
+    // Apply concentric mapping to point
+    float theta, r;
+    if (std::abs(uOffset.x) > std::abs(uOffset.y)) {
+        r = uOffset.x;
+        theta = PI_OVER_4 * (uOffset.y / uOffset.x);
+    } else {
+        r = uOffset.y;
+        theta = PI_OVER_2 - PI_OVER_4 * (uOffset.x / uOffset.y);
     }
+    return Vector2f(std::cos(theta), std::sin(theta)) * r;
+}
 
-    inline float Cos2Theta(const StaticArray<float, 3> &w)
-    {
-        return w.z() * w.z();
-    }
+FILIANORE_INLINE Vector3f cosine_hemisphere_sample(const Vector2f &u) {
+    Vector2f d = concentric_sample_disk(u);
+    float z = std::sqrt(std::max(0.f, 1.f - d.x * d.x - d.y * d.y));
+    return Vector3f(d.x, d.y, z);
+}
 
-    inline float AbsCosTheta(const StaticArray<float, 3> &w)
-    {
-        return std::abs(w.z());
-    }
+FILIANORE_INLINE float cosine_hemisphere_pdf(float cosTheta) {
+    return cosTheta * INV_PI;
+}
 
-    inline float Sin2Theta(const StaticArray<float, 3> &w)
-    {
-        return std::max(0.f, 1.f - Cos2Theta(w));
-    }
+FILIANORE_INLINE Vector3f uniform_sample_hemisphere(const Vector2f &u) {
+    float z = u[0];
+    float r = std::sqrt(std::max(0.f, 1.f - z * z));
+    float phi = 2.f * PI * u[1];
+    return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
+}
 
-    inline float SinTheta(const StaticArray<float, 3> &w)
-    {
-        return std::sqrt(Sin2Theta(w));
-    }
+FILIANORE_INLINE Vector3f uniform_sample_sphere(const Vector2f &u) {
+    float z = 1.f - 2.f * u[0];
+    float r = std::sqrt(std::max(0.f, 1.f - z * z));
+    float phi = 2.f * PI * u[1];
+    return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
+}
 
-    inline float TanTheta(const StaticArray<float, 3> &w)
-    {
-        return SinTheta(w) / CosTheta(w);
-    }
-
-    inline float Tan2Theta(const StaticArray<float, 3> &w)
-    {
-        return Sin2Theta(w) / Cos2Theta(w);
-    }
-
-    inline float CosPhi(const StaticArray<float, 3> &w)
-    {
-        float sinTheta = SinTheta(w);
-        return (sinTheta == 0.f) ? 1.f : Clamp<float>(w.x() / sinTheta, -1.f, 1.f);
-    }
-
-    inline float SinPhi(const StaticArray<float, 3> &w)
-    {
-        float sinTheta = SinTheta(w);
-        return (sinTheta == 0.f) ? 0.f : Clamp<float>(w.y() / sinTheta, -1.f, 1.f);
-    }
-
-    inline float Cos2Phi(const StaticArray<float, 3> &w)
-    {
-        return CosPhi(w) * CosPhi(w);
-    }
-
-    inline float Sin2Phi(const StaticArray<float, 3> &w)
-    {
-        return SinPhi(w) * SinPhi(w);
-    }
-
-    inline bool SameHemisphere(const StaticArray<float, 3> &w, const StaticArray<float, 3> &wp)
-    {
-        return (w.z() * wp.z()) > 0;
-    }
-
-    inline StaticArray<float, 2> UniformSampleDisk(const StaticArray<float, 2> &u)
-    {
-        float r = std::sqrt(u.x());
-        float theta = 2.f * Pi<float> * u.y();
-        return StaticArray<float, 2>(r * std::cos(theta), r * std::sin(theta));
-    }
-
-    inline StaticArray<float, 2> ConcentricSampleDisk(const StaticArray<float, 2> &u)
-    {
-        // Map uniform random numbers to $[-1,1]^2$
-        StaticArray<float, 2> uOffset = u * 2.f - StaticArray<float, 2>(1.f, 1.f);
-
-        // Handle degeneracy at the origin
-        if (uOffset.x() == 0 && uOffset.y() == 0)
-            return StaticArray<float, 2>(0.f, 0.f);
-
-        // Apply concentric mapping to point
-        float theta, r;
-        if (std::abs(uOffset.x()) > std::abs(uOffset.y()))
-        {
-            r = uOffset.x();
-            theta = PiOver4<float> * (uOffset.y() / uOffset.x());
-        }
-        else
-        {
-            r = uOffset.y();
-            theta = PiOver2<float> - PiOver4<float> * (uOffset.x() / uOffset.y());
-        }
-        return StaticArray<float, 2>(std::cos(theta), std::sin(theta)) * r;
-    }
-
-    inline StaticArray<float, 3> CosineHemisphereSample(const StaticArray<float, 2> &u)
-    {
-        StaticArray<float, 2> d = ConcentricSampleDisk(u);
-        float z = std::sqrt(std::max(0.f, 1.f - d.x() * d.x() - d.y() * d.y()));
-        return StaticArray<float, 3>(d.x(), d.y(), z);
-    }
-
-    inline float CosineHemispherePdf(float cosTheta)
-    {
-        return cosTheta * InvPi<float>;
-    }
-
-    inline StaticArray<float, 3> UniformSampleHemisphere(const StaticArray<float, 2> &u)
-    {
-        float z = u.params[0];
-        float r = std::sqrt(std::max(0.f, 1.f - z * z));
-        float phi = 2.f * Pi<float> * u.params[1];
-        return StaticArray<float, 3>(r * std::cos(phi), r * std::sin(phi), z);
-    }
-
-    inline StaticArray<float, 3> UniformSampleSphere(const StaticArray<float, 2> &u)
-    {
-        float z = 1 - 2 * u.params[0];
-        float r = std::sqrt(std::max(0.f, 1.f - z * z));
-        float phi = 2 * Pi<float> * u.params[1];
-        return StaticArray<float, 3>(r * std::cos(phi), r * std::sin(phi), z);
-    }
-
-    inline float UniformHemispherePdf()
-    {
-        return Inv2Pi<float>;
-    }
+FILIANORE_INLINE float uniform_hemisphere_pdf() {
+    return INV_2_PI;
+}
 } // namespace filianore
 
 #endif

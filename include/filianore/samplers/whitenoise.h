@@ -6,31 +6,27 @@
 #include <iostream>
 #include <random>
 
-namespace filianore
-{
+namespace filianore {
 
-    class Whitenoise : public Sampler
-    {
-    public:
-        Whitenoise();
+class Whitenoise : public Sampler {
+public:
+    Whitenoise();
 
-        float Get1D()
-        {
-            return dist(m_mersenneTwister);
-        }
+    float get_1d() {
+        return dist(m_mersenneTwister);
+    }
 
-        StaticArray<float, 2> Get2D()
-        {
-            return StaticArray<float, 2>(Get1D(), Get1D());
-        }
+    Vector2f get_2d() {
+        return Vector2f(get_1d(), get_1d());
+    }
 
-        void PrepareNextSample() {}
+    void prepare_next_sample() {}
 
-    private:
-        std::random_device rd;
-        std::mt19937 m_mersenneTwister{rd()};
-        std::uniform_real_distribution<float> dist{0.f, 1.f};
-    };
+private:
+    std::random_device rd;
+    std::mt19937 m_mersenneTwister{rd()};
+    std::uniform_real_distribution<float> dist{0.f, 1.f};
+};
 
 } // namespace filianore
 

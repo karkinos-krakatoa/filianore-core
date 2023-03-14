@@ -1,22 +1,19 @@
 #ifndef _MATERIAL_H
 #define _MATERIAL_H
 
-#include <memory>
 #include "elemental.h"
-#include "../maths/static_array.h"
+#include <memory>
 
-namespace filianore
-{
+namespace filianore {
 
-    class Material
-    {
-    public:
-        virtual ~Material() {}
+class Material {
+public:
+    virtual ~Material() {}
 
-        virtual void ComputeScatteringFunctions(SurfaceInteraction *isect) const = 0;
+    virtual void compute_scattering_functions(SurfaceInteraction *isect) const = 0;
 
-        static void BumpEvaluate(const std::shared_ptr<Texture<float>> &bumpMap, SurfaceInteraction *isect);
-    };
+    static void bump_evaluate(const std::shared_ptr<Texture<float>> &bumpMap, SurfaceInteraction *isect);
+};
 
 } // namespace filianore
 

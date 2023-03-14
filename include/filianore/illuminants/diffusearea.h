@@ -3,32 +3,30 @@
 
 #include "../core/illuminant.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class DiffuseAreaIlluminant : public AreaIlluminant
-    {
-    public:
-        DiffuseAreaIlluminant(const Transform &_lightToWorld, const PrincipalSpectrum &_color, float _intensity,
-                              short _decayRate, const PrincipalSpectrum &_shadowColor, const std::shared_ptr<Shape> &_shape);
+class DiffuseAreaIlluminant : public AreaIlluminant {
+public:
+    DiffuseAreaIlluminant(const Transform &_lightToWorld, const PrincipalSpectrum &_color, float _intensity,
+                          short _decayRate, const PrincipalSpectrum &_shadowColor, const std::shared_ptr<Shape> &_shape);
 
-        PrincipalSpectrum SampleLi(const Interaction &isect, const StaticArray<float, 2> &u, StaticArray<float, 3> *wi, float *pdf,
-                                   VisibilityEvaluator *visEval) const;
+    PrincipalSpectrum sample_li(const Interaction &isect, const Vector2f &u, Vector3f *wi, float *pdf,
+                                VisibilityEvaluator *visEval) const;
 
-        PrincipalSpectrum Power() const;
+    PrincipalSpectrum power() const;
 
-        void PrepareIlluminant(const Scene &scene);
+    void prepare_illuminant(const Scene &scene);
 
-        float PdfLi(const Interaction &ref, const StaticArray<float, 3> &wi) const;
+    float pdf_li(const Interaction &ref, const Vector3f &wi) const;
 
-        PrincipalSpectrum L(const Interaction &isect, const StaticArray<float, 3> &w) const;
+    PrincipalSpectrum L(const Interaction &isect, const Vector3f &w) const;
 
-    private:
-        const float intensity;
-        const PrincipalSpectrum color;
-        const std::shared_ptr<Shape> shape;
-        const float area;
-    };
+private:
+    const float intensity;
+    const PrincipalSpectrum color;
+    const std::shared_ptr<Shape> shape;
+    const float area;
+};
 
 } // namespace filianore
 

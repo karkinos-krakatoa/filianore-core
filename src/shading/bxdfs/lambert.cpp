@@ -1,32 +1,27 @@
 #include "filianore/shading/bxdfs/lambert.h"
 #include "filianore/core/shadingcore.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    PrincipalSpectrum LambertBRDF::Evaluate(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
-    {
-        return R * InvPi<float> * weight;
+PrincipalSpectrum LambertBRDF::evaluate(const Vector3f &wo, const Vector3f &wi) const {
+    return R * INV_PI * weight;
+}
+
+PrincipalSpectrum LambertBRDF::sample(const Vector3f &wo, Vector3f *wi, const Vector2f &sample, float *_pdf, BxDFType *sampledType) const {
+    *wi = cosine_hemisphere_sample(sample);
+
+    if (wo.z < 0) {
+        wi->z *= -1.f;
     }
 
-    PrincipalSpectrum LambertBRDF::Sample(const StaticArray<float, 3> &wo, StaticArray<float, 3> *wi, const StaticArray<float, 2> &sample, float *pdf, BxDFType *sampledType) const
-    {
-        *wi = CosineHemisphereSample(sample);
+    *_pdf = pdf(wo, *wi);
+    *sampledType = this->bxDFType;
 
-        if (wo.z() < 0)
-        {
-            wi->params[2] *= -1.f;
-        }
+    return evaluate(wo, *wi);
+}
 
-        *pdf = Pdf(wo, *wi);
-        *sampledType = this->bxDFType;
-
-        return Evaluate(wo, *wi);
-    }
-
-    float LambertBRDF::Pdf(const StaticArray<float, 3> &wo, const StaticArray<float, 3> &wi) const
-    {
-        return SameHemisphere(wo, wi) ? AbsCosTheta(wi) * InvPi<float> : 0.f;
-    }
+float LambertBRDF::pdf(const Vector3f &wo, const Vector3f &wi) const {
+    return same_hemisphere(wo, wi) ? abs_cos_theta(wi) * INV_PI : 0.f;
+}
 
 } // namespace filianore

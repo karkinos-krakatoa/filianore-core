@@ -2,26 +2,21 @@
 #include "filianore/core/illuminant.h"
 #include "filianore/core/primitive.h"
 
-namespace filianore
-{
-    Scene::Scene(const std::shared_ptr<Primitive> &_scenePrims, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
-        : scenePrims(_scenePrims), illuminants(_illuminants)
-    {
-        worldBound = scenePrims->WorldBound();
+namespace filianore {
+Scene::Scene(const std::shared_ptr<Primitive> &_scenePrims, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
+    : scenePrims(_scenePrims), illuminants(_illuminants) {
+    worldBound = scenePrims->world_bound();
 
-        for (const auto &illuminant : illuminants)
-        {
-            illuminant->PrepareIlluminant(*this);
-        }
-    }
-
-    bool Scene::Intersect(const Ray &ray, SurfaceInteraction *isect) const
-    {
-        return scenePrims->Intersect(ray, isect);
-    }
-
-    bool Scene::IntersectP(const Ray &ray) const
-    {
-        return scenePrims->IntersectP(ray);
+    for (const auto &illuminant : illuminants) {
+        illuminant->prepare_illuminant(*this);
     }
 }
+
+bool Scene::intersect(const Ray &ray, SurfaceInteraction *isect) const {
+    return scenePrims->intersect(ray, isect);
+}
+
+bool Scene::intersect_p(const Ray &ray) const {
+    return scenePrims->intersect_p(ray);
+}
+} // namespace filianore

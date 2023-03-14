@@ -3,24 +3,22 @@
 
 #include "basespectrum.h"
 
-namespace filianore
-{
-    static const int sampledWavelengthStart = 400;
-    static const int sampledWavelengthEnd = 700;
-    static const int nSpectralSamples = 60;
+namespace filianore {
+static const int sampledWavelengthStart = 400;
+static const int sampledWavelengthEnd = 700;
+static const int nSpectralSamples = 60;
 
-    class PrincipalSpectrum : public BaseSpectrum<nSpectralSamples>
-    {
-    public:
-        PrincipalSpectrum(float v = 0.f)
-            : BaseSpectrum(v) {}
+class PrincipalSpectrum : public BaseSpectrum<nSpectralSamples> {
+public:
+    PrincipalSpectrum(float v = 0.f)
+        : BaseSpectrum(v) {}
 
-        PrincipalSpectrum(const std::vector<float> &v)
-            : BaseSpectrum(v) {}
+    PrincipalSpectrum(const std::vector<float> &v)
+        : BaseSpectrum(v) {}
 
-        PrincipalSpectrum(const BaseSpectrum<nSpectralSamples> &v)
-            : BaseSpectrum<nSpectralSamples>(v) {}
-    };
-}
+    PrincipalSpectrum(const BaseSpectrum<nSpectralSamples> &v)
+        : BaseSpectrum<nSpectralSamples>(v) {}
+};
+} // namespace filianore
 
 #endif

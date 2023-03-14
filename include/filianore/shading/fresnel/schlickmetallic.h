@@ -3,22 +3,19 @@
 
 #include "../../core/fresnel.h"
 
-namespace filianore
-{
+namespace filianore {
 
-    class SchlickMetallic : public Fresnel
-    {
-    public:
-        SchlickMetallic(const PrincipalSpectrum &_ro)
-            : ro(_ro)
-        {
-        }
+class SchlickMetallic : public Fresnel {
+public:
+    SchlickMetallic(const PrincipalSpectrum &_ro)
+        : ro(_ro) {
+    }
 
-        PrincipalSpectrum Evaluate(float cosThetaI) const;
+    PrincipalSpectrum evaluate(float cosThetaI) const;
 
-    private:
-        const PrincipalSpectrum ro;
-    };
+private:
+    const PrincipalSpectrum ro;
+};
 
 } // namespace filianore
 
