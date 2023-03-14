@@ -37,6 +37,7 @@
 #endif
 
 #define ALLOCA(TYPE, COUNT) (TYPE *)alloca((COUNT) * sizeof(TYPE))
+#define FILIANORE_STATIC static
 
 namespace filianore {
 
