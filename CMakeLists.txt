@@ -1,8 +1,14 @@
-#-----------------------------------------------------------------------------------
-# CMake Config
-#-----------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------
+# Top-Level CMake
+#--------------------------------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 3.14.0)
+cmake_minimum_required(VERSION 3.14...3.25)
+
+project(filianore)
+
+set(CMAKE_CXX_STANDARD 17)
+include (CheckCXXSourceCompiles)
+include (CheckCXXSourceRuns)
 
 
 #-----------------------------------------------------------------------------------
@@ -16,28 +22,6 @@ endif ()
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
-
-project(filianore)
-
-set (CMAKE_MODULE_PATH
-    ${CMAKE_MODULE_PATH}
-    ${PROJECT_SOURCE_DIR}/cmake/modules
-)
-
-
-#-----------------------------------------------------------------------------------
-# Lang and Compile
-#-----------------------------------------------------------------------------------
-
-set(CMAKE_CXX_STANDARD 17)
-
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto")
-
-set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
-
-INCLUDE (CheckCXXSourceCompiles)
-INCLUDE (CheckCXXSourceRuns)
 
 
 #-----------------------------------------------------------------------------------
@@ -74,18 +58,24 @@ ENDIF ()
 
 
 #-----------------------------------------------------------------------------------
-# Main Build
+# Project Sources
 #-----------------------------------------------------------------------------------
 
-add_library(filianore STATIC
+set (ACCEL_SOURCES
     src/accel/bvh.cpp 
-    
-    src/cameras/physical.cpp
-  
+)
+
+set (CAMERA_SOURCES
+    src/cameras/physical.cpp 
+)
+
+set (COLOR_SOURCES
     src/color/metallurgy.cpp
     src/color/spectruminits.cpp
     src/color/spectrumoperations.cpp
+)
 
+set (CORE_SOURCES
     src/core/bsdf.cpp
     src/core/illuminant.cpp
     src/core/integrator.cpp
@@ -97,22 +87,33 @@ add_library(filianore STATIC
     src/core/sampling.cpp
     src/core/scene.cpp
     src/core/shape.cpp
-    src/core/texture.cpp
+)
 
+set (CREATORS_SOURCES
     src/creators/shapecreator.cpp
+)
 
+set (ILLUMS_SOURCES
     src/illuminants/point.cpp
     src/illuminants/spot.cpp
     src/illuminants/directional.cpp
     src/illuminants/diffusearea.cpp
+)
 
-    src/integrators/pathintegrator.cpp
+set (INTEGRATORS_SOURCES
+    src/integrators/pathintegrator.cpp  
+)
 
+set (MATERIAL_SOURCES
     src/materials/lambert.cpp
-    src/materials/standardsurface.cpp
+    src/materials/standardsurface.cpp 
+)
 
+set (SAMPLER_SOURCES
     src/samplers/whitenoise.cpp
+)
 
+set (SHADING_SOURCES
     src/shading/bxdfs/diffusetransmission.cpp
     src/shading/bxdfs/clearcoat.cpp
     src/shading/bxdfs/lambert.cpp
@@ -133,15 +134,83 @@ add_library(filianore STATIC
     src/shading/microfacets/beckmann.cpp
     src/shading/microfacets/estevez.cpp
     src/shading/microfacets/ggx.cpp
-    
-    src/shapes/triangle.cpp
+)
 
-    src/textures/constant.cpp
-    src/textures/imagemap.cpp)
+set (SHAPES_SOURCES
+    src/shapes/triangle.cpp
+)
+
+set (TEXTURES_SOURCES
+    src/textures/imagemap.cpp
+)
+
+
+#-----------------------------------------------------------------------------------
+# Main Build
+#-----------------------------------------------------------------------------------
+
+add_library(filianore STATIC
+    ${ACCEL_SOURCES}
+    ${CAMERA_SOURCES}
+    ${COLOR_SOURCES}
+    ${CORE_SOURCES}
+    ${CREATORS_SOURCES}
+    ${ILLUMS_SOURCES}
+    ${INTEGRATORS_SOURCES}
+    ${MATERIAL_SOURCES}
+    ${SAMPLER_SOURCES}
+    ${SHADING_SOURCES}
+    ${SHAPES_SOURCES}
+    ${TEXTURES_SOURCES}
+    )
 
 target_include_directories(filianore PUBLIC
     $<INSTALL_INTERFACE:include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+
+
+#-----------------------------------------------------------------------------------
+# Lang and Compile
+#-----------------------------------------------------------------------------------
+
+if(MSVC)
+    set(MSVC_FLAGS_DEBUG  "/D_DEBUG /MDd /Zi /Ob0 /Od /RTC1")
+    set(MSVC_FLAGS_RELEASE "/MD /O2 /Ot /Oi /Oy /D /NDEBUG")
+    add_compile_options(filianore PUBLIC "$<$<CONFIG:DEBUG>:${MSVC_FLAGS_DEBUG}>")
+    add_compile_options(filianore PUBLIC "$<$<CONFIG:RELEASE>:${MSVC_FLAGS_RELEASE}>")
+else()
+    set_target_properties(filianore PROPERTIES
+    C_COMPILER /usr/bin/gcc
+    CXX_COMPILER /usr/bin/g++)
+
+    set(NON_MSVC_FLAGS_DEBUG  "-g")
+    set(NON_MSVC_FLAGS_RELEASE "-O3 -march=native -flto")
+    add_compile_options(filianore PUBLIC "$<$<CONFIG:DEBUG>:${NON_MSVC_FLAGS_DEBUG}>")
+    add_compile_options(filianore PUBLIC "$<$<CONFIG:RELEASE>:${NON_MSVC_FLAGS_RELEASE}>")
+endif()
+
+set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARGET>")
+
+
+#-----------------------------------------------------------------------------------
+# Export Lib Setup
+#-----------------------------------------------------------------------------------
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    install (TARGETS ${PROJECT_NAME}
+        RUNTIME
+        DESTINATION bin
+    )
+
+    install (TARGETS ${PROJECT_NAME}
+        ARCHIVE
+        DESTINATION lib
+    )
+else ()
+    install (TARGETS ${PROJECT_NAME}
+        DESTINATION lib
+    )
+endif ()
 
 
 #-----------------------------------------------------------------------------------
@@ -150,118 +219,101 @@ target_include_directories(filianore PUBLIC
 
 set(FULL_CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/filianore)
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/accel/bvh.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/accel)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/accel
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/accel
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/cameras/physical.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/cameras)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/cameras
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/cameras
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/basespectrum.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/cie.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/metallurgy.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/principalspectrum.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectruminits.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color/spectrumoperations.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/color)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/color
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/color
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/aabb.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/bsdf.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/bxdf.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/camera.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/elemental.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/fresnel.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/illuminant.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/integrator.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/interaction.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/material.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/memory.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/microfacet.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/primitive.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/ray.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/rect.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/renderparams.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampler.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/sampling.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/scene.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shadingcore.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/shape.h
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/texture.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core/util.h
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/core
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/core
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/creators/shapecreator.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/creators/spdloader.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/creators)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/creators
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/creators
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/point.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/spot.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/directional.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants/diffusearea.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/illuminants)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/illuminants
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/illuminants
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/integrators/pathintegrator.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/integrators)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/integrators
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/integrators
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/lambert.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials/standardsurface.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/materials)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/materials
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/materials
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/matrix.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/mathutils.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/vec.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths/transform.h
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/maths)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/maths
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/maths
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers/whitenoise.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/samplers
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/samplers
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES  
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/diffusetransmission.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/clearcoat.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/orennayar.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/lambert.h  
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs/microfacetreflection.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/bxdfs)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/bxdfs
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/bxdfs
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES  
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/closures/fresnelblendeddiffspec.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/closures/fresnelspecular.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/closures/microfacettransmission.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/closures)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/closures
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/closures
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES  
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresneldielectric.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelconductor.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/fresnelnull.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/schlickdielectric.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/schlickmetallic.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel/thinfilm.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/fresnel)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/fresnel
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/fresnel
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES  
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets/beckmann.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets/estevez.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets/ggx.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/microfacets)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/microfacets
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/microfacets
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shapes/triangle.h 
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shapes)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/shapes
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/shapes
+        FILES_MATCHING PATTERN "*.h"
+    )
 
-install(FILES 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/textures/constant.h 
-    ${FULL_CMAKE_CURRENT_SOURCE_DIR}/textures/imagemap.h
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/textures)
+install (
+        DIRECTORY ${FULL_CMAKE_CURRENT_SOURCE_DIR}/shading/textures
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include/filianore/shading/textures
+        FILES_MATCHING PATTERN "*.h"
+    )
 
 install(TARGETS filianore
     EXPORT filianore_export
