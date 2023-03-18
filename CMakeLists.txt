@@ -125,6 +125,8 @@ if (FL_ENABLE_EMBREE)
   target_link_libraries(filianore PRIVATE ${embree_LIBRARIES})
 endif()
 
+target_include_directories(filianore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 
 # --------------------------------------------------------------------------------------------------
 # Library Installation
