@@ -122,7 +122,7 @@ set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 # --------------------------------------------------------------------------------------------------
 
 if (FL_ENABLE_EMBREE)
-  target_link_libraries(filianore PRIVATE embree)
+  target_link_libraries(filianore PRIVATE ${embree_LIBRARIES})
 endif()
 
 
