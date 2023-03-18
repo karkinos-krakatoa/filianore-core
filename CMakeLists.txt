@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #  Optional features available to users
 # --------------------------------------------------------------------------------------------------
 
-option(FL_ENABLE_EMBREE         "Use Embree for ray tracing operations" OFF)
+option(FL_ENABLE_EMBREE         "Use Embree for ray tracing operations" ON)
 option(FL_INSTALL_LIBRARY       "Install Filianore library" OFF)
 
 # --------------------------------------------------------------------------------------------------
