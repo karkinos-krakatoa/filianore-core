@@ -5,6 +5,7 @@
 #include "../core/elemental.h"
 #include "../core/primitive.h"
 #include "../maths/vec.h"
+#include <embree4/rtcore.h>
 #include <vector>
 
 namespace filianore {
