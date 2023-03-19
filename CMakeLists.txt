@@ -132,7 +132,7 @@ endif()
 # --------------------------------------------------------------------------------------------------
 
 if (FL_ENABLE_EMBREE)
-  target_link_libraries(filianore PRIVATE ${embree_LIBRARIES})
+  target_link_libraries(filianore PRIVATE embree)
 endif()
 
 
