@@ -1,6 +1,3 @@
-[submodule "external/embree"]
-	path = external/embree
-	url = https://github.com/embree/embree.git
 [submodule "external/tbb"]
 	path = external/tbb
 	url = https://github.com/oneapi-src/oneTBB.git
