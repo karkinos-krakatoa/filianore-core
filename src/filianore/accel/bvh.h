@@ -40,6 +40,8 @@ public:
 
     BVH(const std::vector<std::shared_ptr<Primitive>> &primitives, uint8_t leafSize = 4)
         : nNodes(0), nLeafs(0), leafSize(leafSize), buildPrims(primitives), flatTree(nullptr) {
+        RTCDevice device = rtcNewDevice(NULL);
+        RTCScene scene = rtcNewScene(device);
         build();
     }
 
