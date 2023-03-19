@@ -39,7 +39,6 @@ endif()
 add_subdirectory(external)
 
 if (FL_ENABLE_EMBREE)
-  include_directories(${EMBREE_INCLUDE_DIRS})
   add_definitions(-DFL_ENABLE_EMBREE=1)
   message(STATUS "Filianore : using Embree for CPU ray tracing.")
 else()
@@ -118,14 +117,23 @@ set(CMAKE_CXX_ARCHIVE_FINISH "<CMAKE_RANLIB> -no_warning_for_no_symbols -c <TARG
 
 
 # --------------------------------------------------------------------------------------------------
+# Include Directories
+# --------------------------------------------------------------------------------------------------
+
+target_include_directories(filianore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+if (FL_ENABLE_EMBREE)
+  target_include_directories(filianore PUBLIC ${EMBREE_INCLUDE_DIRS})
+endif()
+
+
+# --------------------------------------------------------------------------------------------------
 # Add Library dependencies
 # --------------------------------------------------------------------------------------------------
 
 if (FL_ENABLE_EMBREE)
   target_link_libraries(filianore PRIVATE ${embree_LIBRARIES})
 endif()
-
-target_include_directories(filianore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 
 # --------------------------------------------------------------------------------------------------
