@@ -1,7 +1,7 @@
 #include "primitive.h"
-#include "aabb.h"
+#include "../maths/geometry.h"
+#include "../shading/materials/material.h"
 #include "interaction.h"
-#include "material.h"
 
 namespace filianore {
 

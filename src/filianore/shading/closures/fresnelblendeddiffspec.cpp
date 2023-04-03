@@ -1,7 +1,7 @@
 #include "../closures/fresnelblendeddiffspec.h"
-#include "../../core/microfacet.h"
 #include "../../core/shadingcore.h"
 #include "../fresnel/thinfilm.h"
+#include "../microfacets/microfacet.h"
 
 namespace filianore {
 

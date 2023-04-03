@@ -1,9 +1,10 @@
 set (ACCEL_SOURCES
-    src/filianore/accel/bvh.h
-    src/filianore/accel/bvh.cpp 
+    src/filianore/bvh/flbvh.h
+    src/filianore/bvh/flbvh.cpp 
 )
 
 set (CAMERA_SOURCES
+    src/filianore/cameras/camera.h
     src/filianore/cameras/physical.h 
     src/filianore/cameras/physical.cpp 
 )
@@ -20,41 +21,16 @@ set (COLOR_SOURCES
     src/filianore/color/spectrumoperations.cpp
 )
 
-set (CORE_SOURCES
-    src/filianore/core/aabb.h
-    src/filianore/core/bsdf.h
-    src/filianore/core/bsdf.cpp
-    src/filianore/core/bxdf.h
-    src/filianore/core/camera.h
+set (CORE_SOURCES    
     src/filianore/core/elemental.h
-    src/filianore/core/fresnel.h
-    src/filianore/core/illuminant.h
-    src/filianore/core/illuminant.cpp
-    src/filianore/core/integrator.h
-    src/filianore/core/integrator.cpp
     src/filianore/core/interaction.h
     src/filianore/core/interaction.cpp
-    src/filianore/core/material.h
-    src/filianore/core/material.cpp
-    src/filianore/core/memory.h
-    src/filianore/core/memory.cpp
-    src/filianore/core/microfacet.h
-    src/filianore/core/microfacet.cpp
     src/filianore/core/primitive.h
     src/filianore/core/primitive.cpp
-    src/filianore/core/ray.h
-    src/filianore/core/rect.h
     src/filianore/core/renderparams.h
-    src/filianore/core/sampler.h
-    src/filianore/core/sampling.h
-    src/filianore/core/sampling.cpp
     src/filianore/core/scene.h
     src/filianore/core/scene.cpp
     src/filianore/core/shadingcore.h
-    src/filianore/core/shape.h
-    src/filianore/core/shape.cpp
-    src/filianore/core/texture.h
-    src/filianore/core/util.h
 )
 
 set (CREATORS_SOURCES
@@ -64,41 +40,54 @@ set (CREATORS_SOURCES
 )
 
 set (ILLUMS_SOURCES
+    src/filianore/illuminants/illuminant.h
+    src/filianore/illuminants/illuminant.cpp
     src/filianore/illuminants/point.h
     src/filianore/illuminants/point.cpp
     src/filianore/illuminants/spot.h
     src/filianore/illuminants/spot.cpp
     src/filianore/illuminants/directional.h
     src/filianore/illuminants/directional.cpp
-    src/filianore/illuminants/diffusearea.cpp
+    src/filianore/illuminants/diffusearea.h
     src/filianore/illuminants/diffusearea.cpp
 )
 
 set (INTEGRATORS_SOURCES
+    src/filianore/integrators/integrator.h 
+    src/filianore/integrators/integrator.cpp  
     src/filianore/integrators/pathintegrator.h 
     src/filianore/integrators/pathintegrator.cpp  
 )
 
-set (MATERIAL_SOURCES
-    src/filianore/materials/lambert.h
-    src/filianore/materials/lambert.cpp
-    src/filianore/materials/standardsurface.h 
-    src/filianore/materials/standardsurface.cpp 
+set (MATHS_SOURCES
+    src/filianore/maths/affine.h
+    src/filianore/maths/geometry.h
+    src/filianore/maths/mathutils.h
 )
 
-set (MATHS_SOURCES
-    src/filianore/maths/mathutils.h
-    src/filianore/maths/matrix.h
-    src/filianore/maths/transform.h
-    src/filianore/maths/vec.h
+set (MEMORY_SOURCES
+    src/filianore/memory/memory.h
+    src/filianore/memory/memory.cpp
+)
+
+set (SAMPLING_SOURCES
+    src/filianore/sampling/sampler.h
+    src/filianore/sampling/sampling.h
+    src/filianore/sampling/sampling.cpp
 )
 
 set (SAMPLER_SOURCES
-    src/filianore/samplers/whitenoise.h
-    src/filianore/samplers/whitenoise.cpp
+    src/filianore/sampling/samplers/whitenoise.h
+    src/filianore/sampling/samplers/whitenoise.cpp
 )
 
 set (SHADING_SOURCES
+    src/filianore/shading/bsdf.h
+    src/filianore/shading/bsdf.cpp
+)
+
+set (SHADING_BXDFS_SOURCES
+    src/filianore/shading/bxdfs/bxdf.h
     src/filianore/shading/bxdfs/diffusetransmission.h
     src/filianore/shading/bxdfs/diffusetransmission.cpp
     src/filianore/shading/bxdfs/clearcoat.h
@@ -108,15 +97,18 @@ set (SHADING_SOURCES
     src/filianore/shading/bxdfs/orennayar.h
     src/filianore/shading/bxdfs/orennayar.cpp
     src/filianore/shading/bxdfs/microfacetreflection.h
-    src/filianore/shading/bxdfs/microfacetreflection.cpp
+    src/filianore/shading/bxdfs/microfacetreflection.cpp)
 
+set (SHADING_CLOSURES_SOURCES
     src/filianore/shading/closures/fresnelblendeddiffspec.h
     src/filianore/shading/closures/fresnelblendeddiffspec.cpp
     src/filianore/shading/closures/fresnelspecular.h 
     src/filianore/shading/closures/fresnelspecular.cpp 
     src/filianore/shading/closures/microfacettransmission.h
-    src/filianore/shading/closures/microfacettransmission.cpp
+    src/filianore/shading/closures/microfacettransmission.cpp)
 
+set (SHADING_FRESNEL_SOURCES
+    src/filianore/shading/fresnel/fresnel.h
     src/filianore/shading/fresnel/fresneldielectric.h
     src/filianore/shading/fresnel/fresneldielectric.cpp
     src/filianore/shading/fresnel/fresnelconductor.h
@@ -128,8 +120,20 @@ set (SHADING_SOURCES
     src/filianore/shading/fresnel/schlickmetallic.h
     src/filianore/shading/fresnel/schlickmetallic.cpp
     src/filianore/shading/fresnel/thinfilm.h
-    src/filianore/shading/fresnel/thinfilm.cpp
+    src/filianore/shading/fresnel/thinfilm.cpp)
 
+set (SHADING_MATERIAL_SOURCES
+    src/filianore/shading/materials/material.h
+    src/filianore/shading/materials/material.cpp
+    src/filianore/shading/materials/lambert.h
+    src/filianore/shading/materials/lambert.cpp
+    src/filianore/shading/materials/standardsurface.h 
+    src/filianore/shading/materials/standardsurface.cpp 
+)
+
+set (SHADING_MICROFACETS_SOURCES
+    src/filianore/shading/microfacets/microfacet.h
+    src/filianore/shading/microfacets/microfacet.cpp
     src/filianore/shading/microfacets/beckmann.h
     src/filianore/shading/microfacets/beckmann.cpp
     src/filianore/shading/microfacets/estevez.h
@@ -138,16 +142,20 @@ set (SHADING_SOURCES
     src/filianore/shading/microfacets/ggx.cpp
 )
 
+set (SHADING_TEXTURES_SOURCES
+    src/filianore/shading/textures/texture.h
+    src/filianore/shading/textures/constant.h
+    src/filianore/shading/textures/imagemap.h
+    src/filianore/shading/textures/imagemap.cpp
+)
+
 set (SHAPES_SOURCES
+    src/filianore/shapes/shape.h
+    src/filianore/shapes/shape.cpp
     src/filianore/shapes/triangle.h
     src/filianore/shapes/triangle.cpp
 )
 
-set (TEXTURES_SOURCES
-    src/filianore/textures/constant.h
-    src/filianore/textures/imagemap.h
-    src/filianore/textures/imagemap.cpp
-)
 
 
 set(ALL_FILIANORE_SOURCES 
@@ -158,9 +166,15 @@ set(ALL_FILIANORE_SOURCES
     ${CREATORS_SOURCES}
     ${ILLUMS_SOURCES}
     ${INTEGRATORS_SOURCES}
-    ${MATERIAL_SOURCES}
     ${MATHS_SOURCES}
+    ${MEMORY_SOURCES}
+    ${SAMPLING_SOURCES}   
     ${SAMPLER_SOURCES}
     ${SHADING_SOURCES}
-    ${SHAPES_SOURCES}
-    ${TEXTURES_SOURCES} PARENT_SCOPE)
+    ${SHADING_BXDFS_SOURCES}
+    ${SHADING_CLOSURES_SOURCES}
+    ${SHADING_FRESNEL_SOURCES}
+    ${SHADING_MATERIAL_SOURCES}
+    ${SHADING_MICROFACETS_SOURCES}
+    ${SHADING_TEXTURES_SOURCES}
+    ${SHAPES_SOURCES} PARENT_SCOPE)

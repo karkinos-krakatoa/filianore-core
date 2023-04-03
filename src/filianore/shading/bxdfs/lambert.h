@@ -1,7 +1,7 @@
 #ifndef _LAMBERT_BRDF_H
 #define _LAMBERT_BRDF_H
 
-#include "../../core/bxdf.h"
+#include "bxdf.h"
 
 namespace filianore {
 

@@ -1,7 +1,7 @@
 #ifndef _GGX_DISTRIBUTION_H
 #define _GGX_DISTRIBUTION_H
 
-#include "../../core/microfacet.h"
+#include "microfacet.h"
 
 namespace filianore {
 

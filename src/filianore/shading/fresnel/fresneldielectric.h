@@ -1,7 +1,7 @@
 #ifndef _FRESNEL_DIELECTRIC_H
 #define _FRESNEL_DIELECTRIC_H
 
-#include "../../core/fresnel.h"
+#include "fresnel.h"
 
 namespace filianore {
 

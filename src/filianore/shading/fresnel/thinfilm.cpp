@@ -1,4 +1,4 @@
-#include "../fresnel/thinfilm.h"
+#include "thinfilm.h"
 
 #include <algorithm>
 #include <iostream>

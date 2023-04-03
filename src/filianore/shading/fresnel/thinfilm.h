@@ -1,7 +1,7 @@
 #ifndef _FRESNEL_THIN_FILM_H
 #define _FRESNEL_THIN_FILM_H
 
-#include "../../core/fresnel.h"
+#include "fresnel.h"
 
 namespace filianore {
 

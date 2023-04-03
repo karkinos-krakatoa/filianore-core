@@ -1,8 +1,7 @@
 #ifndef _PRIMITIVE_H
 #define _PRIMITIVE_H
 
-#include "../maths/transform.h"
-#include "shape.h"
+#include "../shapes/shape.h"
 #include <utility>
 
 namespace filianore {

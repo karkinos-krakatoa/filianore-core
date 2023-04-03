@@ -1,4 +1,4 @@
-#include "../fresnel/schlickdielectric.h"
+#include "schlickdielectric.h"
 
 #include <algorithm>
 #include <iostream>

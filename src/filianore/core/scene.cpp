@@ -1,5 +1,5 @@
 #include "scene.h"
-#include "illuminant.h"
+#include "../illuminants/illuminant.h"
 #include "primitive.h"
 
 namespace filianore {

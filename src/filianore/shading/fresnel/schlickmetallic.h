@@ -1,7 +1,7 @@
 #ifndef _SCHLICK_METALLIC_H
 #define _SCHLICK_METALLIC_H
 
-#include "../../core/fresnel.h"
+#include "fresnel.h"
 
 namespace filianore {
 

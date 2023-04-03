@@ -1,7 +1,7 @@
-#include "../bxdfs/microfacetreflection.h"
-#include "../../core/fresnel.h"
-#include "../../core/microfacet.h"
+#include "microfacetreflection.h"
 #include "../../core/shadingcore.h"
+#include "../fresnel/fresnel.h"
+#include "../microfacets/microfacet.h"
 
 namespace filianore {
 

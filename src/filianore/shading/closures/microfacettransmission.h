@@ -1,7 +1,7 @@
 #ifndef _MICROFACET_TRANSMISSION_H
 #define _MICROFACET_TRANSMISSION_H
 
-#include "../../core/bxdf.h"
+#include "../bxdfs/bxdf.h"
 
 namespace filianore {
 

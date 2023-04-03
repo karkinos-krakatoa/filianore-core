@@ -1,7 +1,7 @@
 #ifndef _OREN_NAYAR_BRDF_H
 #define _OREN_NAYAR_BRDF_H
 
-#include "../../core/bxdf.h"
+#include "bxdf.h"
 
 namespace filianore {
 

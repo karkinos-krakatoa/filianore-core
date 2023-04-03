@@ -1,4 +1,4 @@
-#include "../fresnel/fresneldielectric.h"
+#include "fresneldielectric.h"
 #include "../../maths/mathutils.h"
 #include <algorithm>
 #include <iostream>

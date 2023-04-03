@@ -1,6 +1,6 @@
-#include "../bxdfs/diffusetransmission.h"
+#include "diffusetransmission.h"
 #include "../../core/shadingcore.h"
-#include "../bxdfs/orennayar.h"
+#include "orennayar.h"
 
 namespace filianore {
 

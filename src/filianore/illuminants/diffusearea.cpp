@@ -1,6 +1,6 @@
 #include "diffusearea.h"
-#include "../core/shape.h"
 #include "../maths/mathutils.h"
+#include "../shapes/shape.h"
 
 namespace filianore {
 

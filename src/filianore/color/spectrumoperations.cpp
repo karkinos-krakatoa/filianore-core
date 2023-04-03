@@ -1,6 +1,5 @@
 #include "spectrumoperations.h"
 #include "../maths/mathutils.h"
-#include "../maths/vec.h"
 #include "cie.h"
 #include "spectruminits.h"
 

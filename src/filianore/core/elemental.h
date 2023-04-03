@@ -59,6 +59,8 @@ class Ray;
 template <typename T>
 class Rect;
 struct AABB;
+template <typename T, typename MatrixType>
+class MatrixBase;
 class Transform;
 
 struct Interaction;

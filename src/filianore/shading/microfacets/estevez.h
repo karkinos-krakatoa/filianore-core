@@ -1,7 +1,7 @@
 #ifndef _ESTEVEZ_SHEEN_DISTRIBUTION_H
 #define _ESTEVEZ_SHEEN_DISTRIBUTION_H
 
-#include "../../core/microfacet.h"
+#include "microfacet.h"
 
 namespace filianore {
 

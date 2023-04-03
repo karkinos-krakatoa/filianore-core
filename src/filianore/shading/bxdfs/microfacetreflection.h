@@ -1,7 +1,7 @@
 #ifndef _MICROFACET_REFLECTION_H
 #define _MICROFACET_REFLECTION_H
 
-#include "../../core/bxdf.h"
+#include "bxdf.h"
 
 namespace filianore {
 

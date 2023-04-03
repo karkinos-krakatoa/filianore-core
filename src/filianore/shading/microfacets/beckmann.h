@@ -1,7 +1,7 @@
 #ifndef _BECKMANN_DISTRIBUTION_H
 #define _BECKMANN_DISTRIBUTION_H
 
-#include "../../core/microfacet.h"
+#include "microfacet.h"
 
 namespace filianore {
 

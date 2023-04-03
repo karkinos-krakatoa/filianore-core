@@ -96,13 +96,11 @@ int find_interval(int size, const P &predicate) {
 
 template <typename T>
 T next_float_up(float v) {
-    // Handle infinity and negative zero for _NextFloatUp()_
     if (std::isinf(v) && v > 0.)
         return v;
     if (v == -0.f)
         v = 0.f;
 
-    // Advance _v_ to next higher float
     uint32_t ui = float_to_bits(v);
     if (v >= 0)
         ++ui;
@@ -113,7 +111,6 @@ T next_float_up(float v) {
 
 template <typename T>
 inline T next_float_down(float v) {
-    // Handle infinity and positive zero for _NextFloatDown()_
     if (std::isinf(v) && v < 0.)
         return v;
     if (v == 0.f)
