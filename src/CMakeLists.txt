@@ -57,6 +57,8 @@ set (INTEGRATORS_SOURCES
     src/filianore/integrators/integrator.cpp  
     src/filianore/integrators/pathintegrator.h 
     src/filianore/integrators/pathintegrator.cpp  
+    src/filianore/integrators/normalintegrator.h 
+    src/filianore/integrators/normalintegrator.cpp 
 )
 
 set (MATHS_SOURCES

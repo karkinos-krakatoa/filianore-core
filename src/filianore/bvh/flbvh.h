@@ -1,5 +1,5 @@
-#ifndef _BVH_H
-#define _BVH_H
+#ifndef _FLBVH_H
+#define _FLBVH_H
 
 #include "../core/elemental.h"
 #include "../core/primitive.h"
