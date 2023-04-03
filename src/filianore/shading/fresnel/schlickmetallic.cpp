@@ -1,4 +1,4 @@
-#include "../fresnel/schlickmetallic.h"
+#include "schlickmetallic.h"
 
 #include <algorithm>
 #include <iostream>

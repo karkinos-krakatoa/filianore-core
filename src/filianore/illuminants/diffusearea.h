@@ -1,7 +1,7 @@
 #ifndef _ILLUMINANT_DIFFUSE_AREA_H
 #define _ILLUMINANT_DIFFUSE_AREA_H
 
-#include "../core/illuminant.h"
+#include "illuminant.h"
 
 namespace filianore {
 

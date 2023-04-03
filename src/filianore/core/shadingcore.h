@@ -1,8 +1,8 @@
 #ifndef _SHADING_CORE_H
 #define _SHADING_CORE_H
 
+#include "../maths/geometry.h"
 #include "../maths/mathutils.h"
-#include "../maths/vec.h"
 
 namespace filianore {
 

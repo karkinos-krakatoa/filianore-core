@@ -1,4 +1,4 @@
-#include "../fresnel/fresnelconductor.h"
+#include "fresnelconductor.h"
 #include "../../color/basespectrum.h"
 #include "../../maths/mathutils.h"
 #include <algorithm>

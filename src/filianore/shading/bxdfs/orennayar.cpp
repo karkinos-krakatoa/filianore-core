@@ -1,4 +1,4 @@
-#include "../bxdfs/orennayar.h"
+#include "orennayar.h"
 #include "../../core/shadingcore.h"
 
 namespace filianore {

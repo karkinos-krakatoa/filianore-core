@@ -1,7 +1,7 @@
 #ifndef _SPECTRUM_OPERATIONS_H
 #define _SPECTRUM_OPERATIONS_H
 
-#include "../maths/vec.h"
+#include "../maths/geometry.h"
 #include "principalspectrum.h"
 
 namespace filianore {

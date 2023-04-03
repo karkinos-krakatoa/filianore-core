@@ -1,7 +1,7 @@
 #ifndef _FRESNEL_CONDUCTOR_H
 #define _FRESNEL_CONDUCTOR_H
 
-#include "../../core/fresnel.h"
+#include "fresnel.h"
 
 namespace filianore {
 

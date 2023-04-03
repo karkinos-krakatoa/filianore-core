@@ -1,6 +1,6 @@
 #include "../microfacets/ggx.h"
 #include "../../core/shadingcore.h"
-#include "../../maths/vec.h"
+#include "../../maths/geometry.h"
 
 namespace filianore {
 

@@ -1,7 +1,7 @@
 #ifndef _ILLUMINANT_SPOT_H
 #define _ILLUMINANT_SPOT_H
 
-#include "../core/illuminant.h"
+#include "illuminant.h"
 
 namespace filianore {
 

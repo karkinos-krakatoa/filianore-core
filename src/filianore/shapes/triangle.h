@@ -1,8 +1,8 @@
 #ifndef _TRIANGLE_SHAPE_H
 #define _TRIANGLE_SHAPE_H
 
-#include "../core/aabb.h"
-#include "../core/shape.h"
+#include "../maths/geometry.h"
+#include "shape.h"
 
 namespace filianore {
 

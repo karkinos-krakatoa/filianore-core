@@ -1,7 +1,7 @@
 #ifndef _DIFFUSE_BTDF_H
 #define _DIFFUSE_BTDF_H
 
-#include "../../core/bxdf.h"
+#include "bxdf.h"
 
 namespace filianore {
 

@@ -1,8 +1,8 @@
 #ifndef _SCENE_H
 #define _SCENE_H
 
-#include "aabb.h"
-#include "illuminant.h"
+#include "../illuminants/illuminant.h"
+#include "../maths/geometry.h"
 #include "primitive.h"
 #include <vector>
 

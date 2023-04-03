@@ -1,8 +1,8 @@
-#include "../bxdfs/clearcoat.h"
-#include "../../core/microfacet.h"
+#include "clearcoat.h"
 #include "../../core/shadingcore.h"
-#include "../../maths/vec.h"
+#include "../../maths/geometry.h"
 #include "../fresnel/fresneldielectric.h"
+#include "../microfacets/microfacet.h"
 
 namespace filianore {
 inline float GTR1(float cosTheta, float alpha) {

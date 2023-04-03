@@ -1,7 +1,7 @@
-#include "../closures/fresnelspecular.h"
-#include "../../core/microfacet.h"
+#include "fresnelspecular.h"
 #include "../../core/shadingcore.h"
 #include "../fresnel/fresneldielectric.h"
+#include "../microfacets/microfacet.h"
 
 namespace filianore {
 

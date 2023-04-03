@@ -2,9 +2,9 @@
 #define _INTERACTION_H
 
 #include "../color/principalspectrum.h"
-#include "../maths/transform.h"
+#include "../maths/affine.h"
+#include "../maths/geometry.h"
 #include "elemental.h"
-#include "ray.h"
 
 namespace filianore {
 

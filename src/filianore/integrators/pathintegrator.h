@@ -2,7 +2,7 @@
 #define _INTEGRATOR_PATH_H
 
 #include "../core/elemental.h"
-#include "../core/integrator.h"
+#include "integrator.h"
 
 namespace filianore {
 

@@ -1,6 +1,6 @@
 #include "interaction.h"
-#include "../core/illuminant.h"
 #include "../core/primitive.h"
+#include "../illuminants/illuminant.h"
 
 namespace filianore {
 

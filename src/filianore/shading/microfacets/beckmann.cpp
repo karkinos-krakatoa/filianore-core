@@ -1,6 +1,6 @@
-#include "../microfacets/beckmann.h"
+#include "beckmann.h"
 #include "../../core/shadingcore.h"
-#include "../../maths/vec.h"
+#include "../../maths/geometry.h"
 
 namespace filianore {
 

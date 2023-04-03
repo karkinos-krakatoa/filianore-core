@@ -1,7 +1,7 @@
 #ifndef _SCHLICK_DIELECTRIC_H
 #define _SCHLICK_DIELECTRIC_H
 
-#include "../../core/fresnel.h"
+#include "fresnel.h"
 
 namespace filianore {
 

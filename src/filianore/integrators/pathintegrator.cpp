@@ -1,8 +1,8 @@
 #include "pathintegrator.h"
-#include "../core/bsdf.h"
-#include "../core/sampler.h"
 #include "../core/scene.h"
 #include "../core/shadingcore.h"
+#include "../sampling/sampler.h"
+#include "../shading/bsdf.h"
 
 namespace filianore {
 

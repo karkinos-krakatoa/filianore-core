@@ -1,7 +1,7 @@
 #ifndef _FRESNEL_SPECULAR_BRDF_H
 #define _FRESNEL_SPECULAR_BRDF_H
 
-#include "../../core/bxdf.h"
+#include "../bxdfs/bxdf.h"
 
 namespace filianore {
 

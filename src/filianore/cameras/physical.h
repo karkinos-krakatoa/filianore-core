@@ -1,7 +1,7 @@
 #ifndef _PHYSICAL_CAMERA_H
 #define _PHYSICAL_CAMERA_H
 
-#include "../core/camera.h"
+#include "camera.h"
 
 namespace filianore {
 class PhysicalCamera : public Camera {

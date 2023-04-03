@@ -1,7 +1,7 @@
 #ifndef _CLEARCOAT_BRDF_H
 #define _CLEARCOAT_BRDF_H
 
-#include "../../core/bxdf.h"
+#include "bxdf.h"
 
 namespace filianore {
 

@@ -1,6 +1,6 @@
-#include "../microfacets/estevez.h"
+#include "estevez.h"
 #include "../../core/shadingcore.h"
-#include "../../maths/vec.h"
+#include "../../maths/geometry.h"
 
 namespace filianore {
 

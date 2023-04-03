@@ -1,7 +1,7 @@
 #ifndef _ILLUMINANT_DIRECTIONAL_H
 #define _ILLUMINANT_DIRECTIONAL_H
 
-#include "../core/illuminant.h"
+#include "illuminant.h"
 
 namespace filianore {
 
