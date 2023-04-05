@@ -117,7 +117,7 @@ class MemoryArena;
 class SamplerIntegrator;
 class PathIntegrator;
 
-class Bvh;
+struct BVH;
 class RayTraverser;
 struct PrimitiveIntersector;
 

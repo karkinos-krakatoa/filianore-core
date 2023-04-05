@@ -1,6 +1,5 @@
 set (ACCEL_SOURCES
-    src/filianore/bvh/flbvh.h
-    src/filianore/bvh/flbvh.cpp 
+    src/filianore/bvh/bvh.h
 )
 
 set (CAMERA_SOURCES
