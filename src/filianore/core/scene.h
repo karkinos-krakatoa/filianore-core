@@ -1,6 +1,7 @@
 #ifndef _SCENE_H
 #define _SCENE_H
 
+#include "../bvh/bvh.h"
 #include "../illuminants/illuminant.h"
 #include "../maths/geometry.h"
 #include "primitive.h"
@@ -12,7 +13,7 @@ class Scene {
 public:
     Scene() {}
 
-    Scene(const std::shared_ptr<Primitive> &_scenePrims, const std::vector<std::shared_ptr<Illuminant>> &_illuminants);
+    Scene(const BVH &_bvh, const std::vector<std::shared_ptr<Illuminant>> &_illuminants);
 
     const AABB &world_bound() const {
         return worldBound;
@@ -25,7 +26,7 @@ public:
     std::vector<std::shared_ptr<Illuminant>> illuminants;
 
 private:
-    const std::shared_ptr<Primitive> scenePrims;
+    const BVH bvh;
     AABB worldBound;
 };
 
