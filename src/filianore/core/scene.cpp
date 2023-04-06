@@ -3,8 +3,14 @@
 #include "primitive.h"
 
 namespace filianore {
-Scene::Scene(const BVH &_bvh, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
-    : bvh(_bvh), illuminants(_illuminants) {
+
+Scene::Scene(const SceneGeometry &sceneGeometry, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
+    : illuminants(_illuminants) {
+    // Initialize BVH with Scene Geometry
+    bvh = BVH();
+    bvh.initialize_scene_geometry(sceneGeometry);
+
+    // Initialize and prep illuminants
     for (const auto &illuminant : illuminants) {
         illuminant->prepare_illuminant(*this);
     }
@@ -15,6 +21,7 @@ bool Scene::intersect(const Ray &ray, SurfaceInteraction *isect) const {
 }
 
 bool Scene::intersect_p(const Ray &ray) const {
-    return false; // bvh->intersect_p(ray);
+    return bvh.intersect_p(ray);
 }
+
 } // namespace filianore

@@ -11,9 +11,7 @@ namespace filianore {
 
 class Scene {
 public:
-    Scene() {}
-
-    Scene(const BVH &_bvh, const std::vector<std::shared_ptr<Illuminant>> &_illuminants);
+    Scene(const SceneGeometry &SceneGeometry, const std::vector<std::shared_ptr<Illuminant>> &_illuminants);
 
     const AABB &world_bound() const {
         return worldBound;
@@ -26,7 +24,7 @@ public:
     std::vector<std::shared_ptr<Illuminant>> illuminants;
 
 private:
-    const BVH bvh;
+    BVH bvh;
     AABB worldBound;
 };
 
