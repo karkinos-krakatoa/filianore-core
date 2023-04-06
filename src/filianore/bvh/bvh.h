@@ -27,7 +27,7 @@ public:
         rtcReleaseDevice(device);
     }
 
-    void initialize_scene_geometry(SceneGeometry sceneGeometry);
+    void initialize_scene_geometry(const SceneGeometry &sceneGeometry);
 
     void add_triangle_mesh(const std::vector<Vector3f> &vertices,
                            const std::vector<Vector3ui> &indices);

@@ -4,7 +4,7 @@
 
 namespace filianore {
 
-void BVH::initialize_scene_geometry(SceneGeometry sceneGeometry) {
+void BVH::initialize_scene_geometry(const SceneGeometry &sceneGeometry) {
     for (auto triangleMesh : sceneGeometry.triangleMeshes) {
         add_triangle_mesh(triangleMesh.vertices, triangleMesh.indices);
     }
