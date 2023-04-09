@@ -11,8 +11,10 @@ Scene::Scene(const SceneGeometry &sceneGeometry, const std::vector<std::shared_p
     bvh.initialize_scene_geometry(sceneGeometry);
 
     // Initialize and prep illuminants
-    for (const auto &illuminant : illuminants) {
-        illuminant->prepare_illuminant(*this);
+    if (!illuminants.empty()) {
+        for (const auto &illuminant : illuminants) {
+            illuminant->prepare_illuminant(*this);
+        }
     }
 }
 

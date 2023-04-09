@@ -5,10 +5,18 @@
 namespace filianore {
 
 void BVH::initialize_scene_geometry(const SceneGeometry &sceneGeometry) {
-    for (auto triangleMesh : sceneGeometry.triangleMeshes) {
-        add_triangle_mesh(triangleMesh.vertices, triangleMesh.indices);
+    bool geometryExists = false;
+
+    if (!sceneGeometry.triangleMeshes.empty()) {
+        geometryExists = true;
+        for (auto triangleMesh : sceneGeometry.triangleMeshes) {
+            add_triangle_mesh(triangleMesh.vertices, triangleMesh.indices);
+        }
     }
-    finalise();
+
+    if (geometryExists) {
+        finalise();
+    }
 }
 
 void BVH::add_triangle_mesh(const std::vector<Vector3f> &vertices,
