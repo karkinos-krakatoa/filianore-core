@@ -7,7 +7,7 @@ namespace filianore {
 Scene::Scene(const SceneGeometry &sceneGeometry, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
     : illuminants(_illuminants) {
     // Initialize BVH with Scene Geometry
-    bvh = BVH();
+    // bvh = BVH();
     // bvh.initialize_scene_geometry(sceneGeometry);
 
     // Initialize and prep illuminants
