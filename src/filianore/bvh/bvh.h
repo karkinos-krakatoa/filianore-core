@@ -7,10 +7,6 @@
 namespace filianore {
 
 struct SceneGeometryTriangleMesh {
-    SceneGeometryTriangleMesh() {
-        vertices = {};
-        indices = {};
-    }
     std::vector<Vector3f> vertices;
     std::vector<Vector3ui> indices;
 };
