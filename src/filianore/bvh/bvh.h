@@ -8,7 +8,7 @@ namespace filianore {
 
 struct SceneGeometryTriangleMesh {
     std::vector<Vector3f> vertices;
-    std::vector<Vector3ui> indices;
+    std::vector<int> indices;
 };
 
 struct SceneGeometry {
@@ -32,7 +32,7 @@ public:
     void initialize_scene_geometry(const SceneGeometry &sceneGeometry);
 
     void add_triangle_mesh(const std::vector<Vector3f> &vertices,
-                           const std::vector<Vector3ui> &indices);
+                           const std::vector<int> &indices);
 
     void finalise();
 

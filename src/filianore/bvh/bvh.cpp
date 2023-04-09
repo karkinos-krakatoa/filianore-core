@@ -20,27 +20,21 @@ void BVH::initialize_scene_geometry(const SceneGeometry &sceneGeometry) {
 }
 
 void BVH::add_triangle_mesh(const std::vector<Vector3f> &vertices,
-                            const std::vector<Vector3ui> &indices) {
+                            const std::vector<int> &indices) {
     //
     RTCGeometry geometry = rtcNewGeometry(device, RTC_GEOMETRY_TYPE_TRIANGLE);
 
-    rtcSetSharedGeometryBuffer(geometry,
-                               RTC_BUFFER_TYPE_VERTEX,
-                               0,
-                               RTC_FORMAT_FLOAT3,
-                               vertices.data(),
-                               0,
-                               sizeof(Vector3f),
-                               vertices.size());
+    // set vertices
+    Vector3f *verts = (Vector3f *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_VERTEX, 0, RTC_FORMAT_FLOAT3, sizeof(Vector3f), vertices.size());
+    for (size_t i = 0; i < vertices.size(); ++i) {
+        verts[i] = vertices[i];
+    }
 
-    rtcSetSharedGeometryBuffer(geometry,
-                               RTC_BUFFER_TYPE_INDEX,
-                               0,
-                               RTC_FORMAT_UINT3,
-                               indices.data(),
-                               0,
-                               sizeof(Vector3ui),
-                               indices.size());
+    // set indices
+    unsigned *ib = (unsigned *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_INDEX, 0, RTC_FORMAT_UINT3, 3 * sizeof(unsigned), indices.size() / 3);
+    for (size_t i = 0; i < indices.size(); ++i) {
+        ib[i] = indices[i];
+    }
 
     rtcCommitGeometry(geometry);
     rtcAttachGeometry(scene, geometry);
