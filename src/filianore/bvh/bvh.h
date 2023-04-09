@@ -12,7 +12,7 @@ struct SceneGeometryTriangleMesh {
 };
 
 struct SceneGeometry {
-    std::vector<SceneGeometryTriangleMesh> triangleMeshes = {};
+    std::vector<SceneGeometryTriangleMesh> triangleMeshes;
 };
 
 class BVH {
