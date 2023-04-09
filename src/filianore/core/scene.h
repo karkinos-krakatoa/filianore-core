@@ -13,6 +13,8 @@ class Scene {
 public:
     Scene(const SceneGeometry &SceneGeometry, const std::vector<std::shared_ptr<Illuminant>> &_illuminants);
 
+    ~Scene();
+
     const AABB &world_bound() const {
         return worldBound;
     }

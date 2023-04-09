@@ -17,12 +17,14 @@ struct SceneGeometry {
 
 class BVH {
 public:
-    BVH() {
+    BVH() = default;
+
+    void initialize() {
         device = rtcNewDevice(NULL);
         scene = rtcNewScene(device);
     }
 
-    ~BVH() {
+    void clean_up() {
         rtcReleaseScene(scene);
         rtcReleaseDevice(device);
     }

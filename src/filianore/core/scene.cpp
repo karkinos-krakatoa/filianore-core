@@ -7,8 +7,8 @@ namespace filianore {
 Scene::Scene(const SceneGeometry &sceneGeometry, const std::vector<std::shared_ptr<Illuminant>> &_illuminants)
     : illuminants(_illuminants) {
     // Initialize BVH with Scene Geometry
-    // bvh = BVH();
-    // bvh.initialize_scene_geometry(sceneGeometry);
+    bvh.initialize();
+    bvh.initialize_scene_geometry(sceneGeometry);
 
     // Initialize and prep illuminants
     if (!illuminants.empty()) {
@@ -16,6 +16,10 @@ Scene::Scene(const SceneGeometry &sceneGeometry, const std::vector<std::shared_p
             illuminant->prepare_illuminant(*this);
         }
     }
+}
+
+Scene::~Scene() {
+    bvh.clean_up();
 }
 
 bool Scene::intersect(const Ray &ray, SurfaceInteraction *isect) const {
