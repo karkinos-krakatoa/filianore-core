@@ -26,9 +26,13 @@ void BVH::add_triangle_mesh(const std::vector<Vector3f> &vertices,
     RTCGeometry geometry = rtcNewGeometry(device, RTC_GEOMETRY_TYPE_TRIANGLE);
 
     // set vertices
-    Vector3f *verts = (Vector3f *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_VERTEX, 0, RTC_FORMAT_FLOAT3, sizeof(Vector3f), vertices.size() / 3);
-    for (size_t i = 0; i < vertices.size(); ++i) {
-        verts[i] = vertices[i];
+    float *vts = (float *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_VERTEX, 0, RTC_FORMAT_FLOAT3, 3 * sizeof(float), vertices.size() / 3);
+
+    int count = 0;
+    for (auto vert : vertices) {
+        vts[count] = vert.x;
+        vts[count++] = vert.y;
+        vts[count++] = vert.z;
     }
 
     // set indices
