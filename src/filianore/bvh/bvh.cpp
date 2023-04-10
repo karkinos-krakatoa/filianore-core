@@ -26,20 +26,18 @@ void BVH::add_triangle_mesh(const std::vector<Vector3f> &vertices,
     RTCGeometry geometry = rtcNewGeometry(device, RTC_GEOMETRY_TYPE_TRIANGLE);
 
     // set vertices
-    float *vts = (float *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_VERTEX, 0, RTC_FORMAT_FLOAT3, 3 * sizeof(float), vertices.size() / 3);
-
-    int count = 0;
-    for (auto vert : vertices) {
-        vts[count] = vert.x;
-        vts[count++] = vert.y;
-        vts[count++] = vert.z;
+    Vector3f *verts = (Vector3f *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_VERTEX, 0, RTC_FORMAT_FLOAT3, sizeof(Vector3f), 3);
+    for (int i = 0; i < vertices.size(); i++) {
+        verts[i].x = vertices[i].x;
+        verts[i].y = vertices[i].y;
+        verts[i].z = vertices[i].z;
     }
 
     // set indices
-    unsigned *ib = (unsigned *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_INDEX, 0, RTC_FORMAT_UINT3, 3 * sizeof(unsigned), indices.size() / 3);
-    for (size_t i = 0; i < indices.size(); ++i) {
-        ib[i] = indices[i];
-    }
+    Vector3ui *triangles = (Vector3ui *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_INDEX, 0, RTC_FORMAT_UINT3, sizeof(Vector3ui), 1);
+    triangles[0] = 0;
+    triangles[1] = 1;
+    triangles[2] = 2;
 
     rtcCommitGeometry(geometry);
     rtcAttachGeometry(scene, geometry);
