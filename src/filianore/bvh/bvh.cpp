@@ -10,7 +10,7 @@ void BVH::initialize_scene_geometry(const SceneGeometry &sceneGeometry) {
     if (!sceneGeometry.triangleMeshes.empty()) {
         geometryExists = true;
         for (auto triangleMesh : sceneGeometry.triangleMeshes) {
-            for (auto tri : triangleMesh->triangles) {
+            for (auto tri : triangleMesh.triangles) {
                 add_triangle_mesh(tri);
             }
         }
