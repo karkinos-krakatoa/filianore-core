@@ -6,13 +6,16 @@
 
 namespace filianore {
 
-struct SceneGeometryTriangleMesh {
-    std::vector<Vector3f> vertices;
-    std::vector<int> indices;
+struct Triangle {
+    Vector3f v1, v2, v3;
+};
+
+struct TriangleMesh {
+    std::vector<Triangle> triangles;
 };
 
 struct SceneGeometry {
-    std::vector<SceneGeometryTriangleMesh> triangleMeshes;
+    std::vector<TriangleMesh> triangleMeshes;
 };
 
 class BVH {
@@ -31,8 +34,7 @@ public:
 
     void initialize_scene_geometry(const SceneGeometry &sceneGeometry);
 
-    void add_triangle_mesh(const std::vector<Vector3f> &vertices,
-                           const std::vector<int> &indices);
+    void add_triangle_mesh(const Triangle &tri);
 
     void finalise();
 
