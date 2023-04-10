@@ -10,7 +10,7 @@ void BVH::initialize_scene_geometry(const SceneGeometry &sceneGeometry) {
     if (!sceneGeometry.triangleMeshes.empty()) {
         geometryExists = true;
         for (auto triangleMesh : sceneGeometry.triangleMeshes) {
-            for (auto tri : triangleMesh.triangles) {
+            for (auto tri : triangleMesh->triangles) {
                 add_triangle_mesh(tri);
             }
         }
@@ -21,15 +21,15 @@ void BVH::initialize_scene_geometry(const SceneGeometry &sceneGeometry) {
     }
 }
 
-void BVH::add_triangle_mesh(const BasicTriangle &tri) {
+void BVH::add_triangle_mesh(const std::shared_ptr<BasicTriangle> &tri) {
     //
     RTCGeometry geometry = rtcNewGeometry(device, RTC_GEOMETRY_TYPE_TRIANGLE);
 
     // set vertices
     Vector3f *verts = (Vector3f *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_VERTEX, 0, RTC_FORMAT_FLOAT3, sizeof(Vector3f), 3);
-    verts[0] = tri.v1;
-    verts[1] = tri.v2;
-    verts[2] = tri.v3;
+    verts[0] = tri->v1;
+    verts[1] = tri->v2;
+    verts[2] = tri->v3;
 
     // set indices
     Vector3ui *triangles = (Vector3ui *)rtcSetNewGeometryBuffer(geometry, RTC_BUFFER_TYPE_INDEX, 0, RTC_FORMAT_UINT3, sizeof(Vector3ui), 1);

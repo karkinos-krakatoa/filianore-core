@@ -11,11 +11,11 @@ struct BasicTriangle {
 };
 
 struct TriangleMesh {
-    std::vector<BasicTriangle> triangles;
+    std::vector<std::shared_ptr<BasicTriangle>> triangles;
 };
 
 struct SceneGeometry {
-    std::vector<TriangleMesh> triangleMeshes;
+    std::vector<std::shared_ptr<TriangleMesh>> triangleMeshes;
 };
 
 class BVH {
@@ -34,7 +34,7 @@ public:
 
     void initialize_scene_geometry(const SceneGeometry &sceneGeometry);
 
-    void add_triangle_mesh(const BasicTriangle &tri);
+    void add_triangle_mesh(const std::shared_ptr<BasicTriangle> &tri);
 
     void finalise();
 
