@@ -6,12 +6,12 @@
 
 namespace filianore {
 
-struct Triangle {
+struct BasicTriangle {
     Vector3f v1, v2, v3;
 };
 
 struct TriangleMesh {
-    std::vector<Triangle> triangles;
+    std::vector<BasicTriangle> triangles;
 };
 
 struct SceneGeometry {
@@ -34,7 +34,7 @@ public:
 
     void initialize_scene_geometry(const SceneGeometry &sceneGeometry);
 
-    void add_triangle_mesh(const Triangle &tri);
+    void add_triangle_mesh(const BasicTriangle &tri);
 
     void finalise();
 

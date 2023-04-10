@@ -21,7 +21,7 @@ void BVH::initialize_scene_geometry(const SceneGeometry &sceneGeometry) {
     }
 }
 
-void BVH::add_triangle_mesh(const Triangle &tri) {
+void BVH::add_triangle_mesh(const BasicTriangle &tri) {
     //
     RTCGeometry geometry = rtcNewGeometry(device, RTC_GEOMETRY_TYPE_TRIANGLE);
 
