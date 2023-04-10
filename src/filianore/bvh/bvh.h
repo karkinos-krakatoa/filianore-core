@@ -15,7 +15,7 @@ struct TriangleMesh {
 };
 
 struct SceneGeometry {
-    std::vector<TriangleMesh> triangleMeshes;
+    std::vector<std::shared_ptr<TriangleMesh>> triangleMeshes;
 };
 
 class BVH {
